@@ -2,6 +2,7 @@ package ru.visualmath.android.login;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +18,8 @@ import ru.visualmath.android.R;
 
 public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
 
-    @BindView(R.id.email)
-    EditText email;
+    @BindView(R.id.name)
+    EditText name;
 
     @BindView(R.id.password)
     EditText password;
@@ -56,6 +57,13 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
         setFormEnabled(true);
         loading.setVisibility(View.GONE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setMessage("Ошибка")
+                .setCancelable(true)
+                .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -65,7 +73,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     }
 
     private void setFormEnabled(boolean enabled) {
-        email.setEnabled(enabled);
+        name.setEnabled(enabled);
         password.setEnabled(enabled);
         loginButton.setEnabled(enabled);
     }
@@ -73,13 +81,21 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     @Override
     public void loginSuccessful() {
         Log.d("LOGIN", "Successful");
-        finish();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setMessage("Успешно")
+                .setPositiveButton("ОК", (dialog, id) -> {
+                    dialog.cancel();
+                    finish();
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @OnClick(R.id.loginButton)
     public void onLoginClicked() {
-        String emailValue = email.getText().toString();
+        String nameValue = name.getText().toString();
         String passwordValue = password.getText().toString();
-        presenter.doLogin(emailValue, passwordValue);
+        presenter.doLogin(nameValue, passwordValue);
     }
 }

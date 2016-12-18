@@ -11,13 +11,13 @@
     tools:context="ru.visualmath.android.login.LoginActivity">
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="Email"
+        android:hint="Name"
         android:inputType="textEmailAddress" />
 
 
@@ -25,9 +25,9 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/email"
-        android:layout_alignStart="@+id/email"
-        android:layout_below="@+id/email"
+        android:layout_alignLeft="@+id/name"
+        android:layout_alignStart="@+id/name"
+        android:layout_below="@+id/name"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
