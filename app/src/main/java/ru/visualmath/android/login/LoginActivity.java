@@ -1,5 +1,6 @@
 package ru.visualmath.android.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.visualmath.android.R;
+import ru.visualmath.android.lectures.LecturesActivity;
 
 public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
 
@@ -52,14 +54,15 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     }
 
     @Override
-    public void showError() {
+    public void showError(String message) {
         Log.d("LOGIN", "Error");
 
         setFormEnabled(true);
         loading.setVisibility(View.GONE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setMessage("Ошибка")
+                .setTitle("Ошибка входа")
+                .setMessage(message)
                 .setCancelable(true)
                 .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
         AlertDialog dialog = builder.create();
@@ -80,16 +83,9 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
     @Override
     public void loginSuccessful() {
-        Log.d("LOGIN", "Successful");
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setMessage("Успешно")
-                .setPositiveButton("ОК", (dialog, id) -> {
-                    dialog.cancel();
-                    finish();
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Intent intent = new Intent(this, LecturesActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     @OnClick(R.id.loginButton)

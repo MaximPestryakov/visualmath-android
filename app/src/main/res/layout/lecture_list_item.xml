@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp">
+
+    <TextView
+        android:id="@+id/lecture_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:textColor="#212121"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/lecture_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/lecture_name"
+        android:layout_alignLeft="@id/lecture_name"
+        android:layout_alignRight="@id/lecture_name"
+        android:layout_alignStart="@id/lecture_name"
+        android:layout_below="@id/lecture_name"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+</RelativeLayout>
