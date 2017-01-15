@@ -2,11 +2,11 @@ package ru.visualmath.android.lectures;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
@@ -20,10 +20,10 @@ import ru.visualmath.android.api.model.Lecture;
 public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresenter> implements LecturesView {
 
     @BindView(R.id.lectures_list)
-    RecyclerView lecuresList;
+    RecyclerView lecturesList;
 
-    @BindView(R.id.loadingLectures)
-    ProgressBar loading;
+    @BindView(R.id.refresh_lectures_list)
+    SwipeRefreshLayout refreshLecturesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,7 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
         setContentView(R.layout.activity_lectures);
         ButterKnife.bind(this);
 
+        refreshLecturesList.setOnRefreshListener(() -> presenter.loadLectures());
         presenter.loadLectures();
     }
 
@@ -42,26 +43,26 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
 
     @Override
     public void showLoading() {
-        lecuresList.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
+        lecturesList.setVisibility(View.GONE);
+        refreshLecturesList.setRefreshing(true);
     }
 
     @Override
     public void showLectureList(List<Lecture> lectures) {
-        loading.setVisibility(View.VISIBLE);
+        refreshLecturesList.setRefreshing(true);
 
-        lecuresList.setHasFixedSize(true);
-        lecuresList.setLayoutManager(new LinearLayoutManager(this));
-        lecuresList.setAdapter(new LecturesListAdapter(lectures));
+        lecturesList.setHasFixedSize(true);
+        lecturesList.setLayoutManager(new LinearLayoutManager(this));
+        lecturesList.setAdapter(new LecturesListAdapter(lectures));
 
-        loading.setVisibility(View.GONE);
-        lecuresList.setVisibility(View.VISIBLE);
+        refreshLecturesList.setRefreshing(false);
+        lecturesList.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showError(String message) {
-        loading.setVisibility(View.GONE);
-        lecuresList.setVisibility(View.GONE);
+        lecturesList.setVisibility(View.GONE);
+        refreshLecturesList.setRefreshing(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Ошибка")
@@ -71,4 +72,6 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
 }
