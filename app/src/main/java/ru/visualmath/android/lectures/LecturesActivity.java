@@ -1,5 +1,6 @@
 package ru.visualmath.android.lectures;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.login.LoginActivity;
 
 public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresenter> implements LecturesView {
 
@@ -73,5 +75,10 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
         dialog.show();
     }
 
-
+    @Override
+    public void logout() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        finish();
+        startActivity(intent);
+    }
 }

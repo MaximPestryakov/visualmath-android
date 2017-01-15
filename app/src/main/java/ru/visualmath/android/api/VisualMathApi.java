@@ -1,5 +1,7 @@
 package ru.visualmath.android.api;
 
+import android.util.Log;
+
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.List;
@@ -16,10 +18,11 @@ import ru.visualmath.android.api.model.User;
 public class VisualMathApi {
 
     private static VisualMathApi api = new VisualMathApi();
+    private String cookie = "";
     VisualMathService service;
-    String cookie = "";
 
     private VisualMathApi() {
+        Log.d("VisualMathApi", "Constructor");
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> chain.proceed(chain
@@ -30,7 +33,9 @@ public class VisualMathApi {
                 .addInterceptor(chain -> {
                     Response response = chain.proceed(chain.request());
 
-                    cookie = response.header("Set-Cookie", "");
+                    if (!response.header("Set-Cookie", "").isEmpty()) {
+                        cookie = response.header("Set-Cookie");
+                    }
 
                     return response;
                 })

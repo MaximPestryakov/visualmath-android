@@ -13,4 +13,6 @@ interface LecturesView extends MvpView {
     void showLectureList(List<Lecture> lectures);
 
     void showError(String message);
+
+    void logout();
 }

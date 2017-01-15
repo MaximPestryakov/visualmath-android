@@ -3,6 +3,7 @@ package ru.visualmath.android.lectures;
 import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.io.IOException;
 
@@ -21,7 +22,14 @@ public class LecturesPresenter extends MvpBasePresenter<LecturesView> {
                 .subscribe(lectures -> getView().showLectureList(lectures),
                         throwable -> {
                             String errorMessage;
-                            if (throwable instanceof IOException) {
+                            if (throwable instanceof HttpException) {
+                                if (((HttpException) throwable).code() == 500) {
+                                    getView().logout();
+                                    return;
+                                } else {
+                                    errorMessage = "Сервер временно недоступен";
+                                }
+                            } else if (throwable instanceof IOException) {
                                 errorMessage = "Проверьте подключение к интернету";
                             } else {
                                 errorMessage = "Неизвестная ошибка";
