@@ -1,16 +1,18 @@
 package ru.visualmath.android.api;
 
-import android.util.Log;
-
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.LoginParams;
 import ru.visualmath.android.api.model.User;
@@ -18,27 +20,14 @@ import ru.visualmath.android.api.model.User;
 public class VisualMathApi {
 
     private static VisualMathApi api = new VisualMathApi();
-    private String cookie = "";
     VisualMathService service;
 
     private VisualMathApi() {
-        Log.d("VisualMathApi", "Constructor");
+        CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
+                new SharedPrefsCookiePersistor(App.getContext()));
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(chain -> chain.proceed(chain
-                        .request()
-                        .newBuilder()
-                        .addHeader("Cookie", cookie)
-                        .build()))
-                .addInterceptor(chain -> {
-                    Response response = chain.proceed(chain.request());
-
-                    if (!response.header("Set-Cookie", "").isEmpty()) {
-                        cookie = response.header("Set-Cookie");
-                    }
-
-                    return response;
-                })
+                .cookieJar(cookieJar)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
