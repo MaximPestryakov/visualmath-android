@@ -15,6 +15,7 @@ public class LecturesPresenter extends MvpBasePresenter<LecturesView> {
 
     void loadLectures() {
         getView().showLoading();
+        Log.d("LecturesPresenter", "loadLectures");
 
         VisualMathApi.getApi().lecturesList()
                 .subscribeOn(Schedulers.io())

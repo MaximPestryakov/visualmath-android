@@ -1,7 +1,5 @@
 package ru.visualmath.android.login;
 
-import android.util.Log;
-
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
@@ -17,7 +15,6 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
         if (isViewAttached()) {
             getView().showLoading();
         }
-        Log.d("LOGIN", name + " " + password);
 
         VisualMathApi.getApi().login(name, password)
                 .subscribeOn(Schedulers.io())

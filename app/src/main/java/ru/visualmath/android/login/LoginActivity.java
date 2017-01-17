@@ -10,15 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.hannesdorfmann.mosby.mvp.MvpActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.visualmath.android.R;
 import ru.visualmath.android.lectures.LecturesActivity;
+import ru.visualmath.android.login.LoginViewState.LoginState;
 
-public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
+public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresenter> implements LoginView {
 
     @BindView(R.id.name)
     EditText name;
@@ -37,8 +39,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        showLoginForm();
+        setRetainInstance(true);
     }
 
     @NonNull
@@ -47,14 +48,27 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         return new LoginPresenter();
     }
 
+    @NonNull
+    @Override
+    public ViewState<LoginView> createViewState() {
+        return new LoginViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        showLoginForm();
+    }
+
     @Override
     public void showLoginForm() {
+        setState(LoginState.SHOW_LOGIN_FORM);
         setFormEnabled(true);
         loading.setVisibility(View.GONE);
     }
 
     @Override
     public void showError(String message) {
+        setState(LoginState.SHOW_ERROR, message);
         Log.d("LOGIN", "Error");
 
         setFormEnabled(true);
@@ -71,6 +85,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
     @Override
     public void showLoading() {
+        setState(LoginState.SHOW_LOADING);
         setFormEnabled(false);
         loading.setVisibility(View.VISIBLE);
     }
@@ -83,6 +98,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
     @Override
     public void loginSuccessful() {
+        setState(LoginState.LOGIN_SUCCESSFUL);
         Intent intent = new Intent(this, LecturesActivity.class);
         finish();
         startActivity(intent);
@@ -93,5 +109,14 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         String nameValue = name.getText().toString();
         String passwordValue = password.getText().toString();
         presenter.doLogin(nameValue, passwordValue);
+    }
+
+    void setState(LoginState state) {
+        ((LoginViewState) viewState).setState(state);
+    }
+
+
+    void setState(LoginState state, Object data) {
+        ((LoginViewState) viewState).setState(state, data);
     }
 }
