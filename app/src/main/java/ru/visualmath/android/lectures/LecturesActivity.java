@@ -9,7 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hannesdorfmann.mosby.mvp.MvpActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import java.util.List;
 
@@ -17,9 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.lectures.LectureViewState.LectureState;
 import ru.visualmath.android.login.LoginActivity;
 
-public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresenter> implements LecturesView {
+public class LecturesActivity extends MvpViewStateActivity<LecturesView, LecturesPresenter> implements LecturesView {
 
     @BindView(R.id.lectures_list)
     RecyclerView lecturesList;
@@ -32,9 +34,9 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lectures);
         ButterKnife.bind(this);
+        setRetainInstance(true);
 
         refreshLecturesList.setOnRefreshListener(() -> presenter.loadLectures());
-        presenter.loadLectures();
     }
 
     @NonNull
@@ -43,14 +45,27 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
         return new LecturesPresenter();
     }
 
+    @NonNull
+    @Override
+    public ViewState<LecturesView> createViewState() {
+        return new LectureViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+        presenter.loadLectures();
+    }
+
     @Override
     public void showLoading() {
+        setState(LectureState.SHOW_LOADING);
         lecturesList.setVisibility(View.GONE);
         refreshLecturesList.setRefreshing(true);
     }
 
     @Override
     public void showLectureList(List<Lecture> lectures) {
+        setState(LectureState.SHOW_LECTURE_LIST, lectures);
         refreshLecturesList.setRefreshing(true);
 
         lecturesList.setHasFixedSize(true);
@@ -63,6 +78,7 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
 
     @Override
     public void showError(String message) {
+        setState(LectureState.SHOW_ERROR, message);
         lecturesList.setVisibility(View.GONE);
         refreshLecturesList.setRefreshing(false);
 
@@ -77,8 +93,18 @@ public class LecturesActivity extends MvpActivity<LecturesView, LecturesPresente
 
     @Override
     public void logout() {
+        setState(LectureState.LOGOUT);
         Intent intent = new Intent(this, LoginActivity.class);
         finish();
         startActivity(intent);
+    }
+
+    void setState(LectureState state) {
+        ((LectureViewState) viewState).setState(state);
+    }
+
+
+    void setState(LectureState state, Object data) {
+        ((LectureViewState) viewState).setState(state, data);
     }
 }

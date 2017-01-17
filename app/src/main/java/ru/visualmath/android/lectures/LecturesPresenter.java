@@ -14,18 +14,26 @@ import ru.visualmath.android.api.VisualMathApi;
 public class LecturesPresenter extends MvpBasePresenter<LecturesView> {
 
     void loadLectures() {
-        getView().showLoading();
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
         Log.d("LecturesPresenter", "loadLectures");
 
         VisualMathApi.getApi().lecturesList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lectures -> getView().showLectureList(lectures),
+                .subscribe(lectures -> {
+                            if (isViewAttached()) {
+                                getView().showLectureList(lectures);
+                            }
+                        },
                         throwable -> {
                             String errorMessage;
                             if (throwable instanceof HttpException) {
                                 if (((HttpException) throwable).code() == 500) {
-                                    getView().logout();
+                                    if (isViewAttached()) {
+                                        getView().logout();
+                                    }
                                     return;
                                 } else {
                                     errorMessage = "Сервер временно недоступен";
@@ -36,7 +44,9 @@ public class LecturesPresenter extends MvpBasePresenter<LecturesView> {
                                 errorMessage = "Неизвестная ошибка";
                             }
                             Log.d("Error", throwable.getMessage());
-                            getView().showError(errorMessage);
+                            if (isViewAttached()) {
+                                getView().showError(errorMessage);
+                            }
                         });
     }
 }

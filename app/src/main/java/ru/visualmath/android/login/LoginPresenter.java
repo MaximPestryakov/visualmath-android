@@ -19,7 +19,11 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
         VisualMathApi.getApi().login(name, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> getView().loginSuccessful(),
+                .subscribe(user -> {
+                            if (isViewAttached()) {
+                                getView().loginSuccessful();
+                            }
+                        },
                         throwable -> {
                             String errorMessage;
                             if (throwable instanceof HttpException) {
@@ -33,7 +37,9 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
                             } else {
                                 errorMessage = "Неизвестная ошибка";
                             }
-                            getView().showError(errorMessage);
+                            if (isViewAttached()) {
+                                getView().showError(errorMessage);
+                            }
                         });
     }
 }
