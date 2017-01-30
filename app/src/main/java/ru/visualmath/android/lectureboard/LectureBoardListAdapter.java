@@ -1,5 +1,7 @@
-package ru.visualmath.android.lectures;
+package ru.visualmath.android.lectureboard;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.lecture.LectureActivity;
 
-public class LecturesListAdapter extends RecyclerView.Adapter<LecturesListAdapter.ViewHolder> {
+public class LectureBoardListAdapter extends RecyclerView.Adapter<LectureBoardListAdapter.ViewHolder> {
 
+    Context context;
     private List<Lecture> lectures;
 
-    public LecturesListAdapter(List<Lecture> lectures) {
+    public LectureBoardListAdapter(Context context, List<Lecture> lectures) {
+        this.context = context;
         this.lectures = lectures;
     }
 
@@ -27,7 +32,7 @@ public class LecturesListAdapter extends RecyclerView.Adapter<LecturesListAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.lecture_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, context);
     }
 
     @Override
@@ -52,9 +57,18 @@ public class LecturesListAdapter extends RecyclerView.Adapter<LecturesListAdapte
         @BindView(R.id.lecture_date)
         TextView lectureDate;
 
-        public ViewHolder(View itemView) {
+        Context context;
+
+        public ViewHolder(View itemView, Context context) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.context = context;
+            itemView.setOnClickListener(this::showLecture);
+        }
+
+        void showLecture(View view) {
+            Intent intent = new Intent(context, LectureActivity.class);
+            context.startActivity(intent);
         }
     }
 }

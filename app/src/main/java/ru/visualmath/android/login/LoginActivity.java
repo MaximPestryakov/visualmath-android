@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.visualmath.android.R;
-import ru.visualmath.android.lectures.LecturesActivity;
+import ru.visualmath.android.lectureboard.LectureBoardActivity;
 import ru.visualmath.android.login.LoginViewState.LoginState;
 
 public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresenter> implements LoginView {
@@ -99,7 +99,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
     @Override
     public void loginSuccessful() {
         setState(LoginState.LOGIN_SUCCESSFUL);
-        Intent intent = new Intent(this, LecturesActivity.class);
+        Intent intent = new Intent(this, LectureBoardActivity.class);
         finish();
         startActivity(intent);
     }
