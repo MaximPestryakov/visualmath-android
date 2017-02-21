@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/answer_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp" />
+
+    <RadioButton
+        android:id="@+id/answer_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp" />
+
+
+
+    <TextView
+        android:id="@+id/answer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/answer_check_box"
+        android:layout_alignBottom="@+id/answer_check_box"
+        android:layout_toEndOf="@+id/answer_check_box"
+        android:layout_toRightOf="@+id/answer_check_box"
+        android:fontFamily="sans-serif"
+        android:text="Вопрос"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+</RelativeLayout>

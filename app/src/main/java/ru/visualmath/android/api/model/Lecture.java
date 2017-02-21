@@ -1,21 +1,26 @@
 package ru.visualmath.android.api.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Lecture {
-    @SerializedName("_id")
-    String id;
 
-    String name;
+    public String name;
 
-    boolean hidden;
+    public List<Page> mapping;
 
-    String created;
+    public List<Module> modules;
+
+    public List<Question> questions;
+
+    public List<String> questionBlocks;
+
+    public boolean hidden;
+
+    public String created;
 
     public String getName() {
         return name;
@@ -30,5 +35,29 @@ public class Lecture {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public class Page {
+        public int index;
+
+        public String type;
+    }
+
+    public class Module {
+        public String name;
+
+        public String content;
+
+        public List<String> images;
+    }
+
+    public class Question {
+        public String question;
+
+        public boolean multiple;
+
+        public List<String> answers;
+
+        public List<String> images;
     }
 }

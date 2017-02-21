@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -37,10 +39,13 @@ public class LectureBoardListAdapter extends RecyclerView.Adapter<LectureBoardLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.lectureName.setText(lectures.get(position).getName());
+        Lecture lecture = lectures.get(position);
+
+        holder.setLecture(lecture);
+        holder.lectureName.setText(lecture.getName());
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy");
-        String date = dateFormat.format(lectures.get(position).getCreatedDate());
+        String date = dateFormat.format(lecture.getCreatedDate());
         holder.lectureDate.setText(date);
     }
 
@@ -59,6 +64,8 @@ public class LectureBoardListAdapter extends RecyclerView.Adapter<LectureBoardLi
 
         Context context;
 
+        Lecture lecture;
+
         public ViewHolder(View itemView, Context context) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -68,7 +75,12 @@ public class LectureBoardListAdapter extends RecyclerView.Adapter<LectureBoardLi
 
         void showLecture(View view) {
             Intent intent = new Intent(context, LectureActivity.class);
+            intent.putExtra("lecture", new Gson().toJson(lecture));
             context.startActivity(intent);
+        }
+
+        void setLecture(Lecture lecture) {
+            this.lecture = lecture;
         }
     }
 }

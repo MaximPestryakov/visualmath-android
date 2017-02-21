@@ -5,7 +5,9 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.CookieJar;
@@ -14,13 +16,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.Lecture;
-import ru.visualmath.android.api.model.LoginParams;
+import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.User;
 
 public class VisualMathApi {
 
     private static VisualMathApi api = new VisualMathApi();
-    VisualMathService service;
+
+    private VisualMathService service;
 
     private VisualMathApi() {
         CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
@@ -45,10 +48,19 @@ public class VisualMathApi {
     }
 
     public Observable<User> login(String name, String password) {
-        return service.login(new LoginParams(name, password));
+        Map<String, String> data = new HashMap<>();
+        data.put("name", name);
+        data.put("password", password);
+        return service.login(data);
     }
 
     public Observable<List<Lecture>> lecturesList() {
         return service.lecturesList();
+    }
+
+    public Observable<QuestionBlock> loadQuestionBlock(String id) {
+        Map<String, String> data = new HashMap<>();
+        data.put("id", id);
+        return service.loadQuestionBlock(data);
     }
 }

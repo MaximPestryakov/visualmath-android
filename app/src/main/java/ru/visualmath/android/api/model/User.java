@@ -3,8 +3,6 @@ package ru.visualmath.android.api.model;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    @SerializedName("_id")
-    String id;
 
     String username;
 
