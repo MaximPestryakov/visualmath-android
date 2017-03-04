@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
+import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
 
 public class VisualMathApi {
@@ -56,6 +57,10 @@ public class VisualMathApi {
 
     public Observable<List<Lecture>> lecturesList() {
         return service.lecturesList();
+    }
+
+    public Observable<List<SyncLecture>> syncLecturesList() {
+        return service.syncLectureList();
     }
 
     public Observable<QuestionBlock> loadQuestionBlock(String id) {

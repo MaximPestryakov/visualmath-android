@@ -23,30 +23,29 @@ public class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lectures -> {
+                    if (isViewAttached()) {
+                        getView().showLectureList(lectures);
+                    }
+                }, throwable -> {
+                    String errorMessage;
+                    if (throwable instanceof HttpException) {
+                        if (((HttpException) throwable).code() == 500) {
                             if (isViewAttached()) {
-                                getView().showLectureList(lectures);
+                                getView().logout();
                             }
-                        },
-                        throwable -> {
-                            String errorMessage;
-                            if (throwable instanceof HttpException) {
-                                if (((HttpException) throwable).code() == 500) {
-                                    if (isViewAttached()) {
-                                        getView().logout();
-                                    }
-                                    return;
-                                } else {
-                                    errorMessage = "Сервер временно недоступен";
-                                }
-                            } else if (throwable instanceof IOException) {
-                                errorMessage = "Проверьте подключение к интернету";
-                            } else {
-                                errorMessage = "Неизвестная ошибка";
-                            }
-                            Log.d("Error", throwable.getMessage());
-                            if (isViewAttached()) {
-                                getView().showError(errorMessage);
-                            }
-                        });
+                            return;
+                        } else {
+                            errorMessage = "Сервер временно недоступен";
+                        }
+                    } else if (throwable instanceof IOException) {
+                        errorMessage = "Проверьте подключение к интернету";
+                    } else {
+                        errorMessage = "Неизвестная ошибка";
+                    }
+                    Log.d("Error", throwable.getMessage());
+                    if (isViewAttached()) {
+                        getView().showError(errorMessage);
+                    }
+                });
     }
 }
