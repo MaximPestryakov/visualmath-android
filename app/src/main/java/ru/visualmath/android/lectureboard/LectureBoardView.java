@@ -5,12 +5,13 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import java.util.List;
 
 import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.api.model.SyncLecture;
 
 interface LectureBoardView extends MvpView {
 
     void showLoading();
 
-    void showLectureList(List<Lecture> lectures);
+    void showLectureList(List<SyncLecture> syncLectures, List<Lecture> lectures);
 
     void showError(String message);
 

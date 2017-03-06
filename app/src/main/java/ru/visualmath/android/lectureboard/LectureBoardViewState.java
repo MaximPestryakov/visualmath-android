@@ -19,7 +19,7 @@ class LectureBoardViewState implements ViewState<LectureBoardView> {
                 break;
 
             case SHOW_LECTURE_LIST:
-                view.showLectureList((List<Lecture>) data);
+                view.showLectureList(null, (List<Lecture>) data);
                 break;
 
             case SHOW_ERROR:

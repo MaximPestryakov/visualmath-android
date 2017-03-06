@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.lectureboard.LectureBoardViewState.LectureState;
 import ru.visualmath.android.login.LoginActivity;
 
@@ -72,10 +74,11 @@ public class LectureBoardActivity extends MvpViewStateActivity<LectureBoardView,
     }
 
     @Override
-    public void showLectureList(List<Lecture> lectures) {
-        setState(LectureState.SHOW_LECTURE_LIST, lectures);
+    public void showLectureList(List<SyncLecture> syncLectures, List<Lecture> lectures) {
+        //setState(LectureState.SHOW_LECTURE_LIST, lectures);
         refreshLecturesList.setRefreshing(true);
-        adapter.setLectures(lectures);
+        Log.d("SYNC_LECTURES", syncLectures.size() + "");
+        adapter.setLectures(syncLectures, lectures);
         refreshLecturesList.setRefreshing(false);
         lecturesList.setVisibility(View.VISIBLE);
     }

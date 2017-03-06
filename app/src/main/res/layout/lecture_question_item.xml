@@ -28,7 +28,7 @@
         android:layout_toRightOf="@+id/answer_check_box"
         android:fontFamily="sans-serif"
         android:text="Вопрос"
-        android:textColor="#757575"
+        android:textColor="@color/colorSecondaryText"
         android:textSize="14sp" />
 
 </RelativeLayout>

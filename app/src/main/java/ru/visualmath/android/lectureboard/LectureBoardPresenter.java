@@ -6,10 +6,15 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.App;
+import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.api.model.SyncLecture;
 
 class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
 
@@ -24,13 +29,21 @@ class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
             getView().showLoading();
         }
 
-        app.getApi().lecturesList()
+        List<SyncLecture> syncLectures = new ArrayList<>();
+        List<Lecture> lectures = new ArrayList<>();
+
+        Observable.concat(app.getApi().syncLecturesList(), app.getApi().lecturesList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lectures -> {
-                    if (isViewAttached()) {
+                .subscribe(allLectures -> {
+                    if (!allLectures.isEmpty() && allLectures.get(0) instanceof SyncLecture) {
+                        syncLectures.addAll((List<SyncLecture>) allLectures);
+                        syncLectures.sort((l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
+                    } else if (!allLectures.isEmpty() && allLectures.get(0) instanceof Lecture) {
+                        lectures.addAll((List<Lecture>) allLectures);
+                        lectures.removeIf(lecture -> lecture.hidden);
                         lectures.sort((l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
-                        getView().showLectureList(lectures);
+                        getView().showLectureList(syncLectures, lectures);
                     }
                 }, throwable -> {
                     String errorMessage;

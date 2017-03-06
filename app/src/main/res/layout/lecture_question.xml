@@ -8,13 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:text="Вопрос"
-        android:textColor="#212121"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="24sp" />
 
     <android.support.v7.widget.RecyclerView
@@ -30,4 +28,3 @@
         android:layout_marginTop="16dp" />
 
 </RelativeLayout>
-
