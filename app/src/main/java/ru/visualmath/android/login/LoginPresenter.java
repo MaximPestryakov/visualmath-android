@@ -7,16 +7,22 @@ import java.io.IOException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import ru.visualmath.android.api.VisualMathApi;
+import ru.visualmath.android.App;
 
 public class LoginPresenter extends MvpBasePresenter<LoginView> {
+
+    private App app;
+
+    public LoginPresenter(App app) {
+        this.app = app;
+    }
 
     public void doLogin(String name, String password) {
         if (isViewAttached()) {
             getView().showLoading();
         }
 
-        VisualMathApi.getApi().login(name, password)
+        app.getApi().login(name, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {

@@ -9,21 +9,27 @@ import java.io.IOException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import ru.visualmath.android.api.VisualMathApi;
+import ru.visualmath.android.App;
 
 public class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
+
+    private App app;
+
+    public LectureBoardPresenter(App app) {
+        this.app = app;
+    }
 
     void loadLectures() {
         if (isViewAttached()) {
             getView().showLoading();
         }
-        Log.d("LectureBoardPresenter", "loadLectures");
 
-        VisualMathApi.getApi().lecturesList()
+        app.getApi().lecturesList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lectures -> {
                     if (isViewAttached()) {
+                        lectures.sort((l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
                         getView().showLectureList(lectures);
                     }
                 }, throwable -> {

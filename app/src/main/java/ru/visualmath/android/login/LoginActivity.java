@@ -16,6 +16,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.lectureboard.LectureBoardActivity;
 import ru.visualmath.android.login.LoginViewState.LoginState;
@@ -45,7 +46,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
     @NonNull
     @Override
     public LoginPresenter createPresenter() {
-        return new LoginPresenter();
+        return new LoginPresenter(App.from(this));
     }
 
     @NonNull

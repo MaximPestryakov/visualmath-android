@@ -1,5 +1,7 @@
 package ru.visualmath.android.api;
 
+import android.content.Context;
+
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
@@ -14,7 +16,6 @@ import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
@@ -22,13 +23,11 @@ import ru.visualmath.android.api.model.User;
 
 public class VisualMathApi {
 
-    private static VisualMathApi api = new VisualMathApi();
-
     private VisualMathService service;
 
-    private VisualMathApi() {
+    public VisualMathApi(Context context) {
         CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
-                new SharedPrefsCookiePersistor(App.getContext()));
+                new SharedPrefsCookiePersistor(context));
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(cookieJar)
@@ -42,10 +41,6 @@ public class VisualMathApi {
                 .build();
 
         service = retrofit.create(VisualMathService.class);
-    }
-
-    public static VisualMathApi getApi() {
-        return api;
     }
 
     public Observable<User> login(String name, String password) {

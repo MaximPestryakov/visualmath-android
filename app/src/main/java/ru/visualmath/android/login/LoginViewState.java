@@ -4,10 +4,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 public class LoginViewState implements ViewState<LoginView> {
 
-    public enum LoginState {
-        SHOW_LOGIN_FORM, SHOW_ERROR, SHOW_LOADING, LOGIN_SUCCESSFUL
-    }
-
     private LoginState state;
     private Object data;
 
@@ -39,5 +35,9 @@ public class LoginViewState implements ViewState<LoginView> {
     public void setState(LoginState state, Object data) {
         this.state = state;
         this.data = data;
+    }
+
+    public enum LoginState {
+        SHOW_LOGIN_FORM, SHOW_ERROR, SHOW_LOADING, LOGIN_SUCCESSFUL
     }
 }

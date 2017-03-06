@@ -18,21 +18,17 @@ import ru.visualmath.android.R;
 
 public class LectureModuleFragment extends Fragment {
 
-    @BindView(R.id.lecture_module_name)
-    TextView nameTextView;
-
-    @BindView(R.id.lecture_module_content)
-    TextView contentTextView;
-
-    private Unbinder unbinder;
-
-    private String name;
-    private String content;
-    private ArrayList<String> images;
-
     private static final String NAME_KEY = "name";
     private static final String CONTENT_KEY = "content";
     private static final String IMAGES_KEY = "images";
+    @BindView(R.id.lecture_module_name)
+    TextView nameTextView;
+    @BindView(R.id.lecture_module_content)
+    TextView contentTextView;
+    private Unbinder unbinder;
+    private String name;
+    private String content;
+    private ArrayList<String> images;
 
     public static LectureModuleFragment newInstance(String name, String content,
                                                     List<String> images) {

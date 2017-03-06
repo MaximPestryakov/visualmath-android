@@ -13,11 +13,9 @@ import ru.visualmath.android.R;
 
 public class LectureQuestionBlockFragment extends Fragment {
 
-    private Unbinder unbinder;
-
-    private String id;
-
     private static String ID_KEY = "id";
+    private Unbinder unbinder;
+    private String id;
 
     public static LectureQuestionBlockFragment newInstance(String id) {
         Bundle args = new Bundle();

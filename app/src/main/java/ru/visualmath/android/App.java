@@ -3,17 +3,24 @@ package ru.visualmath.android;
 import android.app.Application;
 import android.content.Context;
 
+import ru.visualmath.android.api.VisualMathApi;
+
 public class App extends Application {
 
-    private static Context context;
+    private VisualMathApi api;
+
+    public static App from(Context context) {
+        return (App) context.getApplicationContext();
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+
+        api = new VisualMathApi(this);
     }
 
-    public static Context getContext() {
-        return context;
+    public VisualMathApi getApi() {
+        return api;
     }
 }

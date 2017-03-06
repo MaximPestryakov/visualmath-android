@@ -22,21 +22,17 @@ import ru.visualmath.android.R;
 
 public class LectureQuestionFragment extends Fragment {
 
-    @BindView(R.id.lecture_question)
-    TextView questionTextView;
-
-    @BindView(R.id.lecture_answers)
-    RecyclerView answersRecyclerView;
-
-    private Unbinder unbinder;
-
-    private String question;
-    private List<String> answers;
-    private Boolean multiple;
-
     private static final String QUESTION_KEY = "question";
     private static final String ANSWERS_KEY = "answers";
     private static final String MULTIPLE_KEY = "multiple";
+    @BindView(R.id.lecture_question)
+    TextView questionTextView;
+    @BindView(R.id.lecture_answers)
+    RecyclerView answersRecyclerView;
+    private Unbinder unbinder;
+    private String question;
+    private List<String> answers;
+    private Boolean multiple;
 
     public static LectureQuestionFragment newInstance(String question, List<String> answers,
                                                       Boolean multiple) {

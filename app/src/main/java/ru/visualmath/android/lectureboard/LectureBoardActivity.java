@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.lectureboard.LectureBoardViewState.LectureState;
@@ -36,13 +37,13 @@ public class LectureBoardActivity extends MvpViewStateActivity<LectureBoardView,
         ButterKnife.bind(this);
         setRetainInstance(true);
 
-        refreshLecturesList.setOnRefreshListener(() -> presenter.loadLectures());
+        refreshLecturesList.setOnRefreshListener(presenter::loadLectures);
     }
 
     @NonNull
     @Override
     public LectureBoardPresenter createPresenter() {
-        return new LectureBoardPresenter();
+        return new LectureBoardPresenter(App.from(this));
     }
 
     @NonNull
