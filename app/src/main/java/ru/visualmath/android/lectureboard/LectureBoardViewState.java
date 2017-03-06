@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.visualmath.android.api.model.Lecture;
 
-public class LectureBoardViewState implements ViewState<LectureBoardView> {
+class LectureBoardViewState implements ViewState<LectureBoardView> {
 
     private LectureState state;
     private Object data;
@@ -32,16 +32,16 @@ public class LectureBoardViewState implements ViewState<LectureBoardView> {
         }
     }
 
-    public void setState(LectureState state) {
+    void setState(LectureState state) {
         this.state = state;
     }
 
-    public void setState(LectureState state, Object data) {
+    void setState(LectureState state, Object data) {
         this.state = state;
         this.data = data;
     }
 
-    public enum LectureState {
+    enum LectureState {
         SHOW_LOADING, SHOW_LECTURE_LIST, SHOW_ERROR, LOGOUT
     }
 }

@@ -30,12 +30,19 @@ public class LectureBoardActivity extends MvpViewStateActivity<LectureBoardView,
     @BindView(R.id.refresh_lectures_list)
     SwipeRefreshLayout refreshLecturesList;
 
+    private LectureBoardListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lectures);
         ButterKnife.bind(this);
         setRetainInstance(true);
+
+        adapter = new LectureBoardListAdapter(this);
+        lecturesList.setHasFixedSize(true);
+        lecturesList.setLayoutManager(new LinearLayoutManager(this));
+        lecturesList.setAdapter(adapter);
 
         refreshLecturesList.setOnRefreshListener(presenter::loadLectures);
     }
@@ -68,11 +75,7 @@ public class LectureBoardActivity extends MvpViewStateActivity<LectureBoardView,
     public void showLectureList(List<Lecture> lectures) {
         setState(LectureState.SHOW_LECTURE_LIST, lectures);
         refreshLecturesList.setRefreshing(true);
-
-        lecturesList.setHasFixedSize(true);
-        lecturesList.setLayoutManager(new LinearLayoutManager(this));
-        lecturesList.setAdapter(new LectureBoardListAdapter(this, lectures));
-
+        adapter.setLectures(lectures);
         refreshLecturesList.setRefreshing(false);
         lecturesList.setVisibility(View.VISIBLE);
     }

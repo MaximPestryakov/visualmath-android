@@ -11,11 +11,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.App;
 
-public class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
+class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
 
     private App app;
 
-    public LectureBoardPresenter(App app) {
+    LectureBoardPresenter(App app) {
         this.app = app;
     }
 

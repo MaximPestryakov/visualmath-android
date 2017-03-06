@@ -83,13 +83,13 @@ public class LectureQuestionFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public static class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
+    static class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
 
         private List<String> answers;
         private Boolean multiple;
         private int radioButtonChosen = -1;
 
-        public QuestionAdapter(List<String> answers, Boolean multiple) {
+        QuestionAdapter(List<String> answers, Boolean multiple) {
             this.answers = answers;
             this.multiple = multiple;
         }
@@ -114,7 +114,7 @@ public class LectureQuestionFragment extends Fragment {
             return answers.size();
         }
 
-        public class QuestionViewHolder extends RecyclerView.ViewHolder {
+        class QuestionViewHolder extends RecyclerView.ViewHolder {
 
             @BindView(R.id.answer_check_box)
             CheckBox answerCheckBox;
@@ -126,14 +126,13 @@ public class LectureQuestionFragment extends Fragment {
             TextView answerText;
 
 
-            public QuestionViewHolder(View itemView) {
+            QuestionViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
                 answerRadioButton.setOnClickListener(v -> {
                     radioButtonChosen = getAdapterPosition();
                     notifyItemRangeChanged(0, answers.size());
                 });
-
             }
         }
     }

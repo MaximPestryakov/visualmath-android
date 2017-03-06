@@ -9,15 +9,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.App;
 
-public class LoginPresenter extends MvpBasePresenter<LoginView> {
+class LoginPresenter extends MvpBasePresenter<LoginView> {
 
     private App app;
 
-    public LoginPresenter(App app) {
+    LoginPresenter(App app) {
         this.app = app;
     }
 
-    public void doLogin(String name, String password) {
+    void doLogin(String name, String password) {
         if (isViewAttached()) {
             getView().showLoading();
         }

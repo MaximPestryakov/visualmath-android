@@ -2,7 +2,7 @@ package ru.visualmath.android.login;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
-public class LoginViewState implements ViewState<LoginView> {
+class LoginViewState implements ViewState<LoginView> {
 
     private LoginState state;
     private Object data;
@@ -28,16 +28,16 @@ public class LoginViewState implements ViewState<LoginView> {
         }
     }
 
-    public void setState(LoginState state) {
+    void setState(LoginState state) {
         this.state = state;
     }
 
-    public void setState(LoginState state, Object data) {
+    void setState(LoginState state, Object data) {
         this.state = state;
         this.data = data;
     }
 
-    public enum LoginState {
+    enum LoginState {
         SHOW_LOGIN_FORM, SHOW_ERROR, SHOW_LOADING, LOGIN_SUCCESSFUL
     }
 }
