@@ -2,7 +2,8 @@ package ru.visualmath.android.lectureboard;
 
 import android.util.Log;
 
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.io.IOException;
@@ -16,18 +17,18 @@ import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.SyncLecture;
 
-class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
+@InjectViewState
+public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
 
     private App app;
 
     LectureBoardPresenter(App app) {
         this.app = app;
+        loadLectures();
     }
 
     void loadLectures() {
-        if (isViewAttached()) {
-            getView().showLoading();
-        }
+        getViewState().showLoading();
 
         List<SyncLecture> syncLectures = new ArrayList<>();
         List<Lecture> lectures = new ArrayList<>();
@@ -43,15 +44,13 @@ class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
                         lectures.addAll((List<Lecture>) allLectures);
                         lectures.removeIf(lecture -> lecture.hidden);
                         lectures.sort((l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
-                        getView().showLectureList(syncLectures, lectures);
+                        getViewState().showLectureList(syncLectures, lectures);
                     }
                 }, throwable -> {
                     String errorMessage;
                     if (throwable instanceof HttpException) {
                         if (((HttpException) throwable).code() == 500) {
-                            if (isViewAttached()) {
-                                getView().logout();
-                            }
+                            getViewState().logout();
                             return;
                         } else {
                             errorMessage = "Сервер временно недоступен";
@@ -62,9 +61,7 @@ class LectureBoardPresenter extends MvpBasePresenter<LectureBoardView> {
                         errorMessage = "Неизвестная ошибка";
                     }
                     Log.d("Error", throwable.getMessage());
-                    if (isViewAttached()) {
-                        getView().showError(errorMessage);
-                    }
+                    getViewState().showError(errorMessage);
                 });
     }
 }

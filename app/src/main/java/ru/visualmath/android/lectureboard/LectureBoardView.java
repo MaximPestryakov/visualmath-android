@@ -1,6 +1,6 @@
 package ru.visualmath.android.lectureboard;
 
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.arellomobile.mvp.MvpView;
 
 import java.util.List;
 
