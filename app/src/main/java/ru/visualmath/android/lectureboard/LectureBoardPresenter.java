@@ -1,7 +1,5 @@
 package ru.visualmath.android.lectureboard;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
@@ -14,6 +12,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.App;
+import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.SyncLecture;
 
@@ -47,21 +46,17 @@ public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
                         getViewState().showLectureList(syncLectures, lectures);
                     }
                 }, throwable -> {
-                    String errorMessage;
                     if (throwable instanceof HttpException) {
                         if (((HttpException) throwable).code() == 500) {
                             getViewState().logout();
-                            return;
                         } else {
-                            errorMessage = "Сервер временно недоступен";
+                            getViewState().showError(R.string.server_is_not_available);
                         }
                     } else if (throwable instanceof IOException) {
-                        errorMessage = "Проверьте подключение к интернету";
+                        getViewState().showError(R.string.check_the_internet_connection);
                     } else {
-                        errorMessage = "Неизвестная ошибка";
+                        getViewState().showError(R.string.unknown_error);
                     }
-                    Log.d("Error", throwable.getMessage());
-                    getViewState().showError(errorMessage);
                 });
     }
 }

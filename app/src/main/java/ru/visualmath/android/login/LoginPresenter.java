@@ -9,6 +9,7 @@ import java.io.IOException;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.App;
+import ru.visualmath.android.R;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<LoginView> {
@@ -28,19 +29,17 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> getViewState().loginSuccessful(),
                         throwable -> {
-                            String errorMessage;
                             if (throwable instanceof HttpException) {
                                 if (((HttpException) throwable).code() == 500) {
-                                    errorMessage = "Неверный логин или пароль";
+                                    getViewState().showError(R.string.wrong_login_or_password);
                                 } else {
-                                    errorMessage = "Сервер временно недоступен";
+                                    getViewState().showError(R.string.server_is_not_available);
                                 }
                             } else if (throwable instanceof IOException) {
-                                errorMessage = "Проверьте подключение к интернету";
+                                getViewState().showError(R.string.check_the_internet_connection);
                             } else {
-                                errorMessage = "Неизвестная ошибка";
+                                getViewState().showError(R.string.unknown_error);
                             }
-                            getViewState().showError(errorMessage);
                         });
     }
 

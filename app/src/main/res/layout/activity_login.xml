@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="Name"
+        android:hint="@string/login"
         android:inputType="textEmailAddress" />
 
 
@@ -31,7 +31,7 @@
         android:layout_alignStart="@+id/name"
         android:layout_below="@+id/name"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <Button
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
-        android:text="Log in" />
+        android:text="@string/sign_in" />
 
     <ProgressBar
         android:id="@+id/loading"

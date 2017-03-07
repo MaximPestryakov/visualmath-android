@@ -13,7 +13,7 @@ interface LectureBoardView extends MvpView {
 
     void showLectureList(List<SyncLecture> syncLectures, List<Lecture> lectures);
 
-    void showError(String message);
+    void showError(int messageId);
 
     void logout();
 }

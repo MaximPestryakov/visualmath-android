@@ -66,9 +66,9 @@ class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (syncLectures != null && !syncLectures.isEmpty()) {
             if (position == 0) {
-                ((ListSubheaderViewHolder) holder).listSubheader.setText("Активные лекции");
+                ((ListSubheaderViewHolder) holder).listSubheader.setText(R.string.active_lecture);
             } else if (position == syncLectures.size() + 1) {
-                ((ListSubheaderViewHolder) holder).listSubheader.setText("Неактивные лекции");
+                ((ListSubheaderViewHolder) holder).listSubheader.setText(R.string.inactive_lecture);
             } else if (position > syncLectures.size()) {
                 Lecture lecture = lectures.get(position - syncLectures.size() - 2);
                 ((LectureViewHolder) holder).setLecture(lecture);
@@ -78,7 +78,7 @@ class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         } else {
             if (position == 0) {
-                ((ListSubheaderViewHolder) holder).listSubheader.setText("Неактивные лекции");
+                ((ListSubheaderViewHolder) holder).listSubheader.setText(R.string.inactive_lecture);
             } else {
                 Lecture lecture = lectures.get(position - 1);
                 ((LectureViewHolder) holder).setLecture(lecture);

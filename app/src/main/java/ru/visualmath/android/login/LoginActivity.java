@@ -67,15 +67,15 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     }
 
     @Override
-    public void showError(String message) {
+    public void showError(int messageId) {
         setFormEnabled(true);
         loading.setVisibility(View.GONE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Ошибка входа")
-                .setMessage(message)
+                .setTitle(R.string.sign_in_error)
+                .setMessage(messageId)
                 .setCancelable(true)
-                .setNegativeButton("Отмена", (d, id) -> presenter.onErrorCancel())
+                .setNegativeButton(R.string.cancel, (d, id) -> presenter.onErrorCancel())
                 .setOnCancelListener(d -> presenter.onErrorCancel());
         dialog = builder.create();
         dialog.show();

@@ -6,7 +6,7 @@ interface LoginView extends MvpView {
 
     void showLoginForm();
 
-    void showError(String message);
+    void showError(int messageId);
 
     void showLoading();
 

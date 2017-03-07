@@ -42,7 +42,7 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lectures);
+        setContentView(R.layout.activity_lectureboard);
         ButterKnife.bind(this);
 
         adapter = new LectureBoardListAdapter(this);
@@ -66,14 +66,14 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
     }
 
     @Override
-    public void showError(String message) {
+    public void showError(int messageId) {
         refreshLecturesList.setRefreshing(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Ошибка")
-                .setMessage(message)
+                .setTitle(R.string.error)
+                .setMessage(messageId)
                 .setCancelable(true)
-                .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
