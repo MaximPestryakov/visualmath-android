@@ -1,6 +1,6 @@
 package ru.visualmath.android.lecture;
 
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.arellomobile.mvp.MvpView;
 
 interface LectureView extends MvpView {
 

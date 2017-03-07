@@ -1,6 +1,6 @@
 package ru.visualmath.android.login;
 
-import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.arellomobile.mvp.MvpView;
 
 interface LoginView extends MvpView {
 
@@ -11,4 +11,6 @@ interface LoginView extends MvpView {
     void showLoading();
 
     void loginSuccessful();
+
+    void hideError();
 }

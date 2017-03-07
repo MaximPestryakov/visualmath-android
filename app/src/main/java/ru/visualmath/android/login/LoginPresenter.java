@@ -1,6 +1,7 @@
 package ru.visualmath.android.login;
 
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.io.IOException;
@@ -9,27 +10,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.App;
 
-class LoginPresenter extends MvpBasePresenter<LoginView> {
+@InjectViewState
+public class LoginPresenter extends MvpPresenter<LoginView> {
 
     private App app;
 
     LoginPresenter(App app) {
         this.app = app;
+        getViewState().showLoginForm();
     }
 
-    void doLogin(String name, String password) {
-        if (isViewAttached()) {
-            getView().showLoading();
-        }
+    void onLogin(String name, String password) {
+        getViewState().showLoading();
 
         app.getApi().login(name, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> {
-                            if (isViewAttached()) {
-                                getView().loginSuccessful();
-                            }
-                        },
+                .subscribe(user -> getViewState().loginSuccessful(),
                         throwable -> {
                             String errorMessage;
                             if (throwable instanceof HttpException) {
@@ -43,9 +40,11 @@ class LoginPresenter extends MvpBasePresenter<LoginView> {
                             } else {
                                 errorMessage = "Неизвестная ошибка";
                             }
-                            if (isViewAttached()) {
-                                getView().showError(errorMessage);
-                            }
+                            getViewState().showError(errorMessage);
                         });
+    }
+
+    void onErrorCancel() {
+        getViewState().hideError();
     }
 }
