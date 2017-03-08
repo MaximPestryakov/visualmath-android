@@ -1,0 +1,1 @@
+[![Build Status](https://circleci.com/gh/MaximPestryakov/visualmath-android/tree/maxim.svg?style=shield&circle-token=95b6ee46516a0ea7be1f86f768527f3987a2bdf5)](https://circleci.com/gh/MaximPestryakov/visualmath-android/tree/maxim)
