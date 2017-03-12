@@ -96,35 +96,25 @@ public class VisualMathSync {
 
         socket = IO.socket(address, opts);
 
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
-                System.out.println("Connected to " + address);
-            }
-
-        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+        socket.on(Socket.EVENT_CONNECT, args -> System.out.println("Connected to " + address)).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
                 System.out.println("Disconnected from " + address);
             }
-        }).on("sync_v1/lectures", new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                JSONObject json = ((JSONObject)objects[0]);
-                try {
-                    ongoingId = parseOngoingId(json);
-                    state = parseType(json);
-                } catch (JSONException ex) {
-                    System.out.println(ex.getMessage());
-                }
+        }).on("sync_v1/lectures", objects -> {
+            JSONObject json = ((JSONObject)objects[0]);
+            try {
+                ongoingId = parseOngoingId(json);
+                state = parseType(json);
+            } catch (JSONException ex) {
+                System.out.println(ex.getMessage());
+            }
 
-                if (state.equals(LECTURE_START)) {
-                    onLectureStart.accept(LECTURE_START);
-                    addSlideSocketListener();
-                } else if (state.equals(LECTURE_FINISH)) {
-                    onLectureFinish.accept(LECTURE_FINISH);
-                }
+            if (state.equals(LECTURE_START)) {
+                onLectureStart.accept(LECTURE_START);
+                addSlideSocketListener();
+            } else if (state.equals(LECTURE_FINISH)) {
+                onLectureFinish.accept(LECTURE_FINISH);
             }
         });
     }
@@ -161,15 +151,12 @@ public class VisualMathSync {
     }
 
     private void addQuestionBlockSocketListener(String questionBlockId) {
-        socket.on("sync_v1/blocks:" + getOngoingId() + ":" + questionBlockId, new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                try {
-                    String action = (String)((JSONObject)objects[0]).get("type");
-                    System.out.println(action);
-                } catch (JSONException ex) {
-                    System.out.println(ex.getMessage());
-                }
+        socket.on("sync_v1/blocks:" + getOngoingId() + ":" + questionBlockId, objects -> {
+            try {
+                String action = (String)((JSONObject)objects[0]).get("type");
+                System.out.println(action);
+            } catch (JSONException ex) {
+                System.out.println(ex.getMessage());
             }
         });
     }
