@@ -20,6 +20,8 @@ public class VisualMathSync {
     private static String QUESTION_START = "QUESTION_START";
     private static String QUESTION_FINISH = "QUESTION_FINISH";
     private static String QUESTION_BLOCK = "questionBlock";
+    private static String QUESTION_BLOCK_START = "BLOCK_START";
+    private static String QUESTION_BLOCK_FINISH = "BLOCK_FINISH";
 
     private URI address;
     private Socket socket;
@@ -40,6 +42,10 @@ public class VisualMathSync {
     private Callback<QuestionBlock> onQuestionBlock;
     private Callback<String> onLectureStart;;
     private Callback<String> onLectureFinish;
+    private Callback<String> onQuestionStart;
+    private Callback<String> onQuestionFinish;
+    private Callback<String> onQuestionBlockStart;
+    private Callback<String> onQuestionBlockFinish;
 
     public VisualMathSync setSlideCallback(Callback<Slide> nextSlideCallback) {
         this.onSimpleSlide = nextSlideCallback;
@@ -66,6 +72,26 @@ public class VisualMathSync {
         return this;
     }
 
+    public VisualMathSync setQuestionStartCallback(Callback<String> questionStartCallback) {
+        this.onQuestionStart = questionStartCallback;
+        return this;
+    }
+
+    public VisualMathSync setQuestionFinishCallback(Callback<String> questionFinishCallback) {
+        this.onQuestionFinish = questionFinishCallback;
+        return this;
+    }
+
+    public VisualMathSync setQuestionBlockStartCallback(Callback<String> questionBlockStartCallback) {
+        this.onQuestionBlockStart = questionBlockStartCallback;
+        return this;
+    }
+
+    public VisualMathSync setQuestionBlockFinishCallback(Callback<String> questionBlockFinishCallback) {
+        this.onQuestionBlockFinish = questionBlockFinishCallback;
+        return this;
+    }
+
     public static void main(String[] args) {
         try {
             VisualMathSync api = new VisualMathSync(new URI("http://sync.visualmath.ru"));
@@ -79,6 +105,14 @@ public class VisualMathSync {
                 System.out.println(question);
             }).setQuestionBlockCallback(questionBlock -> {
                 System.out.println(questionBlock);
+            }).setQuestionStartCallback(state -> {
+                System.out.println(state);
+            }).setQuestionFinishCallback(state -> {
+                System.out.println(state);
+            }).setQuestionBlockStartCallback(state -> {
+                System.out.println(state);
+            }).setQuestionBlockFinishCallback(state -> {
+                System.out.println(state);
             });
 
             api.connect();
@@ -137,12 +171,18 @@ public class VisualMathSync {
         socket.io().reconnection();
     }
 
-    private void addQuestionSocketListener(String questionId) {
+    private void addQuestionSocketListener(String questionId){
         socket.on("sync_v1/questions:" + getOngoingId() + ":" + questionId, objects -> {
             try {
                 String action = (String)((JSONObject)objects[0]).get("type");
-                System.out.println(action);
-            } catch (JSONException ex) {
+                if (action.equals(QUESTION_START)) {
+                    onQuestionStart.accept(action);
+                } else if (action.equals(QUESTION_FINISH)) {
+                    onQuestionFinish.accept(action);
+                } else {
+                    throw new Exception("sync_v1/questions: WRONG TYPE");
+                }
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         });
@@ -154,8 +194,14 @@ public class VisualMathSync {
         socket.on("sync_v1/blocks:" + getOngoingId() + ":" + questionBlockId, objects -> {
             try {
                 String action = (String)((JSONObject)objects[0]).get("type");
-                System.out.println(action);
-            } catch (JSONException ex) {
+                if (action.equals(QUESTION_BLOCK_START)) {
+                    onQuestionBlockStart.accept(action);
+                } else if (action.equals(QUESTION_BLOCK_FINISH)) {
+                    onQuestionBlockFinish.accept(action);
+                } else {
+                    throw new Exception("sync_v1/blocks: WRONG TYPE");
+                }
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         });
