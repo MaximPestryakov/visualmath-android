@@ -25,23 +25,32 @@ public class VisualMathSync {
 
     private URI address;
     private Socket socket;
-    private String state;
+    private Lecture lecture;
     private String ongoingId;
     private int index;
 
     public String getOngoingId() {
         return this.ongoingId;
     }
-    public String getState() {
-        return this.state;
+
+    public int getSlideIndex() {
+        return this.index;
+
     }
-    public int getIndex() {return this.index;}
+
+    public Lecture getLecture() {
+        return this.lecture;
+    }
+
+    public URI getAddress() {
+        return this.address;
+    }
 
     private Callback<Slide> onSimpleSlide;
     private Callback<Question> onQuestion;
     private Callback<QuestionBlock> onQuestionBlock;
-    private Callback<String> onLectureStart;;
-    private Callback<String> onLectureFinish;
+    private Callback<Lecture> onLectureStart;;
+    private Callback<Lecture> onLectureFinish;
     private Callback<String> onQuestionStart;
     private Callback<String> onQuestionFinish;
     private Callback<String> onQuestionBlockStart;
@@ -62,12 +71,12 @@ public class VisualMathSync {
         return this;
     }
 
-    public VisualMathSync setLectureFinishCallback(Callback<String> lectureFinishCallback) {
+    public VisualMathSync setLectureFinishCallback(Callback<Lecture> lectureFinishCallback) {
         this.onLectureFinish = lectureFinishCallback;
         return this;
     }
 
-    public VisualMathSync setLectureStartCallback(Callback<String> lectureStartCallback) {
+    public VisualMathSync setLectureStartCallback(Callback<Lecture> lectureStartCallback) {
         this.onLectureStart = lectureStartCallback;
         return this;
     }
@@ -95,10 +104,10 @@ public class VisualMathSync {
     public static void main(String[] args) {
         try {
             VisualMathSync api = new VisualMathSync(new URI("http://sync.visualmath.ru"));
-            api.setLectureStartCallback(state -> {
-                System.out.println(state);
-            }).setLectureFinishCallback(state -> {
-                System.out.println(state);
+            api.setLectureStartCallback(lecture -> {
+                System.out.println(lecture);
+            }).setLectureFinishCallback(lecture -> {
+                System.out.println(lecture);
             }).setSlideCallback(slide -> {
                 System.out.println(slide);
             }).setQuestionCallback(question -> {
@@ -124,6 +133,8 @@ public class VisualMathSync {
 
     public VisualMathSync(URI address) throws URISyntaxException {
         this.address = address;
+        this.lecture = new Lecture();
+
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
         opts.path = "/ws";
@@ -138,17 +149,17 @@ public class VisualMathSync {
         }).on("sync_v1/lectures", objects -> {
             JSONObject json = ((JSONObject)objects[0]);
             try {
-                ongoingId = parseOngoingId(json);
-                state = parseType(json);
+                lecture.setState(parseType(json));
+                this.ongoingId = parseOngoingId(json);
             } catch (JSONException ex) {
                 System.out.println(ex.getMessage());
             }
 
-            if (state.equals(LECTURE_START)) {
-                onLectureStart.accept(LECTURE_START);
+            if (getLecture().getState().equals(LECTURE_START)) {
+                onLectureStart.accept(getLecture());
                 addSlideSocketListener();
-            } else if (state.equals(LECTURE_FINISH)) {
-                onLectureFinish.accept(LECTURE_FINISH);
+            } else if (getLecture().getState().equals(LECTURE_FINISH)) {
+                onLectureFinish.accept(getLecture());
             }
         });
     }
@@ -162,7 +173,8 @@ public class VisualMathSync {
     private void addSlideSocketListener() {
         socket.on("sync_v1/ongoing_lectures/set_slide:" + getOngoingId() , objects -> {
             try {
-                parseSlide((JSONObject) objects[0]);
+                JSONObject json = (JSONObject)objects[0];
+                parseSlide(json);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -212,11 +224,11 @@ public class VisualMathSync {
         this.index = (int)obj.get("index");
 
         if (tempState.equals(SLIDE)) {
-            state = tempState;
+            getLecture().setState(tempState);
             JSONObject textSlide = (JSONObject)obj.get("content");
             parseTextSlideBody(textSlide);
         } else if (tempState.equals(QUESTION)) {
-            state = tempState;
+            getLecture().setState(tempState);
             JSONObject questionSlide = (JSONObject)obj.get("content");
             Question question = parseQuestionSlideBody(questionSlide);
             onQuestion.accept(question);
@@ -234,8 +246,23 @@ public class VisualMathSync {
     private void parseTextSlideBody(JSONObject obj) throws Exception {
         String content = (String)obj.get("content");
         String name = (String)obj.get("name");
+        JSONArray jsonImageArray = (JSONArray)obj.get("images");
+        JSONArray jsonImageScaleArray = (JSONArray)obj.get("imagesScale");
 
-        onSimpleSlide.accept(new Slide(name, content));
+        ArrayList<Image> imageArrayList = new ArrayList<>();
+        //content: images, imagesScale
+
+        for (int i = 0; i < jsonImageArray.length(); ++i) {
+            String path = jsonImageArray.getString(i);
+            try {
+                Integer scale = jsonImageScaleArray.getInt(i);
+                imageArrayList.add(new Image(path, scale));
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                System.out.println("images count doesn't fit corresponding scales count");
+            }
+        }
+
+        onSimpleSlide.accept(new Slide(name, content, imageArrayList));
     }
 
     private QuestionBlock parseQuestionBlockSlideBody(JSONObject obj) throws Exception {
@@ -276,6 +303,9 @@ public class VisualMathSync {
 
     private String parseOngoingId(JSONObject obj) throws JSONException{
         JSONObject shortLectureObj = parseShortLecture(obj);
+        if (lecture.getState().equals(LECTURE_START)) {
+            lecture.setName((String)shortLectureObj.get("name"));
+        }
         return (String)shortLectureObj.get("ongoingId");
     }
 

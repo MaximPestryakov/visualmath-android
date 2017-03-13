@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class QuestionBlock {
     private String id;
     private String name;
-
-
     private ArrayList<Question> questions;
 
 
