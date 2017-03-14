@@ -11,5 +11,5 @@ public class QuestionBlock {
     public boolean hidden;
 
     @SerializedName("questionsIds")
-    public List<Lecture.Question> questions;
+    public List<Question> questions;
 }

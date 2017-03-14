@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -18,6 +19,7 @@ import butterknife.OnClick;
 import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.lectureboard.LectureBoardActivity;
+import ru.visualmath.android.signup.SignUpActivity;
 
 public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
@@ -35,6 +37,9 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @BindView(R.id.loading)
     ProgressBar loading;
+
+    @BindView(R.id.signUpButton)
+    TextView signUpButton;
 
     private AlertDialog dialog;
 
@@ -112,5 +117,11 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         String nameValue = name.getText().toString();
         String passwordValue = password.getText().toString();
         presenter.onLogin(nameValue, passwordValue);
+    }
+
+    @OnClick(R.id.signUpButton)
+    public void onSignUp() {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 }

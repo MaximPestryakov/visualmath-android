@@ -1,5 +1,7 @@
 package ru.visualmath.android.lectureboard;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
@@ -44,6 +46,7 @@ public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
                         lectures.removeIf(lecture -> lecture.hidden);
                         lectures.sort((l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
                         getViewState().showLectureList(syncLectures, lectures);
+                        Log.d("SMTH", "SMTH");
                     }
                 }, throwable -> {
                     if (throwable instanceof HttpException) {

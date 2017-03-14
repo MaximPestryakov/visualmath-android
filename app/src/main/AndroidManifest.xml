@@ -19,9 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".login.LoginActivity" />
-        <activity
-            android:name=".lecture.LectureActivity"
-            android:configChanges="orientation|screenSize" />
+        <activity android:name=".lecture.LectureActivity" />
+        <activity android:name=".signup.SignUpActivity" />
     </application>
 
 </manifest>

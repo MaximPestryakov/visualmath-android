@@ -19,10 +19,6 @@
         android:id="@+id/lecture_answers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignEnd="@id/lecture_question"
-        android:layout_alignLeft="@+id/lecture_question"
-        android:layout_alignRight="@id/lecture_question"
-        android:layout_alignStart="@+id/lecture_question"
         android:layout_below="@+id/lecture_question"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="16dp" />

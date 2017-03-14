@@ -1,4 +1,4 @@
-package ru.visualmath.android.lecture;
+package ru.visualmath.android.lecture.module;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.visualmath.android.R;
 
-public class LectureModuleFragment extends Fragment {
+public class ModuleFragment extends Fragment {
 
     private static final String NAME_KEY = "name";
     private static final String CONTENT_KEY = "content";
@@ -30,14 +30,14 @@ public class LectureModuleFragment extends Fragment {
     private String content;
     private ArrayList<String> images;
 
-    public static LectureModuleFragment newInstance(String name, String content,
-                                                    List<String> images) {
+    public static ModuleFragment newInstance(String name, String content,
+                                             List<String> images) {
         Bundle args = new Bundle();
         args.putString(NAME_KEY, name);
         args.putString(CONTENT_KEY, content);
         args.putStringArrayList(IMAGES_KEY, (ArrayList<String>) images);
 
-        LectureModuleFragment fragment = new LectureModuleFragment();
+        ModuleFragment fragment = new ModuleFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +62,8 @@ public class LectureModuleFragment extends Fragment {
 
         nameTextView.setText(name);
         contentTextView.setText(content);
+        //content = content.replaceAll("\\$", "\\$\\$");
+        // contentTex.setText("Синус \\(\\sin^2{x}\\)");
         return view;
     }
 

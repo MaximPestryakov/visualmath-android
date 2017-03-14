@@ -37,28 +37,4 @@ public class Lecture {
         }
         return date;
     }
-
-    public class Page {
-        public int index;
-
-        public String type;
-    }
-
-    public class Module {
-        public String name;
-
-        public String content;
-
-        public List<String> images;
-    }
-
-    public class Question {
-        public String question;
-
-        public boolean multiple;
-
-        public List<String> answers;
-
-        public List<String> images;
-    }
 }

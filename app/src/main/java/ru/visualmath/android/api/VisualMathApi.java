@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.visualmath.android.api.model.Lecture;
+import ru.visualmath.android.api.model.NewUser;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
@@ -62,5 +63,9 @@ public class VisualMathApi {
         Map<String, String> data = new HashMap<>();
         data.put("id", id);
         return service.loadQuestionBlock(data);
+    }
+
+    public Observable<User> createUser(NewUser newUser) {
+        return service.createUser(newUser);
     }
 }

@@ -1,10 +1,12 @@
 package ru.visualmath.android.lecture;
 
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -12,14 +14,18 @@ import butterknife.ButterKnife;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
 
-public class LectureActivity extends AppCompatActivity {
+public class LectureActivity extends MvpAppCompatActivity implements LectureView {
+
+    @InjectPresenter
+    LecturePresenter presenter;
 
     @BindView(R.id.pager)
     ViewPager pager;
 
-    String lectureGson;
-
-    Lecture lecture;
+    @ProvidePresenter
+    LecturePresenter provideLecturePresenter() {
+        return new LecturePresenter(getSupportFragmentManager());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,44 +33,20 @@ public class LectureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lecture);
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null) {
-            lectureGson = savedInstanceState.getString("lecture_gson");
-        } else {
-            lectureGson = getIntent().getStringExtra("lecture");
+        if (savedInstanceState == null) {
+            String lectureJson = getIntent().getStringExtra("lecture");
+            Lecture lecture = new Gson().fromJson(lectureJson, Lecture.class);
+            presenter.setLecture(lecture);
         }
-        lecture = new Gson().fromJson(lectureGson, Lecture.class);
-        showLecture();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("lecture_gson", lectureGson);
-    }
-
-    /*
-    @NonNull
-    @Override
-    public ViewState<LectureView> createViewState() {
-        return new LectureViewState();
-    }
-
-    @NonNull
-    @Override
-    public LecturePresenter createPresenter() {
-        return new LecturePresenter();
+    public void initViewPager(PagerAdapter pagerAdapter) {
+        pager.setAdapter(pagerAdapter);
     }
 
     @Override
-    public void onNewViewStateInstance() {
-        showLecture();
-    }
-    */
-
-    public void showLecture() {
-        Log.d("LectureActivity", "showLecture");
+    public void showLecture(Lecture lecture) {
         pager.setOffscreenPageLimit(lecture.mapping.size());
-        LecturePageAdapter lecturePageAdapter = new LecturePageAdapter(getSupportFragmentManager(), lecture);
-        pager.setAdapter(lecturePageAdapter);
     }
 }

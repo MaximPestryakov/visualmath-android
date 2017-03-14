@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/loginValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Логин" />
+
+    <EditText
+        android:id="@+id/passwordValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/loginValue"
+        android:layout_alignStart="@+id/loginValue"
+        android:layout_below="@+id/loginValue"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Пароль" />
+
+    <EditText
+        android:id="@+id/retryPasswordValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordValue"
+        android:layout_alignStart="@+id/passwordValue"
+        android:layout_below="@+id/passwordValue"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Повторите пароль" />
+
+    <EditText
+        android:id="@+id/institutionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/retryPasswordValue"
+        android:layout_alignStart="@+id/retryPasswordValue"
+        android:layout_below="@+id/retryPasswordValue"
+        android:layout_marginTop="19dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Учебное заведение" />
+
+    <EditText
+        android:id="@+id/groupValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/institutionValue"
+        android:layout_alignStart="@+id/institutionValue"
+        android:layout_below="@+id/institutionValue"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Класса/Группа" />
+
+    <Button
+        android:id="@+id/signUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/groupValue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="Зарегистрироваться" />
+</RelativeLayout>

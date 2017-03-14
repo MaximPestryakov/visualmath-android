@@ -1,4 +1,4 @@
-package ru.visualmath.android.lecture;
+package ru.visualmath.android.lecture.question;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,8 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.visualmath.android.R;
 
-public class LectureQuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment {
 
     private static final String QUESTION_KEY = "question";
     private static final String ANSWERS_KEY = "answers";
@@ -34,14 +32,14 @@ public class LectureQuestionFragment extends Fragment {
     private List<String> answers;
     private Boolean multiple;
 
-    public static LectureQuestionFragment newInstance(String question, List<String> answers,
-                                                      Boolean multiple) {
+    public static QuestionFragment newInstance(String question, List<String> answers,
+                                               Boolean multiple) {
         Bundle args = new Bundle();
         args.putString(QUESTION_KEY, question);
         args.putStringArrayList(ANSWERS_KEY, (ArrayList<String>) answers);
         args.putBoolean(MULTIPLE_KEY, multiple);
 
-        LectureQuestionFragment fragment = new LectureQuestionFragment();
+        QuestionFragment fragment = new QuestionFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,59 +79,5 @@ public class LectureQuestionFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    static class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
-
-        private List<String> answers;
-        private Boolean multiple;
-        private int radioButtonChosen = -1;
-
-        QuestionAdapter(List<String> answers, Boolean multiple) {
-            this.answers = answers;
-            this.multiple = multiple;
-        }
-
-        @Override
-        public QuestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.lecture_question_item, parent, false);
-            return new QuestionViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(QuestionViewHolder holder, int position) {
-            holder.answerCheckBox.setVisibility(multiple ? View.VISIBLE : View.INVISIBLE);
-            holder.answerRadioButton.setVisibility(multiple ? View.INVISIBLE : View.VISIBLE);
-            holder.answerRadioButton.setChecked(position == radioButtonChosen);
-            holder.answerText.setText(answers.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return answers.size();
-        }
-
-        class QuestionViewHolder extends RecyclerView.ViewHolder {
-
-            @BindView(R.id.answer_check_box)
-            CheckBox answerCheckBox;
-
-            @BindView(R.id.answer_radio_button)
-            RadioButton answerRadioButton;
-
-            @BindView(R.id.answer_text)
-            TextView answerText;
-
-
-            QuestionViewHolder(View itemView) {
-                super(itemView);
-                ButterKnife.bind(this, itemView);
-                answerRadioButton.setOnClickListener(v -> {
-                    radioButtonChosen = getAdapterPosition();
-                    notifyItemRangeChanged(0, answers.size());
-                });
-            }
-        }
     }
 }
