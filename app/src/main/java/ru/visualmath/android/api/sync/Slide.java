@@ -2,7 +2,7 @@ package ru.visualmath.android.api.sync;
 
 import java.util.ArrayList;
 
-class Slide {
+public class Slide {
     private String name;
     private String content;
     private ArrayList<Image> imageList;
@@ -38,6 +38,3 @@ class Slide {
                 '}';
     }
 }
-
-
-

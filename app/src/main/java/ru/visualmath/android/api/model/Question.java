@@ -1,13 +1,39 @@
 package ru.visualmath.android.api.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    public String question;
 
-    public boolean multiple;
+    @SerializedName("question")
+    private String question;
 
-    public List<String> answers;
+    @SerializedName("multiple")
+    private boolean multiple;
 
-    public List<String> images;
+    @SerializedName("answers")
+    private List<String> answers;
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public List<String> getAnswers() {
+        return new ArrayList<>(answers);
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "question: " + question + ", " +
+                "multiple: " + multiple + ", " +
+                "answers: " + answers +
+                "}";
+    }
 }

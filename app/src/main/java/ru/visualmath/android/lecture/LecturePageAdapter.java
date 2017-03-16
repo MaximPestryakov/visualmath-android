@@ -24,11 +24,11 @@ class LecturePageAdapter extends FragmentStatePagerAdapter {
         Page page = lecture.mapping.get(position);
         if ("module".equals(page.type)) {
             Module module = lecture.modules.get(page.index);
-            return ModuleFragment.newInstance(module.name, module.content, module.images);
+            return ModuleFragment.newInstance(module.getName(), module.getContent());
         }
         if ("question".equals(page.type)) {
             Question question = lecture.questions.get(page.index);
-            return QuestionFragment.newInstance(question.question, question.answers, question.multiple);
+            return QuestionFragment.newInstance(question.getQuestion(), question.getAnswers(), question.isMultiple());
         }
         if ("questionBlock".equals(page.type)) {
             String questionBlockId = lecture.questionBlocks.get(page.index);

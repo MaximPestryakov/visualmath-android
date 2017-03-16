@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,12 +29,10 @@ public class ModuleFragment extends Fragment {
     private String content;
     private ArrayList<String> images;
 
-    public static ModuleFragment newInstance(String name, String content,
-                                             List<String> images) {
+    public static ModuleFragment newInstance(String name, String content) {
         Bundle args = new Bundle();
         args.putString(NAME_KEY, name);
         args.putString(CONTENT_KEY, content);
-        args.putStringArrayList(IMAGES_KEY, (ArrayList<String>) images);
 
         ModuleFragment fragment = new ModuleFragment();
         fragment.setArguments(args);
@@ -49,7 +46,6 @@ public class ModuleFragment extends Fragment {
         if (args != null) {
             name = args.getString(NAME_KEY);
             content = args.getString(CONTENT_KEY);
-            images = args.getStringArrayList(IMAGES_KEY);
         }
     }
 

@@ -8,12 +8,12 @@ public class Lecture {
         return state;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setState(String state) {
         this.state = state;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -24,4 +24,3 @@ public class Lecture {
                 '}';
     }
 }
-

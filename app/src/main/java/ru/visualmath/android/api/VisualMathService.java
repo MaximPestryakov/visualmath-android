@@ -23,9 +23,21 @@ public interface VisualMathService {
     @GET("lectures/list")
     Observable<List<Lecture>> lecturesList();
 
+    @POST("questionBlock/load")
+    Observable<QuestionBlock> loadQuestionBlock(@Body Map<String, String> data);
+
     @GET("sync_v1/lectures/list")
     Observable<List<SyncLecture>> syncLectureList();
 
-    @POST("questionBlock/load")
-    Observable<QuestionBlock> loadQuestionBlock(@Body Map<String, String> data);
+    @POST("sync_v1/ongoing_lectures/load_lecture")
+    void loadSyncLecture();
+
+    @POST("sync_v1/ongoing_lectures/load_slide")
+    void loadSyncSlide();
+
+    @POST("sync_v1/ongoing_lectures/metainfo")
+    void metaInfo();
+
+    @POST("sync_v1/ongoing_lectures/userinfo")
+    void userInfo();
 }

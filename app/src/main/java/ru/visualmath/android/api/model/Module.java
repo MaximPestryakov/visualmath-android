@@ -1,11 +1,28 @@
 package ru.visualmath.android.api.model;
 
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 public class Module {
-    public String name;
 
-    public String content;
+    @SerializedName("name")
+    private String name;
 
-    public List<String> images;
+    @SerializedName("content")
+    private String content;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    @Override
+    public String toString() {
+        return "Module{" +
+                "name: " + name + ", " +
+                "content: " + content +
+                "}";
+    }
 }

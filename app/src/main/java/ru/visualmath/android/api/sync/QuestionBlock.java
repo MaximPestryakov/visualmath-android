@@ -11,7 +11,7 @@ public class QuestionBlock {
     public QuestionBlock(String name, String id) {
         this.questions = new ArrayList<>();
         this.name = name;
-        this.id =  id;
+        this.id = id;
     }
 
     public String getName() {
@@ -21,6 +21,7 @@ public class QuestionBlock {
     public String getId() {
         return id;
     }
+
     public ArrayList<Question> getQuestions() {
         return questions;
     }
@@ -37,6 +38,4 @@ public class QuestionBlock {
                 ", questions=" + questions +
                 '}';
     }
-
-
 }

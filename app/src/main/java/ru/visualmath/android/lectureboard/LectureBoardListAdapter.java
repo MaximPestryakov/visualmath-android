@@ -21,6 +21,7 @@ import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.lecture.LectureActivity;
+import ru.visualmath.android.synclecture.SyncLectureActivity;
 
 class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -137,7 +138,12 @@ class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.context = context;
-            itemView.setOnClickListener(v -> showLecture());
+        }
+
+        void showSyncLecture() {
+            Intent intent = new Intent(context, SyncLectureActivity.class);
+            intent.putExtra("ongoing_id", syncLecture.ongoingId);
+            context.startActivity(intent);
         }
 
         void showLecture() {
@@ -152,6 +158,7 @@ class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             lectureName.setText(syncLecture.name);
             String date = DATE_FORMAT.format(syncLecture.getCreatedDate());
             lectureDate.setText(date);
+            itemView.setOnClickListener(v -> showSyncLecture());
         }
 
         void setLecture(Lecture lecture) {
@@ -159,6 +166,7 @@ class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             lectureName.setText(lecture.getName());
             String date = DATE_FORMAT.format(lecture.getCreatedDate());
             lectureDate.setText(date);
+            itemView.setOnClickListener(v -> showLecture());
         }
     }
 }

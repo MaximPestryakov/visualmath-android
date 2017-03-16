@@ -9,6 +9,13 @@ public class Question {
     private ArrayList<String> correctAnswers;
     private String id;
 
+    public Question(String question, ArrayList<String> answers, ArrayList<String> correctAnswers, String id) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswers = correctAnswers;
+        this.id = id;
+    }
+
     public String getQuestion() {
         return question;
     }
@@ -25,13 +32,6 @@ public class Question {
         return id;
     }
 
-    public Question(String question, ArrayList<String> answers, ArrayList<String> correctAnswers, String id) {
-        this.question = question;
-        this.answers = answers;
-        this.correctAnswers = correctAnswers;
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "Question{" +
@@ -41,6 +41,3 @@ public class Question {
                 '}';
     }
 }
-
-
-
