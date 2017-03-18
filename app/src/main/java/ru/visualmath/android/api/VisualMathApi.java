@@ -25,14 +25,14 @@ import ru.visualmath.android.api.model.User;
 
 public class VisualMathApi {
 
+    private static VisualMathApi api;
     private VisualMathService service;
-    private OkHttpClient okHttpClient;
 
-    public VisualMathApi(Context context) {
+    private VisualMathApi(Context context) {
         CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
                 new SharedPrefsCookiePersistor(context));
 
-        okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(cookieJar)
                 .build();
 
@@ -44,6 +44,14 @@ public class VisualMathApi {
                 .build();
 
         service = retrofit.create(VisualMathService.class);
+    }
+
+    public static void init(Context context) {
+        api = new VisualMathApi(context);
+    }
+
+    public static VisualMathApi getApi() {
+        return api;
     }
 
     public Observable<User> login(String name, String password) {

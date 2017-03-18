@@ -9,13 +9,11 @@ import android.support.v7.widget.RecyclerView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.SyncLecture;
@@ -33,11 +31,6 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
     SwipeRefreshLayout refreshLecturesList;
 
     private LectureBoardListAdapter adapter;
-
-    @ProvidePresenter
-    LectureBoardPresenter provideLectureBoardPresenter() {
-        return new LectureBoardPresenter(App.from(this));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

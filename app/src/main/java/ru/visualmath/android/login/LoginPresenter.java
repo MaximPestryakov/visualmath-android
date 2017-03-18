@@ -8,23 +8,23 @@ import java.io.IOException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import ru.visualmath.android.App;
 import ru.visualmath.android.R;
+import ru.visualmath.android.api.VisualMathApi;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<LoginView> {
 
-    private App app;
+    private VisualMathApi api;
 
-    LoginPresenter(App app) {
-        this.app = app;
+    public LoginPresenter() {
+        api = VisualMathApi.getApi();
         getViewState().showLoginForm();
     }
 
     void onLogin(String name, String password) {
         getViewState().showLoading();
 
-        app.getApi().login(name, password)
+        api.login(name, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> getViewState().loginSuccessful(),

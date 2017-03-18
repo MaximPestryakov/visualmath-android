@@ -23,13 +23,12 @@ import ru.visualmath.android.api.model.SlideInfo;
 public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
 
     private VisualMathApi api;
-    private VisualMathSync syncApi;
 
-    public SyncLecturePresenter(VisualMathApi api) {
-        this.api = api;
+    public SyncLecturePresenter() {
+        this.api = VisualMathApi.getApi();
     }
 
-    public void connect(String ongoingId) {
+    void connect(String ongoingId) {
         api.loadSyncSlide(ongoingId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,7 +59,7 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                 });
 
         Handler handler = new Handler();
-        syncApi = new VisualMathSync.Builder(ongoingId)
+        VisualMathSync syncApi = new VisualMathSync.Builder(ongoingId)
                 .setOnConnectListener(__ -> Log.d("MyTag", "Connected"))
                 .setOnDisconnectListener(__ -> Log.d("MyTag", "Disconnected"))
                 .setOnFinishListener(__ -> Log.d("MyTag", "Finished"))

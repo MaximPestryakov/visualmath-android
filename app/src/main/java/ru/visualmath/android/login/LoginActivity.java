@@ -11,12 +11,10 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.lectureboard.LectureBoardActivity;
 import ru.visualmath.android.signup.SignUpActivity;
@@ -42,11 +40,6 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     TextView signUpButton;
 
     private AlertDialog dialog;
-
-    @ProvidePresenter
-    LoginPresenter provideLoginPresenter() {
-        return new LoginPresenter(App.from(this));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

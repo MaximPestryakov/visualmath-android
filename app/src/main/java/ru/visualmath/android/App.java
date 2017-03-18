@@ -7,8 +7,6 @@ import ru.visualmath.android.api.VisualMathApi;
 
 public class App extends Application {
 
-    private VisualMathApi api;
-
     public static App from(Context context) {
         return (App) context.getApplicationContext();
     }
@@ -17,10 +15,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        api = new VisualMathApi(this);
-    }
-
-    public VisualMathApi getApi() {
-        return api;
+        VisualMathApi.init(this);
     }
 }

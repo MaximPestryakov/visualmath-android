@@ -13,18 +13,18 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import ru.visualmath.android.App;
 import ru.visualmath.android.R;
+import ru.visualmath.android.api.VisualMathApi;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.SyncLecture;
 
 @InjectViewState
 public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
 
-    private App app;
+    private VisualMathApi api;
 
-    LectureBoardPresenter(App app) {
-        this.app = app;
+    LectureBoardPresenter() {
+        api = VisualMathApi.getApi();
         loadLectures();
     }
 
@@ -34,7 +34,7 @@ public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
         List<SyncLecture> syncLectures = new ArrayList<>();
         List<Lecture> lectures = new ArrayList<>();
 
-        Observable.concat(app.getApi().syncLecturesList(), app.getApi().lecturesList())
+        Observable.concat(api.syncLecturesList(), api.lecturesList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(allLectures -> {

@@ -6,11 +6,9 @@ import android.webkit.WebView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 
 public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLectureView {
@@ -20,11 +18,6 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
 
     @BindView(R.id.lectureName)
     WebView lectureName;
-
-    @ProvidePresenter
-    SyncLecturePresenter provideSyncLecturePresenter() {
-        return new SyncLecturePresenter(App.from(this).getApi());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

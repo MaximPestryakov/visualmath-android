@@ -7,11 +7,9 @@ import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import ru.visualmath.android.App;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.NewUser;
 
@@ -37,12 +35,6 @@ public class SignUpActivity extends MvpAppCompatActivity implements MvpView {
 
     @BindView(R.id.signUp)
     Button signUp;
-
-    @ProvidePresenter
-    SignUpPresenter provideSignUoPresenter() {
-        return new SignUpPresenter(App.from(this));
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
