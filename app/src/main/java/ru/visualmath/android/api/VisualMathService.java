@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -13,7 +14,7 @@ import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
 
-public interface VisualMathService {
+interface VisualMathService {
     @POST("login")
     Observable<User> login(@Body Map<String, String> data);
 
@@ -29,15 +30,14 @@ public interface VisualMathService {
     @GET("sync_v1/lectures/list")
     Observable<List<SyncLecture>> syncLectureList();
 
-    @POST("sync_v1/ongoing_lectures/load_lecture")
-    void loadSyncLecture();
-
     @POST("sync_v1/ongoing_lectures/load_slide")
-    void loadSyncSlide();
+    Observable<ResponseBody> loadSyncSlide(@Body ActiveLectureId activeLectureId);
+}
 
-    @POST("sync_v1/ongoing_lectures/metainfo")
-    void metaInfo();
+class ActiveLectureId {
+    private String activeLectureId;
 
-    @POST("sync_v1/ongoing_lectures/userinfo")
-    void userInfo();
+    ActiveLectureId(String activeLectureId) {
+        this.activeLectureId = activeLectureId;
+    }
 }

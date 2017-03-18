@@ -5,5 +5,5 @@ import com.arellomobile.mvp.MvpView;
 
 public interface SyncLectureView extends MvpView {
 
-    void show(String message);
+    void showModule(String name, String content);
 }

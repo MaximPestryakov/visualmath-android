@@ -14,6 +14,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.visualmath.android.api.model.Lecture;
@@ -25,12 +26,13 @@ import ru.visualmath.android.api.model.User;
 public class VisualMathApi {
 
     private VisualMathService service;
+    private OkHttpClient okHttpClient;
 
     public VisualMathApi(Context context) {
         CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
                 new SharedPrefsCookiePersistor(context));
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(cookieJar)
                 .build();
 
@@ -67,5 +69,9 @@ public class VisualMathApi {
 
     public Observable<User> createUser(NewUser newUser) {
         return service.createUser(newUser);
+    }
+
+    public Observable<ResponseBody> loadSyncSlide(String activeLectureId) {
+        return service.loadSyncSlide(new ActiveLectureId(activeLectureId));
     }
 }

@@ -54,6 +54,7 @@ public class VisualMathSync {
                 contentJson = jsonObject.getJSONObject("content").toString();
             } catch (JSONException ignored) {
             }
+
             switch (slideInfo.getType()) {
                 case MODULE:
                     Module module = new Gson().fromJson(contentJson, Module.class);
