@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="./katex/katex.min.js"></script>
+    <script src="./katex/auto-render.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./katex/katex.min.css">
+</head>
+
+<body>
+<div id="main">
+    <h3>
+        <div class="name"></div>
+    </h3>
+    <div class="content"></div>
+</div>
+<script>
+    if (typeof slide !== 'undefined') {
+      const name = slide.getName();
+      const content = slide.getContent();
+
+      const main = document.getElementById('main');
+      main.getElementsByClassName('name')[0].innerHTML = name;
+      main.getElementsByClassName('content')[0].innerHTML = content;
+
+      renderMathInElement(main, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ]
+      });
+    }
+
+
+</script>
+</body>
+
+</html>
