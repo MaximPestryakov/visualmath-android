@@ -141,9 +141,7 @@ class LectureBoardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         void showSyncLecture() {
-            Intent intent = new Intent(context, SyncLectureActivity.class);
-            intent.putExtra("ongoing_id", syncLecture.ongoingId);
-            context.startActivity(intent);
+            context.startActivity(SyncLectureActivity.getStartIntent(context, syncLecture.ongoingId));
         }
 
         void showLecture() {

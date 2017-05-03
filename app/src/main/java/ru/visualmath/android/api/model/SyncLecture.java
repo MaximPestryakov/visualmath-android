@@ -26,7 +26,7 @@ public class SyncLecture {
     public String created;
 
     public Date getCreatedDate() {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault());
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
         Date date = new Date(0);
         try {
             date = format.parse(created);

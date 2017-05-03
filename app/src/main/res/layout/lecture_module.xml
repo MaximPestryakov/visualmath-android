@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <me.maximpestryakov.katexview.KatexView
         android:id="@+id/lecture_module_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,23 +12,21 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
-        android:text="Название"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        tools:text="Название" />
 
-    <TextView
+    <me.maximpestryakov.katexview.KatexView
         android:id="@+id/lecture_module_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/lecture_module_name"
-        android:layout_alignLeft="@+id/lecture_module_name"
-        android:layout_alignRight="@id/lecture_module_name"
         android:layout_alignStart="@+id/lecture_module_name"
         android:layout_below="@+id/lecture_module_name"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
-        android:text="Контент"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="Контент" />
 </RelativeLayout>

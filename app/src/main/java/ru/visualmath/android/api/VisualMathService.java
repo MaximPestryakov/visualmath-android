@@ -8,6 +8,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.NewUser;
 import ru.visualmath.android.api.model.QuestionBlock;
@@ -32,6 +33,9 @@ interface VisualMathService {
 
     @POST("sync_v1/ongoing_lectures/load_slide")
     Observable<ResponseBody> loadSyncSlide(@Body ActiveLectureId activeLectureId);
+
+    @POST("sync_v1/questions/answer")
+    Observable<AnswerRequest> answerQuestion(@Body Map<String, Object> data);
 }
 
 class ActiveLectureId {

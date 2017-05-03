@@ -28,8 +28,8 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
         this.api = VisualMathApi.getApi();
     }
 
-    void connect(String ongoingId) {
-        api.loadSyncSlide(ongoingId)
+    void connect(String lectureId) {
+        api.loadSyncSlide(lectureId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseBody -> {
@@ -49,7 +49,7 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                             return;
                         case QUESTION:
                             Question question = new Gson().fromJson(contentJson, Question.class);
-                            getViewState().showModule(question.getQuestion(), "");
+                            getViewState().showModule(question.getTitle(), "");
                             return;
                         case QUESTION_BLOCK:
                             QuestionBlock questionBlock = new Gson().fromJson(contentJson, QuestionBlock.class);
@@ -59,26 +59,20 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                 });
 
         Handler handler = new Handler();
-        VisualMathSync syncApi = new VisualMathSync.Builder(ongoingId)
+        VisualMathSync syncApi = new VisualMathSync.Builder(lectureId)
                 .setOnConnectListener(__ -> Log.d("MyTag", "Connected"))
                 .setOnDisconnectListener(__ -> Log.d("MyTag", "Disconnected"))
                 .setOnFinishListener(__ -> Log.d("MyTag", "Finished"))
                 .setOnModuleListener((slideInfo, module) -> {
-                    handler.post(() -> {
-                        getViewState().showModule(module.getName(), module.getContent());
-                    });
+                    handler.post(() -> getViewState().showModule(module.getName(), module.getContent()));
                     Log.d("MyTag", "module");
                 })
                 .setOnQuestionListener((slideInfo, question) -> {
-                    handler.post(() -> {
-                        getViewState().showModule(question.getQuestion(), "");
-                    });
+                    handler.post(() -> getViewState().showQuestion(question));
                     Log.d("MyTag", "question");
                 })
                 .setOnQuestionBlockListener((slideInfo, questionBlock) -> {
-                    handler.post(() -> {
-                        getViewState().showModule(questionBlock.getName(), "");
-                    });
+                    handler.post(() -> getViewState().showModule(questionBlock.getName(), ""));
                     Log.d("MyTag", "questionBlock");
                 })
                 .build();

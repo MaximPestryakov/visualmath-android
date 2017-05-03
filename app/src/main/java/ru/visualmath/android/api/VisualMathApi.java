@@ -17,6 +17,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.NewUser;
 import ru.visualmath.android.api.model.QuestionBlock;
@@ -81,5 +82,13 @@ public class VisualMathApi {
 
     public Observable<ResponseBody> loadSyncSlide(String activeLectureId) {
         return service.loadSyncSlide(new ActiveLectureId(activeLectureId));
+    }
+
+    public Observable<AnswerRequest> answerQuestion(String activeLectureId, List<Integer> answer, String questionId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("activeLectureId", activeLectureId);
+        data.put("answer", answer);
+        data.put("questionId", questionId);
+        return service.answerQuestion(data);
     }
 }

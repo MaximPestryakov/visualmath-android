@@ -6,8 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -15,6 +13,8 @@ import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SlideInfo;
+import ru.visualmath.android.util.BiConsumer;
+import ru.visualmath.android.util.Consumer;
 
 public class VisualMathSync {
 

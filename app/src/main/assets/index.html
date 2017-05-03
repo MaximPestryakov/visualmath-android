@@ -8,32 +8,18 @@
 </head>
 
 <body>
-<div id="main">
-    <h3>
-        <div class="name"></div>
-    </h3>
-    <div class="content"></div>
-</div>
+<div id="main"></div>
 <script>
-    if (typeof slide !== 'undefined') {
-      const name = slide.getName();
-      const content = slide.getContent();
-
-      const main = document.getElementById('main');
-      main.getElementsByClassName('name')[0].innerHTML = name;
-      main.getElementsByClassName('content')[0].innerHTML = content;
-
-      renderMathInElement(main, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false }
-        ]
-      });
+    if (typeof data !== 'undefined') {
+        const main = document.getElementById('main');
+        main.innerHTML = data.getText();
+        renderMathInElement(main, {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+            ]
+        });
     }
-
-
-
-
 </script>
 </body>
 

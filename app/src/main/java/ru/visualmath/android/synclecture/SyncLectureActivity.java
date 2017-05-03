@@ -1,61 +1,61 @@
 package ru.visualmath.android.synclecture;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
+import android.support.v4.app.Fragment;
+import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ru.visualmath.android.R;
+import ru.visualmath.android.api.model.Question;
+import ru.visualmath.android.lecture.module.ModuleFragment;
+import ru.visualmath.android.lecture.question.QuestionFragment;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLectureView {
 
+    private static final String LECTURE_ID = "LECTURE_ID";
     @InjectPresenter
     SyncLecturePresenter presenter;
+    private String lectureId;
 
-    @BindView(R.id.lectureName)
-    WebView lectureName;
+    public static Intent getStartIntent(Context context, String lectureId) {
+        return new Intent(context, SyncLectureActivity.class).putExtra(LECTURE_ID, lectureId);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sync_lecture);
-        ButterKnife.bind(this);
 
-        String ongoingId = getIntent().getStringExtra("ongoing_id");
+        FrameLayout frameLayout = new FrameLayout(this);
+        frameLayout.setId(R.id.frameLayout);
+        frameLayout.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
-        lectureName.getSettings().setJavaScriptEnabled(true);
-        lectureName.loadUrl("file:///android_asset/index.html");
+        setContentView(frameLayout);
 
-        presenter.connect(ongoingId);
+        lectureId = getIntent().getStringExtra(LECTURE_ID);
+        presenter.connect(lectureId);
     }
 
     @Override
     public void showModule(String name, String content) {
-        lectureName.addJavascriptInterface(new ObjectToJs(name, content), "slide");
-        lectureName.reload();
+        Fragment fragment = ModuleFragment.newInstance(name, content);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout, fragment, ModuleFragment.TAG)
+                .commit();
     }
 
-    private static class ObjectToJs {
-        private String name;
-        private String content;
-
-        ObjectToJs(String name, String content) {
-            this.name = name;
-            this.content = content;
-        }
-
-        @JavascriptInterface
-        String getName() {
-            return name;
-        }
-
-        @JavascriptInterface
-        String getContent() {
-            return content;
-        }
+    @Override
+    public void showQuestion(Question question) {
+        Fragment fragment = QuestionFragment.newInstance(lectureId, question);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout, fragment, QuestionFragment.TAG)
+                .commit();
     }
 }

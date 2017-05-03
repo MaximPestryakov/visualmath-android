@@ -6,24 +6,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.maximpestryakov.katexview.KatexView;
 import ru.visualmath.android.R;
 
 public class ModuleFragment extends Fragment {
 
-    private static final String NAME_KEY = "name";
-    private static final String CONTENT_KEY = "content";
-    private static final String IMAGES_KEY = "images";
+    public static final String TAG = "ModuleFragment";
+    private static final String NAME_KEY = "NAME_KEY";
+    private static final String CONTENT_KEY = "CONTENT_KEY";
+    private static final String IMAGES_KEY = "IMAGES_KEY";
     @BindView(R.id.lecture_module_name)
-    TextView nameTextView;
+    KatexView nameTextView;
     @BindView(R.id.lecture_module_content)
-    TextView contentTextView;
+    KatexView contentTextView;
     private Unbinder unbinder;
     private String name;
     private String content;

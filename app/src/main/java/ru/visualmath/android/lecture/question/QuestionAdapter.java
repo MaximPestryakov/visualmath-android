@@ -6,24 +6,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.maximpestryakov.katexview.KatexView;
 import ru.visualmath.android.R;
 
 
 class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
 
     private List<String> answers;
+
+    private Set<Integer> answer;
+
     private Boolean multiple;
-    private int radioButtonChosen = -1;
+
+    private QuestionViewHolder checked;
 
     QuestionAdapter(List<String> answers, Boolean multiple) {
         this.answers = answers;
         this.multiple = multiple;
+        answer = new HashSet<>();
     }
 
     @Override
@@ -35,10 +43,27 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
 
     @Override
     public void onBindViewHolder(QuestionViewHolder holder, int position) {
-        holder.answerCheckBox.setVisibility(multiple ? View.VISIBLE : View.INVISIBLE);
-        holder.answerRadioButton.setVisibility(multiple ? View.INVISIBLE : View.VISIBLE);
-        holder.answerRadioButton.setChecked(position == radioButtonChosen);
+        if (multiple) {
+            holder.answerCheckBox.setVisibility(View.VISIBLE);
+            holder.answerRadioButton.setVisibility(View.INVISIBLE);
+            holder.answerCheckBox.setChecked(answer.contains(position));
+        } else {
+            holder.answerCheckBox.setVisibility(View.INVISIBLE);
+            holder.answerRadioButton.setVisibility(View.VISIBLE);
+            if (answer.contains(position)) {
+                checked = holder;
+                holder.answerRadioButton.setChecked(true);
+            } else {
+                holder.answerRadioButton.setChecked(false);
+            }
+        }
         holder.answerText.setText(answers.get(position));
+    }
+
+    public List<Integer> getAnswer() {
+        List<Integer> result = new ArrayList<>();
+        result.addAll(answer);
+        return result;
     }
 
     @Override
@@ -55,15 +80,29 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
         RadioButton answerRadioButton;
 
         @BindView(R.id.answer_text)
-        TextView answerText;
-
+        KatexView answerText;
 
         QuestionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            answerRadioButton.setOnClickListener(v -> {
-                radioButtonChosen = getAdapterPosition();
-                notifyItemRangeChanged(0, answers.size());
+
+            answerRadioButton.setOnCheckedChangeListener((v, isChecked) -> {
+                if (isChecked) {
+                    answer.clear();
+                    answer.add(getAdapterPosition());
+                    if (checked != null) {
+                        checked.answerRadioButton.setChecked(false);
+                    }
+                    checked = this;
+                }
+            });
+
+            answerCheckBox.setOnCheckedChangeListener((v, isChecked) -> {
+                if (isChecked) {
+                    answer.add(getAdapterPosition());
+                } else {
+                    answer.remove(getAdapterPosition());
+                }
             });
         }
     }

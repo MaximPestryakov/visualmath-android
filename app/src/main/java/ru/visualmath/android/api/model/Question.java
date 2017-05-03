@@ -7,8 +7,11 @@ import java.util.List;
 
 public class Question {
 
+    @SerializedName("_id")
+    private String id;
+
     @SerializedName("question")
-    private String question;
+    private String title;
 
     @SerializedName("multiple")
     private boolean multiple;
@@ -16,8 +19,12 @@ public class Question {
     @SerializedName("answers")
     private List<String> answers;
 
-    public String getQuestion() {
-        return question;
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public boolean isMultiple() {
@@ -31,7 +38,7 @@ public class Question {
     @Override
     public String toString() {
         return "Question{" +
-                "question: " + question + ", " +
+                "title: " + title + ", " +
                 "multiple: " + multiple + ", " +
                 "answers: " + answers +
                 "}";

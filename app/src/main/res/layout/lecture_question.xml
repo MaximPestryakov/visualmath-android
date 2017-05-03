@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <me.maximpestryakov.katexview.KatexView
         android:id="@+id/lecture_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,16 +12,48 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
-        android:text="Вопрос"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        tools:text="Вопрос" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lecture_answers"
+    <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/answer"
         android:layout_below="@+id/lecture_question"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lecture_answers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:minWidth="88dp"
+        android:text="Ответить"
+        android:textColor="@android:color/white"
+        app:backgroundTint="#2196F3" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/answer"
+        android:minWidth="88dp"
+        android:text="Пропустить"
+        app:backgroundTint="@android:color/white" />
 
 </RelativeLayout>
