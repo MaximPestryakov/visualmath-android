@@ -1,13 +1,11 @@
 package ru.visualmath.android.synclecture;
 
-import android.os.Handler;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,11 +20,9 @@ import ru.visualmath.android.api.model.SlideInfo;
 @InjectViewState
 public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
 
-    private VisualMathApi api;
+    private final VisualMathApi api = VisualMathApi.getApi();
 
-    public SyncLecturePresenter() {
-        this.api = VisualMathApi.getApi();
-    }
+    private VisualMathSync syncApi;
 
     void connect(String lectureId) {
         api.loadSyncSlide(lectureId)
@@ -35,12 +31,9 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                 .subscribe(responseBody -> {
                     String jsonString = responseBody.string();
                     SlideInfo slideInfo = new Gson().fromJson(jsonString, SlideInfo.class);
-                    String contentJson = null;
-                    try {
-                        JSONObject jsonObject = new JSONObject(jsonString);
-                        contentJson = jsonObject.getJSONObject("content").toString();
-                    } catch (JSONException ignored) {
-                    }
+
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    String contentJson = jsonObject.getJSONObject("content").toString();
 
                     switch (slideInfo.getType()) {
                         case MODULE:
@@ -49,7 +42,11 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                             return;
                         case QUESTION:
                             Question question = new Gson().fromJson(contentJson, Question.class);
-                            getViewState().showModule(question.getTitle(), "");
+                            boolean isStarted = !jsonObject.isNull("activeContent");
+                            if (isStarted) {
+                                isStarted = !jsonObject.getJSONObject("activeContent").getBoolean("ended");
+                            }
+                            getViewState().showQuestion(question, isStarted);
                             return;
                         case QUESTION_BLOCK:
                             QuestionBlock questionBlock = new Gson().fromJson(contentJson, QuestionBlock.class);
@@ -58,24 +55,29 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                     }
                 });
 
-        Handler handler = new Handler();
-        VisualMathSync syncApi = new VisualMathSync.Builder(lectureId)
-                .setOnConnectListener(__ -> Log.d("MyTag", "Connected"))
-                .setOnDisconnectListener(__ -> Log.d("MyTag", "Disconnected"))
-                .setOnFinishListener(__ -> Log.d("MyTag", "Finished"))
+        syncApi = new VisualMathSync.Builder(lectureId)
+                .setOnConnectListener(() -> Log.d("MyTag", "Connected"))
+                .setOnDisconnectListener(() -> Log.d("MyTag", "Disconnected"))
+                .setOnFinishListener(() -> Log.d("MyTag", "Finished"))
                 .setOnModuleListener((slideInfo, module) -> {
-                    handler.post(() -> getViewState().showModule(module.getName(), module.getContent()));
+                    getViewState().showModule(module.getName(), module.getContent());
                     Log.d("MyTag", "module");
                 })
-                .setOnQuestionListener((slideInfo, question) -> {
-                    handler.post(() -> getViewState().showQuestion(question));
+                .setOnQuestionListener((question, isStarted) -> {
+                    getViewState().showQuestion(question, isStarted);
                     Log.d("MyTag", "question");
                 })
                 .setOnQuestionBlockListener((slideInfo, questionBlock) -> {
-                    handler.post(() -> getViewState().showModule(questionBlock.getName(), ""));
+                    getViewState().showModule(questionBlock.getName(), "");
                     Log.d("MyTag", "questionBlock");
                 })
                 .build();
         syncApi.connect();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        syncApi.disconnect();
     }
 }

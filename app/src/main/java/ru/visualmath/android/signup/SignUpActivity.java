@@ -11,7 +11,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import butterknife.BindView;
 import butterknife.OnClick;
 import ru.visualmath.android.R;
-import ru.visualmath.android.api.model.NewUser;
 
 public class SignUpActivity extends MvpAppCompatActivity implements MvpView {
 
@@ -47,12 +46,11 @@ public class SignUpActivity extends MvpAppCompatActivity implements MvpView {
         String login = loginValue.getText().toString();
         String password = passwordValue.getText().toString();
         if (!password.equals(retryPasswordValue.getText().toString())) {
-            // Incorect passwords
+            // Incorrect passwords
             return;
         }
         String institution = institutionValue.getText().toString();
         String group = groupValue.getText().toString();
-        NewUser newUser = new NewUser(login, password, institution, group);
-        presenter.onSignUp(newUser);
+        presenter.onSignUp(login, password, institution, group);
     }
 }

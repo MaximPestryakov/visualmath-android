@@ -1,13 +1,17 @@
 package ru.visualmath.android.synclecture;
 
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 import ru.visualmath.android.api.model.Question;
 
 
-public interface SyncLectureView extends MvpView {
+interface SyncLectureView extends MvpView {
 
+    @StateStrategyType(SingleStateStrategy.class)
     void showModule(String name, String content);
 
-    void showQuestion(Question question);
+    @StateStrategyType(SingleStateStrategy.class)
+    void showQuestion(Question question, boolean isStarted);
 }

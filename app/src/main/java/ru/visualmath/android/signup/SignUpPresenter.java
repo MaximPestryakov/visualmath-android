@@ -7,19 +7,14 @@ import com.arellomobile.mvp.MvpView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.api.VisualMathApi;
-import ru.visualmath.android.api.model.NewUser;
 
 @InjectViewState
 public class SignUpPresenter extends MvpPresenter<MvpView> {
 
-    private VisualMathApi api;
+    private final VisualMathApi api = VisualMathApi.getApi();
 
-    public SignUpPresenter() {
-        api = VisualMathApi.getApi();
-    }
-
-    void onSignUp(NewUser newUser) {
-        api.createUser(newUser)
+    void onSignUp(String login, String password, String institution, String group) {
+        api.createUser(login, password, institution, group)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {

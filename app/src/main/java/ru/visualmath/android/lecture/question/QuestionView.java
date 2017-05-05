@@ -1,6 +1,14 @@
 package ru.visualmath.android.lecture.question;
 
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
-public interface QuestionView extends MvpView {
+interface QuestionView extends MvpView {
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void startQuestion();
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void finishQuestion();
 }

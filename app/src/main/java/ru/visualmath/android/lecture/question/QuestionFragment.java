@@ -13,7 +13,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,10 +25,8 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
     public static final String TAG = "QuestionFragment";
     private static final String LECTURE_ID_KEY = "LECTURE_ID_KEY";
-    private static final String QUESTION_ID_KEY = "QUESTION_ID_KEY";
-    private static final String TITLE_KEY = "TITLE_KEY";
-    private static final String ANSWERS_KEY = "ANSWERS_KEY";
-    private static final String MULTIPLE_KEY = "MULTIPLE_KEY";
+    private static final String QUESTION_KEY = "QUESTION_KEY";
+    private static final String IS_STARTED_KEY = "IS_STARTED_KEY";
 
     @BindView(R.id.lecture_question)
     KatexView questionTextView;
@@ -48,30 +45,15 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
     private Unbinder unbinder;
     private String lectureId;
-    private String questionId;
-    private String question;
-    private List<String> answers;
-    private Boolean multiple;
+    private Question question;
+    private boolean isStarted;
     private QuestionAdapter adapter;
 
-    public static QuestionFragment newInstance(String lectureId, Question question) {
+    public static QuestionFragment newInstance(String lectureId, Question question, boolean isStarted) {
         Bundle args = new Bundle();
         args.putString(LECTURE_ID_KEY, lectureId);
-        args.putString(QUESTION_ID_KEY, question.getId());
-        args.putString(TITLE_KEY, question.getTitle());
-        args.putStringArrayList(ANSWERS_KEY, (ArrayList<String>) question.getAnswers());
-        args.putBoolean(MULTIPLE_KEY, question.isMultiple());
-
-        QuestionFragment fragment = new QuestionFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static QuestionFragment newInstance(String title, List<String> answers, Boolean multiple) {
-        Bundle args = new Bundle();
-        args.putString(TITLE_KEY, title);
-        args.putStringArrayList(ANSWERS_KEY, (ArrayList<String>) answers);
-        args.putBoolean(MULTIPLE_KEY, multiple);
+        args.putSerializable(QUESTION_KEY, question);
+        args.putBoolean(IS_STARTED_KEY, isStarted);
 
         QuestionFragment fragment = new QuestionFragment();
         fragment.setArguments(args);
@@ -84,10 +66,8 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         Bundle args = getArguments();
         if (args != null) {
             lectureId = args.getString(LECTURE_ID_KEY);
-            questionId = args.getString(QUESTION_ID_KEY);
-            question = args.getString(TITLE_KEY);
-            answers = args.getStringArrayList(ANSWERS_KEY);
-            multiple = args.getBoolean(MULTIPLE_KEY);
+            question = (Question) args.getSerializable(QUESTION_KEY);
+            isStarted = args.getBoolean(IS_STARTED_KEY);
         }
     }
 
@@ -98,7 +78,13 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         View view = inflater.inflate(R.layout.lecture_question, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        questionTextView.setText(question);
+        if (isStarted) {
+            startQuestion();
+        } else {
+            finishQuestion();
+        }
+
+        questionTextView.setText(question.getTitle());
         answersRecyclerView.setHasFixedSize(true);
         answersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
             @Override
@@ -106,13 +92,27 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
                 return false;
             }
         });
-        adapter = new QuestionAdapter(answers, multiple);
+        adapter = new QuestionAdapter(question.getAnswers(), question.isMultiple());
         answersRecyclerView.setAdapter(adapter);
 
-        answer.setOnClickListener(v -> presenter.onAnswer(lectureId, adapter.getAnswer(), questionId));
+        answer.setOnClickListener(v -> presenter.onAnswer(lectureId, adapter.getAnswer(), question.getId()));
 
-        skip.setOnClickListener(v -> presenter.onAnswer(lectureId, new ArrayList<>(), questionId));
+        skip.setOnClickListener(v -> presenter.onAnswer(lectureId, new ArrayList<>(), question.getId()));
+
+        presenter.connect(lectureId, question.getId());
         return view;
+    }
+
+    @Override
+    public void startQuestion() {
+        answer.setVisibility(View.VISIBLE);
+        skip.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void finishQuestion() {
+        answer.setVisibility(View.GONE);
+        skip.setVisibility(View.GONE);
     }
 
     @Override

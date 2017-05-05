@@ -19,7 +19,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
-import ru.visualmath.android.api.model.NewUser;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
@@ -76,12 +75,20 @@ public class VisualMathApi {
         return service.loadQuestionBlock(data);
     }
 
-    public Observable<User> createUser(NewUser newUser) {
-        return service.createUser(newUser);
+    public Observable<User> createUser(String login, String password, String institution, String group) {
+        Map<String, String> data = new HashMap<>();
+        data.put("login", login);
+        data.put("password", password);
+        data.put("institution", institution);
+        data.put("group", group);
+        data.put("access", "student");
+        return service.createUser(data);
     }
 
     public Observable<ResponseBody> loadSyncSlide(String activeLectureId) {
-        return service.loadSyncSlide(new ActiveLectureId(activeLectureId));
+        Map<String, String> data = new HashMap<>();
+        data.put("activeLectureId", activeLectureId);
+        return service.loadSyncSlide(data);
     }
 
     public Observable<AnswerRequest> answerQuestion(String activeLectureId, List<Integer> answer, String questionId) {

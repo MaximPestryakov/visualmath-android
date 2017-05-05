@@ -1,5 +1,5 @@
 package ru.visualmath.android.util;
 
-public interface Consumer<T> {
-    void accept(T t);
+public interface Consumer {
+    void accept();
 }

@@ -16,20 +16,13 @@
         android:textSize="24sp"
         tools:text="Вопрос" />
 
-    <RadioGroup
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lecture_answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/answer"
         android:layout_below="@+id/lecture_question"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/lecture_answers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </RadioGroup>
+        android:layout_marginTop="16dp" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/answer"
@@ -39,10 +32,13 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:minWidth="88dp"
         android:text="Ответить"
         android:textColor="@android:color/white"
-        app:backgroundTint="#2196F3" />
+        android:visibility="gone"
+        app:backgroundTint="#2196F3"
+        tools:visibility="visible" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/skip"
@@ -54,6 +50,8 @@
         android:layout_toStartOf="@+id/answer"
         android:minWidth="88dp"
         android:text="Пропустить"
-        app:backgroundTint="@android:color/white" />
+        android:visibility="gone"
+        app:backgroundTint="@android:color/white"
+        tools:visibility="visible" />
 
 </RelativeLayout>

@@ -51,8 +51,8 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
     }
 
     @Override
-    public void showQuestion(Question question) {
-        Fragment fragment = QuestionFragment.newInstance(lectureId, question);
+    public void showQuestion(Question question, boolean isStarted) {
+        Fragment fragment = QuestionFragment.newInstance(lectureId, question, isStarted);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, fragment, QuestionFragment.TAG)

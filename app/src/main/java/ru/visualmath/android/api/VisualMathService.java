@@ -10,7 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
-import ru.visualmath.android.api.model.NewUser;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
@@ -20,7 +19,7 @@ interface VisualMathService {
     Observable<User> login(@Body Map<String, String> data);
 
     @POST("users/create")
-    Observable<User> createUser(@Body NewUser newUser);
+    Observable<User> createUser(@Body Map<String, String> data);
 
     @GET("lectures/list")
     Observable<List<Lecture>> lecturesList();
@@ -32,16 +31,8 @@ interface VisualMathService {
     Observable<List<SyncLecture>> syncLectureList();
 
     @POST("sync_v1/ongoing_lectures/load_slide")
-    Observable<ResponseBody> loadSyncSlide(@Body ActiveLectureId activeLectureId);
+    Observable<ResponseBody> loadSyncSlide(@Body Map<String, String> data);
 
     @POST("sync_v1/questions/answer")
     Observable<AnswerRequest> answerQuestion(@Body Map<String, Object> data);
-}
-
-class ActiveLectureId {
-    private String activeLectureId;
-
-    ActiveLectureId(String activeLectureId) {
-        this.activeLectureId = activeLectureId;
-    }
 }

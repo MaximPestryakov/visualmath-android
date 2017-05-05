@@ -2,10 +2,11 @@ package ru.visualmath.android.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Question {
+public class Question implements Serializable {
 
     @SerializedName("_id")
     private String id;

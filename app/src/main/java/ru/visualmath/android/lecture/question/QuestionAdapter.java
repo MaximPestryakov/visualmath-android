@@ -60,10 +60,16 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
         holder.answerText.setText(answers.get(position));
     }
 
-    public List<Integer> getAnswer() {
+    List<Integer> getAnswer() {
         List<Integer> result = new ArrayList<>();
         result.addAll(answer);
         return result;
+    }
+
+    void setAnswer(List<Integer> answer) {
+        this.answer.clear();
+        this.answer.addAll(answer);
+        notifyDataSetChanged();
     }
 
     @Override
