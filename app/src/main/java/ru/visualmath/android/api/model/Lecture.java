@@ -1,5 +1,6 @@
 package ru.visualmath.android.api.model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Lecture {
+public class Lecture implements Serializable {
 
     public String name;
 

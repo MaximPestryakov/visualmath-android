@@ -2,7 +2,9 @@ package ru.visualmath.android.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Module {
+import java.io.Serializable;
+
+public class Module implements Serializable {
 
     @SerializedName("name")
     private String name;

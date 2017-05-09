@@ -1,6 +1,9 @@
 package ru.visualmath.android.api.model;
 
-public class Page {
+import java.io.Serializable;
+
+public class Page implements Serializable {
+
     public int index;
 
     public String type;

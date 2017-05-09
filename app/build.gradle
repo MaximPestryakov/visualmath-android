@@ -17,8 +17,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            debuggable false
+            shrinkResources false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -65,10 +66,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     // Moxy
-    compile 'com.arello-mobile:moxy:1.5.1'
-    compile 'com.arello-mobile:moxy-android:1.5.1'
-    compile 'com.arello-mobile:moxy-app-compat:1.5.1'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.1'
+    compile 'com.arello-mobile:moxy:1.5.2'
+    compile 'com.arello-mobile:moxy-android:1.5.2'
+    compile 'com.arello-mobile:moxy-app-compat:1.5.2'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.2'
 
     // Socket.IO
     compile 'io.socket:socket.io-client:0.8.3', {

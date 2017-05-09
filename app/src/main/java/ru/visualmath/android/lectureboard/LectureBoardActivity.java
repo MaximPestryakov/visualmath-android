@@ -30,7 +30,7 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
     @BindView(R.id.refresh_lectures_list)
     SwipeRefreshLayout refreshLecturesList;
 
-    private LectureBoardListAdapter adapter;
+    private LectureBoardAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
         setContentView(R.layout.activity_lectureboard);
         ButterKnife.bind(this);
 
-        adapter = new LectureBoardListAdapter(this);
+        adapter = new LectureBoardAdapter(this);
         lecturesList.setHasFixedSize(true);
         lecturesList.setLayoutManager(new LinearLayoutManager(this));
         lecturesList.setAdapter(adapter);
