@@ -2,12 +2,12 @@ package ru.visualmath.android.login;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.io.IOException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.VisualMathApi;
 

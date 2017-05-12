@@ -5,7 +5,6 @@ import android.content.Context;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,9 @@ import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
@@ -38,7 +39,7 @@ public class VisualMathApi {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://visualmath.ru/api/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(App.getGson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
@@ -91,11 +92,20 @@ public class VisualMathApi {
         return service.loadSyncSlide(data);
     }
 
-    public Observable<AnswerRequest> answerQuestion(String activeLectureId, List<Integer> answer, String questionId) {
+    public Observable<AnswerRequest> answerQuestion(String lectureId, List<Integer> answer, String questionId) {
         Map<String, Object> data = new HashMap<>();
-        data.put("activeLectureId", activeLectureId);
+        data.put("activeLectureId", lectureId);
         data.put("answer", answer);
         data.put("questionId", questionId);
         return service.answerQuestion(data);
+    }
+
+    public Observable<ResponseBody> answerBlock(String lectureId, List<Integer> answer, String blockId, String questionId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("activeLectureId", lectureId);
+        data.put("answer", answer);
+        data.put("blockId", blockId);
+        data.put("questionId", questionId);
+        return service.answerBlock(data);
     }
 }

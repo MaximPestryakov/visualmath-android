@@ -39,6 +39,7 @@ public class Question implements Serializable {
     @Override
     public String toString() {
         return "Question{" +
+                "id: " + id + ", " +
                 "title: " + title + ", " +
                 "multiple: " + multiple + ", " +
                 "answers: " + answers +

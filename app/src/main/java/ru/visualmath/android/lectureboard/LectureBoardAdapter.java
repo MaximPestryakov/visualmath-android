@@ -115,14 +115,12 @@ class LectureBoardAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
         @Override
         public void bind(int position) {
-            if (position > 0 && position <= syncLectures.size()) {
-                setSyncLecture(syncLectures.get(position - 1));
+            if (syncLectures.isEmpty()) {
+                setLecture(lectures.get(position - 1));
+            } else if (position > syncLectures.size()) {
+                setLecture(lectures.get(position - syncLectures.size() - 2));
             } else {
-                if (syncLectures.isEmpty()) {
-                    setLecture(lectures.get(position - 1));
-                } else {
-                    setLecture(lectures.get(position - syncLectures.size() - 2));
-                }
+                setSyncLecture(syncLectures.get(position - 1));
             }
         }
 

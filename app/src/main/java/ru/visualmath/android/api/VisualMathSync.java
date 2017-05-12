@@ -10,14 +10,15 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Consumer;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import ru.visualmath.android.App;
 import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
-import ru.visualmath.android.api.model.QuestionBlock;
+import ru.visualmath.android.api.model.QuestionBlockSlide;
 import ru.visualmath.android.api.model.SlideInfo;
-import ru.visualmath.android.util.BiConsumer;
-import ru.visualmath.android.util.Consumer;
 
 public class VisualMathSync {
 
@@ -27,9 +28,9 @@ public class VisualMathSync {
     private Socket socket;
     private String ongoingId;
 
-    private BiConsumer<SlideInfo, Module> onModuleListener;
+    private Consumer<Module> onModuleListener;
     private BiConsumer<Question, Boolean> onQuestionListener;
-    private BiConsumer<SlideInfo, QuestionBlock> onQuestionBlockListener;
+    private Consumer<QuestionBlockSlide> onQuestionBlockListener;
 
     private Handler mainThreadHandler;
 
@@ -53,7 +54,7 @@ public class VisualMathSync {
             }
             JSONObject jsonObject = (JSONObject) json[0];
             String jsonString = jsonObject.toString();
-            SlideInfo slideInfo = new Gson().fromJson(jsonString, SlideInfo.class);
+            SlideInfo slideInfo = App.getGson().fromJson(jsonString, SlideInfo.class);
             String contentJson = null;
             try {
                 contentJson = jsonObject.getJSONObject("content").toString();
@@ -64,7 +65,12 @@ public class VisualMathSync {
                 case MODULE:
                     if (onModuleListener != null) {
                         Module module = new Gson().fromJson(contentJson, Module.class);
-                        mainThreadHandler.post(() -> onModuleListener.accept(slideInfo, module));
+                        mainThreadHandler.post(() -> {
+                            try {
+                                onModuleListener.accept(module);
+                            } catch (Exception ignored) {
+                            }
+                        });
                     }
                     return;
                 case QUESTION:
@@ -78,13 +84,23 @@ public class VisualMathSync {
                             }
                         }
                         boolean finalIsStarted = isStarted;
-                        mainThreadHandler.post(() -> onQuestionListener.accept(question, finalIsStarted));
+                        mainThreadHandler.post(() -> {
+                            try {
+                                onQuestionListener.accept(question, finalIsStarted);
+                            } catch (Exception ignored) {
+                            }
+                        });
                     }
                     return;
                 case QUESTION_BLOCK:
                     if (onQuestionBlockListener != null) {
-                        QuestionBlock questionBlock = new Gson().fromJson(contentJson, QuestionBlock.class);
-                        mainThreadHandler.post(() -> onQuestionBlockListener.accept(slideInfo, questionBlock));
+                        QuestionBlockSlide slide = App.getGson().fromJson(jsonString, QuestionBlockSlide.class);
+                        mainThreadHandler.post(() -> {
+                            try {
+                                onQuestionBlockListener.accept(slide);
+                            } catch (Exception ignored) {
+                            }
+                        });
                     }
                     break;
             }
@@ -107,17 +123,17 @@ public class VisualMathSync {
             api = new VisualMathSync(ongoingId);
         }
 
-        public Builder setOnConnectListener(Consumer onConnectListener) {
-            api.socket.on(Socket.EVENT_CONNECT, __ -> api.mainThreadHandler.post(onConnectListener::accept));
+        public Builder setOnConnectListener(Runnable onConnectListener) {
+            api.socket.on(Socket.EVENT_CONNECT, __ -> api.mainThreadHandler.post(onConnectListener));
             return this;
         }
 
-        public Builder setOnDisconnectListener(Consumer onDisconnectListener) {
-            api.socket.on(Socket.EVENT_DISCONNECT, __ -> api.mainThreadHandler.post(onDisconnectListener::accept));
+        public Builder setOnDisconnectListener(Runnable onDisconnectListener) {
+            api.socket.on(Socket.EVENT_DISCONNECT, __ -> api.mainThreadHandler.post(onDisconnectListener));
             return this;
         }
 
-        public Builder setOnModuleListener(BiConsumer<SlideInfo, Module> onModuleListener) {
+        public Builder setOnModuleListener(Consumer<Module> onModuleListener) {
             api.onModuleListener = onModuleListener;
             return this;
         }
@@ -127,20 +143,20 @@ public class VisualMathSync {
             return this;
         }
 
-        public Builder setOnQuestionBlockListener(BiConsumer<SlideInfo, QuestionBlock> onQuestionBlockListener) {
+        public Builder setOnQuestionBlockListener(Consumer<QuestionBlockSlide> onQuestionBlockListener) {
             api.onQuestionBlockListener = onQuestionBlockListener;
             return this;
         }
 
-        public Builder setOnFinishListener(Consumer onFinishListener) {
+        public Builder setOnFinishListener(Runnable onFinishListener) {
             api.socket.on("sync_v1/lectures/finish:" + api.ongoingId, __ -> {
-                api.mainThreadHandler.post(onFinishListener::accept);
+                api.mainThreadHandler.post(onFinishListener);
                 api.socket.disconnect();
             });
             return this;
         }
 
-        public Builder setOnStartQuestion(String questionId, Consumer onStartQuestion) {
+        public Builder setOnStartQuestion(String questionId, Runnable onStartQuestion) {
             api.socket.on("sync_v1/questions:" + api.ongoingId + ":" + questionId, json -> {
                 JSONObject jsonObject = (JSONObject) json[0];
                 String type = "";
@@ -149,13 +165,13 @@ public class VisualMathSync {
                 } catch (JSONException ignored) {
                 }
                 if ("QUESTION_START".equals(type)) {
-                    api.mainThreadHandler.post(onStartQuestion::accept);
+                    api.mainThreadHandler.post(onStartQuestion);
                 }
             });
             return this;
         }
 
-        public Builder setOnFinishQuestion(String questionId, Consumer onFinishQuestion) {
+        public Builder setOnFinishQuestion(String questionId, Runnable onFinishQuestion) {
             api.socket.on("sync_v1/questions:" + api.ongoingId + ":" + questionId, json -> {
                 JSONObject jsonObject = (JSONObject) json[0];
                 String type = "";
@@ -164,7 +180,37 @@ public class VisualMathSync {
                 } catch (JSONException ignored) {
                 }
                 if ("QUESTION_FINISH".equals(type)) {
-                    api.mainThreadHandler.post(onFinishQuestion::accept);
+                    api.mainThreadHandler.post(onFinishQuestion);
+                }
+            });
+            return this;
+        }
+
+        public Builder setOnStartBlock(String blockId, Runnable onStartBlock) {
+            api.socket.on("sync_v1/blocks:" + api.ongoingId + ":" + blockId, json -> {
+                JSONObject jsonObject = (JSONObject) json[0];
+                String type = "";
+                try {
+                    type = jsonObject.getString("type");
+                } catch (JSONException ignored) {
+                }
+                if ("BLOCK_START".equals(type)) {
+                    api.mainThreadHandler.post(onStartBlock);
+                }
+            });
+            return this;
+        }
+
+        public Builder setOnFinishBlock(String blockId, Runnable onFinishBlock) {
+            api.socket.on("sync_v1/blocks:" + api.ongoingId + ":" + blockId, json -> {
+                JSONObject jsonObject = (JSONObject) json[0];
+                String type = "";
+                try {
+                    type = jsonObject.getString("type");
+                } catch (JSONException ignored) {
+                }
+                if ("BLOCK_FINISH".equals(type)) {
+                    api.mainThreadHandler.post(onFinishBlock);
                 }
             });
             return this;

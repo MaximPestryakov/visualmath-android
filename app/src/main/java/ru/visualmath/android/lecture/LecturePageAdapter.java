@@ -32,7 +32,7 @@ class LecturePageAdapter extends FragmentStatePagerAdapter {
         }
         if ("questionBlock".equals(page.type)) {
             String questionBlockId = lecture.questionBlocks.get(page.index);
-            return LectureQuestionBlockFragment.newInstance(questionBlockId);
+            // return QuestionBlockFragment.newInstance(questionBlockId);
         }
         return new Fragment();
     }

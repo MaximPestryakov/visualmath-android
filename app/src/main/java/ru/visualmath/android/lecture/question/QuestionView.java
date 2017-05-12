@@ -11,4 +11,7 @@ interface QuestionView extends MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void finishQuestion();
+
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void answerBlock();
 }

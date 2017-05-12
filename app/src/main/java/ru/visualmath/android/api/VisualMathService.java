@@ -35,4 +35,7 @@ interface VisualMathService {
 
     @POST("sync_v1/questions/answer")
     Observable<AnswerRequest> answerQuestion(@Body Map<String, Object> data);
+
+    @POST("sync_v1/blocks/answer")
+    Observable<ResponseBody> answerBlock(@Body Map<String, Object> data);
 }

@@ -4,15 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class SlideInfo {
 
-    @SerializedName("index")
-    private int index;
-
     @SerializedName("type")
     private SlideType type;
-
-    public int getIndex() {
-        return index;
-    }
 
     public SlideType getType() {
         return type;
@@ -21,7 +14,6 @@ public class SlideInfo {
     @Override
     public String toString() {
         return "SlideInfo{" +
-                "index: " + index + ", " +
                 "type: " + type.name() +
                 "}";
     }

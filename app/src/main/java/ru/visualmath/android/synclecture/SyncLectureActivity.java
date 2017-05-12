@@ -10,9 +10,12 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.visualmath.android.R;
+import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
+import ru.visualmath.android.api.model.QuestionBlockSlide;
 import ru.visualmath.android.lecture.module.ModuleFragment;
 import ru.visualmath.android.lecture.question.QuestionFragment;
+import ru.visualmath.android.lecture.questionblock.QuestionBlockFragment;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -42,8 +45,8 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
     }
 
     @Override
-    public void showModule(String name, String content) {
-        Fragment fragment = ModuleFragment.newInstance(name, content);
+    public void showModule(Module module) {
+        Fragment fragment = ModuleFragment.newInstance(module.getName(), module.getContent());
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, fragment, ModuleFragment.TAG)
@@ -56,6 +59,16 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, fragment, QuestionFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public void showQuestionBlock(QuestionBlockSlide slide) {
+        Fragment fragment = QuestionBlockFragment.newInstance(lectureId, slide.getQuestionBlock(),
+                slide.getIndex(), slide.isStarted());
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout, fragment, QuestionBlockFragment.TAG)
                 .commit();
     }
 }
