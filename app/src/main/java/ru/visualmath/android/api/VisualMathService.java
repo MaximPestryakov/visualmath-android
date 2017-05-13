@@ -30,6 +30,9 @@ interface VisualMathService {
     @GET("sync_v1/lectures/list")
     Observable<List<SyncLecture>> syncLectureList();
 
+    @POST("sync_v1/ongoing_lectures/load_lecture")
+    Observable<ResponseBody> loadSyncLecture(@Body Map<String, String> data);
+
     @POST("sync_v1/ongoing_lectures/load_slide")
     Observable<ResponseBody> loadSyncSlide(@Body Map<String, String> data);
 

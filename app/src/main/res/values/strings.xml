@@ -17,4 +17,6 @@
     <string name="inactive_lecture">Неактивные лекции</string>
 
     <string name="message_lecture_finished">Лекция закончена, спасибо за внимание!</string>
+    <string name="message_wait_for_start">Ожидайте начала блока вопросов</string>
+    <string name="message_question_block_finished">Блок вопросов закончен</string>
 </resources>

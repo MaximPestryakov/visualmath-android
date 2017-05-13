@@ -11,6 +11,9 @@ interface QuestionBlockView extends MvpView {
     void showQuestion();
 
     @StateStrategyType(SingleStateStrategy.class)
+    void notStart();
+
+    @StateStrategyType(SingleStateStrategy.class)
     void start();
 
     @StateStrategyType(SingleStateStrategy.class)

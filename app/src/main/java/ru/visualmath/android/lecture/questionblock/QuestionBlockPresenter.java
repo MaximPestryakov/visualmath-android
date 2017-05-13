@@ -25,15 +25,23 @@ public class QuestionBlockPresenter extends MvpPresenter<QuestionBlockView> {
 
     void connect(String lectureId, String blockId) {
         syncApi = new VisualMathSync.Builder(lectureId)
-                .setOnStartBlock(blockId, getViewState()::start)
+                .setOnStartBlock(blockId, this::onStart)
                 .setOnFinishBlock(blockId, getViewState()::finish)
                 .build();
         syncApi.connect();
     }
 
+    void onNotStart() {
+        getViewState().notStart();
+    }
+
     void onStart() {
         getViewState().start();
         getViewState().showQuestion();
+    }
+
+    void onFinish() {
+        getViewState().finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

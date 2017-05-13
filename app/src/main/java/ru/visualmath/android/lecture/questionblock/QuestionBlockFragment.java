@@ -2,7 +2,6 @@ package ru.visualmath.android.lecture.questionblock;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.lecture.question.QuestionFragment;
+import ru.visualmath.android.message.MessageFragment;
 import ru.visualmath.android.util.FragmentUtil;
 
 public class QuestionBlockFragment extends MvpAppCompatFragment implements QuestionBlockView {
@@ -69,14 +69,15 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
         presenter.connect(lectureId, questionBlock.getId());
         if (isStarted) {
             presenter.onStart();
+        } else {
+            presenter.onNotStart();
         }
     }
 
     @Override
     public void showQuestion() {
-        Log.d("MyTag", "index: " + index);
         if (index < 0 || index >= questions.size()) {
-            // done
+            presenter.onFinish();
             return;
         }
         String tag = QuestionFragment.TAG + index;
@@ -85,12 +86,21 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
     }
 
     @Override
-    public void start() {
+    public void notStart() {
+        String tag = MessageFragment.TAG + R.string.message_wait_for_start;
+        FragmentUtil.showFragment(getActivity().getSupportFragmentManager(), R.id.questionBlock, tag,
+                v -> MessageFragment.newInstance(R.string.message_wait_for_start));
+    }
 
+    @Override
+    public void start() {
+        index = 0;
     }
 
     @Override
     public void finish() {
-
+        String tag = MessageFragment.TAG + R.string.message_question_block_finished;
+        FragmentUtil.showFragment(getActivity().getSupportFragmentManager(), R.id.questionBlock, tag,
+                v -> MessageFragment.newInstance(R.string.message_question_block_finished));
     }
 }

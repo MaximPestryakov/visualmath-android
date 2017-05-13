@@ -86,9 +86,15 @@ public class VisualMathApi {
         return service.createUser(data);
     }
 
-    public Observable<ResponseBody> loadSyncSlide(String activeLectureId) {
+    public Observable<ResponseBody> loadSyncLecture(String lectureId) {
         Map<String, String> data = new HashMap<>();
-        data.put("activeLectureId", activeLectureId);
+        data.put("activeLectureId", lectureId);
+        return service.loadSyncLecture(data);
+    }
+
+    public Observable<ResponseBody> loadSyncSlide(String lectureId) {
+        Map<String, String> data = new HashMap<>();
+        data.put("activeLectureId", lectureId);
         return service.loadSyncSlide(data);
     }
 
