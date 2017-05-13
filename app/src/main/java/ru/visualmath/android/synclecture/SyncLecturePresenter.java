@@ -60,7 +60,10 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
         syncApi = new VisualMathSync.Builder(lectureId)
                 .setOnConnectListener(() -> Log.d("MyTag", "Connected"))
                 .setOnDisconnectListener(() -> Log.d("MyTag", "Disconnected"))
-                .setOnFinishListener(() -> Log.d("MyTag", "Finished"))
+                .setOnFinishListener(() -> {
+                    getViewState().showFinish();
+                    Log.d("MyTag", "Finished");
+                })
                 .setOnModuleListener(getViewState()::showModule)
                 .setOnQuestionListener(getViewState()::showQuestion)
                 .setOnQuestionBlockListener(getViewState()::showQuestionBlock)

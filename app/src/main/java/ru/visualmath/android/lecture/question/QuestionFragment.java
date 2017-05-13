@@ -99,12 +99,7 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
         questionTextView.setText(question.getTitle());
         answersRecyclerView.setHasFixedSize(true);
-        answersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
+        answersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new QuestionAdapter(question.getAnswers(), question.isMultiple());
         answersRecyclerView.setAdapter(adapter);
 

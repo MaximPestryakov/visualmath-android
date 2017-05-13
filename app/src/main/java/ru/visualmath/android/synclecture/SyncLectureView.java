@@ -19,4 +19,7 @@ interface SyncLectureView extends MvpView {
 
     @StateStrategyType(SingleStateStrategy.class)
     void showQuestionBlock(QuestionBlockSlide slide);
+
+    @StateStrategyType(SingleStateStrategy.class)
+    void showFinish();
 }

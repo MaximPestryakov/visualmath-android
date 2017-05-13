@@ -15,4 +15,6 @@
 
     <string name="active_lecture">Активные лекции</string>
     <string name="inactive_lecture">Неактивные лекции</string>
+
+    <string name="message_lecture_finished">Лекция закончена, спасибо за внимание!</string>
 </resources>

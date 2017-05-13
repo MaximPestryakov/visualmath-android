@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -40,7 +41,10 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
 
         adapter = new LectureBoardAdapter(this);
         lecturesList.setHasFixedSize(true);
-        lecturesList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        lecturesList.setLayoutManager(layoutManager);
+        lecturesList.addItemDecoration(new DividerItemDecoration(lecturesList.getContext(),
+                layoutManager.getOrientation()));
         lecturesList.setAdapter(adapter);
 
         refreshLecturesList.setOnRefreshListener(presenter::loadLectures);

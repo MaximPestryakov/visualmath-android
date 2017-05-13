@@ -16,6 +16,7 @@ import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.lecture.question.QuestionFragment;
+import ru.visualmath.android.util.FragmentUtil;
 
 public class QuestionBlockFragment extends MvpAppCompatFragment implements QuestionBlockView {
 
@@ -78,12 +79,9 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
             // done
             return;
         }
-        QuestionFragment fragment = QuestionFragment.newInstance(lectureId, questions.get(index++), questionBlock.getId());
-
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.questionBlock, fragment, QuestionFragment.TAG)
-                .commit();
+        String tag = QuestionFragment.TAG + index;
+        FragmentUtil.showFragment(getActivity().getSupportFragmentManager(), R.id.questionBlock, tag,
+                v -> QuestionFragment.newInstance(lectureId, questions.get(index++), questionBlock.getId()));
     }
 
     @Override

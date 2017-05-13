@@ -6,11 +6,18 @@ import java.io.Serializable;
 
 public class Module implements Serializable {
 
+    @SerializedName("_id")
+    String id;
+
     @SerializedName("name")
     private String name;
 
     @SerializedName("content")
     private String content;
+
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
