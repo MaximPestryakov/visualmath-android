@@ -25,6 +25,17 @@
         android:layout_below="@+id/lecture_question"
         android:layout_marginTop="16dp" />
 
+    <EditText
+        android:id="@+id/symbolicAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/lecture_question"
+        android:layout_alignStart="@+id/lecture_question"
+        android:layout_below="@+id/lecture_question"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textMultiLine" />
+
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/answer"
         android:layout_width="wrap_content"
@@ -35,7 +46,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:minWidth="88dp"
-        android:text="Ответить"
+        android:text="@string/answer"
         android:textColor="@android:color/white"
         android:visibility="gone"
         app:backgroundTint="#2196F3"
@@ -50,7 +61,7 @@
         android:layout_marginEnd="16dp"
         android:layout_toStartOf="@+id/answer"
         android:minWidth="88dp"
-        android:text="Пропустить"
+        android:text="@string/skip"
         android:visibility="gone"
         app:backgroundTint="@android:color/white"
         tools:visibility="visible" />

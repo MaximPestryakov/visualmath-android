@@ -20,6 +20,9 @@ public class Question implements Serializable {
     @SerializedName("answers")
     private List<String> answers;
 
+    @SerializedName("isAnswerSymbolic")
+    private boolean symbolic;
+
     public String getId() {
         return id;
     }
@@ -36,13 +39,7 @@ public class Question implements Serializable {
         return new ArrayList<>(answers);
     }
 
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id: " + id + ", " +
-                "title: " + title + ", " +
-                "multiple: " + multiple + ", " +
-                "answers: " + answers +
-                "}";
+    public boolean isSymbolic() {
+        return symbolic;
     }
 }

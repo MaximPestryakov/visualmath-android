@@ -1,12 +1,32 @@
-plugins {
-    id 'me.tatarka.retrolambda' version '3.6.0'
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.22.2'
+    }
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key'
+            keyPassword '140897'
+            storeFile file('../cert/cert.jks')
+            storePassword '140897'
+        }
+    }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "ru.visualmath.android"
         minSdkVersion 17
@@ -19,8 +39,9 @@ android {
         release {
             debuggable false
             shrinkResources false
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             debuggable true
@@ -50,10 +71,13 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    // RxBinding
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
     // Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     // Butter Knife
     compile 'com.jakewharton:butterknife:8.5.1'
@@ -64,12 +88,13 @@ dependencies {
 
     // Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     // Moxy
-    compile 'com.arello-mobile:moxy:1.5.2'
-    compile 'com.arello-mobile:moxy-android:1.5.2'
-    compile 'com.arello-mobile:moxy-app-compat:1.5.2'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.2'
+    compile 'com.arello-mobile:moxy:1.5.3'
+    compile 'com.arello-mobile:moxy-android:1.5.3'
+    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
 
     // Socket.IO
     compile 'io.socket:socket.io-client:0.8.3', {
@@ -81,4 +106,12 @@ dependencies {
 
     // Katex View
     compile project(path: ':katexview')
+
+    // Crashlytics
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
+    }
+
+    // PhotoView
+    compile 'com.github.chrisbanes:PhotoView:2.0.0'
 }

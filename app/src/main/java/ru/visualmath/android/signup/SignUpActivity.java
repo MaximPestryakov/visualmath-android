@@ -1,56 +1,75 @@
 package ru.visualmath.android.signup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
-import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import ru.visualmath.android.R;
 
-public class SignUpActivity extends MvpAppCompatActivity implements MvpView {
+public class SignUpActivity extends MvpAppCompatActivity implements SignUpView {
 
     @InjectPresenter
     SignUpPresenter presenter;
 
-    @BindView(R.id.loginValue)
-    EditText loginValue;
+    @BindView(R.id.username)
+    EditText usernameEditText;
 
     @BindView(R.id.password)
-    EditText passwordValue;
+    EditText passwordEditText;
 
-    @BindView(R.id.retryPasswordValue)
-    EditText retryPasswordValue;
+    @BindView(R.id.passwordConfirm)
+    EditText passwordConfirmEditText;
 
-    @BindView(R.id.institutionValue)
-    EditText institutionValue;
+    @BindView(R.id.institution)
+    EditText institutionEditText;
 
-    @BindView(R.id.groupValue)
-    EditText groupValue;
+    @BindView(R.id.group)
+    EditText groupEditText;
 
     @BindView(R.id.signUp)
-    Button signUp;
+    Button signUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        ButterKnife.bind(this);
+
+        Observable.combineLatest(
+                RxTextView.textChanges(usernameEditText),
+                RxTextView.textChanges(passwordEditText),
+                RxTextView.textChanges(passwordConfirmEditText),
+                RxTextView.textChanges(institutionEditText),
+                RxTextView.textChanges(groupEditText),
+                (login, password, passwordConfirm, institution, group) -> login.length() > 0 &&
+                        password.length() > 0 && passwordConfirm.length() > 0 &&
+                        institution.length() > 0 && group.length() > 0
+        ).subscribe(signUpButton::setEnabled);
+
+        signUpButton.setOnClickListener(v -> {
+            String username = usernameEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+            String passwordConfirm = passwordConfirmEditText.getText().toString();
+            String institution = institutionEditText.getText().toString();
+            String group = groupEditText.getText().toString();
+            presenter.onSignUp(username, password, passwordConfirm, institution, group);
+        });
     }
 
-    @OnClick(R.id.signUp)
-    void onSignUp() {
-        String login = loginValue.getText().toString();
-        String password = passwordValue.getText().toString();
-        if (!password.equals(retryPasswordValue.getText().toString())) {
-            // Incorrect passwords
-            return;
-        }
-        String institution = institutionValue.getText().toString();
-        String group = groupValue.getText().toString();
-        presenter.onSignUp(login, password, institution, group);
+    @Override
+    public void signIn(String username, String password) {
+        Intent data = new Intent();
+        data.putExtra("username", username);
+        data.putExtra("password", password);
+        setResult(0, data);
+        finish();
     }
 }

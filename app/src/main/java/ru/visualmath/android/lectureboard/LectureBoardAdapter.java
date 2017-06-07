@@ -125,10 +125,10 @@ class LectureBoardAdapter extends RecyclerView.Adapter<BindableViewHolder> {
         }
 
         void setSyncLecture(SyncLecture syncLecture) {
-            lectureName.setText(syncLecture.name);
+            lectureName.setText(syncLecture.getName());
             String date = DATE_FORMAT.format(syncLecture.getCreatedDate());
             lectureDate.setText(date);
-            itemView.setOnClickListener(v -> showSyncLecture(syncLecture.ongoingId));
+            itemView.setOnClickListener(v -> showSyncLecture(syncLecture.getOngoingId()));
         }
 
         void setLecture(Lecture lecture) {

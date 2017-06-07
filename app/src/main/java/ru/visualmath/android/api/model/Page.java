@@ -1,10 +1,22 @@
 package ru.visualmath.android.api.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Page implements Serializable {
 
-    public int index;
+    @SerializedName("index")
+    private int index;
 
-    public String type;
+    @SerializedName("type")
+    private String type;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

@@ -8,13 +8,15 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
 
 interface VisualMathService {
+
+    String URL = "http://visualmath.ru/api/";
+
     @POST("login")
     Observable<User> login(@Body Map<String, String> data);
 
@@ -37,7 +39,7 @@ interface VisualMathService {
     Observable<ResponseBody> loadSyncSlide(@Body Map<String, String> data);
 
     @POST("sync_v1/questions/answer")
-    Observable<AnswerRequest> answerQuestion(@Body Map<String, Object> data);
+    Observable<ResponseBody> answerQuestion(@Body Map<String, Object> data);
 
     @POST("sync_v1/blocks/answer")
     Observable<ResponseBody> answerBlock(@Body Map<String, Object> data);

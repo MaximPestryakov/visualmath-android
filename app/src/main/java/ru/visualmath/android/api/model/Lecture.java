@@ -1,5 +1,7 @@
 package ru.visualmath.android.api.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,22 +12,49 @@ import java.util.Locale;
 
 public class Lecture implements Serializable {
 
-    public String name;
+    @SerializedName("name")
+    private String name;
 
-    public List<Page> mapping;
+    @SerializedName("mapping")
+    private List<Page> mapping;
 
-    public List<Module> modules;
+    @SerializedName("modules")
+    private List<Module> modules;
 
-    public List<Question> questions;
+    @SerializedName("questions")
+    private List<Question> questions;
 
-    public List<String> questionBlocks;
+    @SerializedName("questionBlocks")
+    private List<String> questionBlocks;
 
-    public boolean hidden;
+    @SerializedName("hidden")
+    private boolean hidden;
 
-    public String created;
+    @SerializedName("created")
+    private String created;
 
     public String getName() {
         return name;
+    }
+
+    public List<Page> getMapping() {
+        return mapping;
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public List<String> getQuestionBlocks() {
+        return questionBlocks;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 
     public Date getCreatedDate() {

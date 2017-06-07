@@ -3,6 +3,10 @@
 
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
+    <string name="confirm_password">Повторите пароль</string>
+    <string name="institution">Учебное заведение</string>
+    <string name="group">Класс/Группа</string>
+    <string name="sign_up">Зарегистрироваться</string>
     <string name="sign_in">Войти</string>
     <string name="cancel">Отмена</string>
 
@@ -19,4 +23,6 @@
     <string name="message_lecture_finished">Лекция закончена, спасибо за внимание!</string>
     <string name="message_wait_for_start">Ожидайте начала блока вопросов</string>
     <string name="message_question_block_finished">Блок вопросов закончен</string>
+    <string name="answer">Ответить</string>
+    <string name="skip">Пропустить</string>
 </resources>

@@ -24,6 +24,10 @@
         <activity
             android:name=".synclecture.SyncLectureActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="4bc8816d05de7b025fc46d1668c1d4cc69e3761a" />
     </application>
 
 </manifest>

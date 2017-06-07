@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,10 +13,13 @@ import java.lang.reflect.Type;
 
 public class QuestionBlockSlide {
 
+    @SerializedName("questionBlock")
     private QuestionBlock questionBlock;
 
+    @SerializedName("index")
     private int index;
 
+    @SerializedName("started")
     private boolean started;
 
     public QuestionBlock getQuestionBlock() {

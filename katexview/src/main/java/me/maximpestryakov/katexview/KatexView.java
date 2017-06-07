@@ -11,9 +11,22 @@ public class KatexView extends WebView {
 
     private String text;
 
+    public KatexView(Context context) {
+        super(context);
+        init();
+    }
+
     public KatexView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
 
+    public KatexView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
         getSettings().setJavaScriptEnabled(true);
         getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         setBackgroundColor(Color.TRANSPARENT);
@@ -27,15 +40,6 @@ public class KatexView extends WebView {
     public void setText(final String text) {
         this.text = text;
         addJavascriptInterface(new JsObject(text), "data");
-        /*
-        addJavascriptInterface(new Object() {
-            @JavascriptInterface
-            String getText() {
-                Log.d("getText", "I am here");
-                return text;
-            }
-        }, "data");
-        */
         reload();
     }
 

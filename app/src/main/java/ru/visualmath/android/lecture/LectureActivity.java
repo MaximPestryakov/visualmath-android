@@ -53,6 +53,6 @@ public class LectureActivity extends MvpAppCompatActivity implements LectureView
 
     @Override
     public void showLecture(Lecture lecture) {
-        pager.setOffscreenPageLimit(lecture.mapping.size());
+        pager.setOffscreenPageLimit(lecture.getMapping().size());
     }
 }

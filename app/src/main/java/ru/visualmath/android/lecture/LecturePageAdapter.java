@@ -21,17 +21,17 @@ class LecturePageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Page page = lecture.mapping.get(position);
-        if ("module".equals(page.type)) {
-            Module module = lecture.modules.get(page.index);
-            return ModuleFragment.newInstance(module.getName(), module.getContent());
+        Page page = lecture.getMapping().get(position);
+        if ("module".equals(page.getType())) {
+            Module module = lecture.getModules().get(page.getIndex());
+            return ModuleFragment.newInstance(module);
         }
-        if ("question".equals(page.type)) {
-            Question question = lecture.questions.get(page.index);
+        if ("question".equals(page.getType())) {
+            Question question = lecture.getQuestions().get(page.getIndex());
             return QuestionFragment.newInstance("", question, true);
         }
-        if ("questionBlock".equals(page.type)) {
-            String questionBlockId = lecture.questionBlocks.get(page.index);
+        if ("questionBlock".equals(page.getType())) {
+            String questionBlockId = lecture.getQuestionBlocks().get(page.getIndex());
             // return QuestionBlockFragment.newInstance(questionBlockId);
         }
         return new Fragment();
@@ -39,10 +39,10 @@ class LecturePageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        if (lecture == null || lecture.mapping == null) {
+        if (lecture == null || lecture.getMapping() == null) {
             return 0;
         }
-        return lecture.mapping.size();
+        return lecture.getMapping().size();
     }
 
     void setLecture(Lecture lecture) {

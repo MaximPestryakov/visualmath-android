@@ -55,7 +55,7 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
     public void showModule(Module module) {
         String tag = ModuleFragment.TAG + "$" + module.getId();
         FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
-                v -> ModuleFragment.newInstance(module.getName(), module.getContent()));
+                v -> ModuleFragment.newInstance(module));
     }
 
     @Override

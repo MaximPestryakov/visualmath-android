@@ -5,6 +5,8 @@ import android.content.Context;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +20,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.visualmath.android.App;
-import ru.visualmath.android.api.model.AnswerRequest;
 import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
@@ -27,24 +28,28 @@ import ru.visualmath.android.api.model.User;
 public class VisualMathApi {
 
     private static VisualMathApi api;
+    private static Picasso picasso;
     private VisualMathService service;
 
     private VisualMathApi(Context context) {
-        CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
-                new SharedPrefsCookiePersistor(context));
+        CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(cookieJar)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://visualmath.ru/api/")
+                .baseUrl(VisualMathService.URL)
                 .addConverterFactory(GsonConverterFactory.create(App.getGson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
 
         service = retrofit.create(VisualMathService.class);
+
+        picasso = new Picasso.Builder(context)
+                .downloader(new OkHttp3Downloader(okHttpClient))
+                .build();
     }
 
     public static void init(Context context) {
@@ -53,6 +58,10 @@ public class VisualMathApi {
 
     public static VisualMathApi getApi() {
         return api;
+    }
+
+    public static Picasso getPicasso() {
+        return picasso;
     }
 
     public Observable<User> login(String name, String password) {
@@ -98,7 +107,7 @@ public class VisualMathApi {
         return service.loadSyncSlide(data);
     }
 
-    public Observable<AnswerRequest> answerQuestion(String lectureId, List<Integer> answer, String questionId) {
+    public Observable<ResponseBody> answerQuestion(String lectureId, List answer, String questionId) {
         Map<String, Object> data = new HashMap<>();
         data.put("activeLectureId", lectureId);
         data.put("answer", answer);
@@ -106,7 +115,7 @@ public class VisualMathApi {
         return service.answerQuestion(data);
     }
 
-    public Observable<ResponseBody> answerBlock(String lectureId, List<Integer> answer, String blockId, String questionId) {
+    public Observable<ResponseBody> answerBlock(String lectureId, List answer, String blockId, String questionId) {
         Map<String, Object> data = new HashMap<>();
         data.put("activeLectureId", lectureId);
         data.put("answer", answer);

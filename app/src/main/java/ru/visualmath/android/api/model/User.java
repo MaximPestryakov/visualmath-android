@@ -4,19 +4,38 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
-    String username;
+    @SerializedName("username")
+    private String username;
 
-    String role;
+    @SerializedName("role")
+    private String role;
 
     @SerializedName("last_name")
-    String lastName;
+    private String lastName;
 
     @SerializedName("first_name")
-    String firstName;
+    private String firstName;
 
-    String token;
+    @SerializedName("token")
+    private String token;
 
     public String getUsername() {
         return username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

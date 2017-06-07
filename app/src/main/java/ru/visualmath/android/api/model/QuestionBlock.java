@@ -35,13 +35,4 @@ public class QuestionBlock implements Serializable {
     public List<Question> getQuestions() {
         return new ArrayList<>(questions);
     }
-
-    @Override
-    public String toString() {
-        return "QuestionBlock{" +
-                "name: " + name + ", " +
-                "hidden: " + hidden + ", " +
-                "questions: " + questions +
-                "}";
-    }
 }

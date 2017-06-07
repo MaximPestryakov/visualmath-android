@@ -32,12 +32,12 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
         syncApi.connect();
     }
 
-    void onAnswer(String lectureId, List<Integer> answer, String questionId) {
+    void onAnswer(String lectureId, List answer, String questionId) {
         if (blockId == null) {
             api.answerQuestion(lectureId, answer, questionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(answerRequest -> {
+                    .subscribe(responseBody -> {
                     }, throwable -> {
 
                     });

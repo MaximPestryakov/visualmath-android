@@ -11,13 +11,6 @@ public class SlideInfo {
         return type;
     }
 
-    @Override
-    public String toString() {
-        return "SlideInfo{" +
-                "type: " + type.name() +
-                "}";
-    }
-
     public enum SlideType {
         @SerializedName("slide")
         MODULE,

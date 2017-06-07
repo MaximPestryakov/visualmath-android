@@ -6,34 +6,33 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
+import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.maximpestryakov.katexview.KatexView;
 import ru.visualmath.android.R;
+import ru.visualmath.android.api.VisualMathApi;
+import ru.visualmath.android.api.model.Module;
 
 public class ModuleFragment extends Fragment {
 
     public static final String TAG = "ModuleFragment";
-    private static final String NAME_KEY = "NAME_KEY";
-    private static final String CONTENT_KEY = "CONTENT_KEY";
-    private static final String IMAGES_KEY = "IMAGES_KEY";
+
+    private static final String ARGUMENT_MODULE = "ARGUMENT_MODULE";
     @BindView(R.id.lecture_module_name)
     KatexView nameTextView;
     @BindView(R.id.lecture_module_content)
     KatexView contentTextView;
+    @BindView(R.id.image)
+    ImageView image;
     private Unbinder unbinder;
-    private String name;
-    private String content;
-    private ArrayList<String> images;
+    private Module module;
 
-    public static ModuleFragment newInstance(String name, String content) {
+    public static ModuleFragment newInstance(Module module) {
         Bundle args = new Bundle();
-        args.putString(NAME_KEY, name);
-        args.putString(CONTENT_KEY, content);
+        args.putSerializable(ARGUMENT_MODULE, module);
 
         ModuleFragment fragment = new ModuleFragment();
         fragment.setArguments(args);
@@ -45,8 +44,7 @@ public class ModuleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            name = args.getString(NAME_KEY);
-            content = args.getString(CONTENT_KEY);
+            module = (Module) args.getSerializable(ARGUMENT_MODULE);
         }
     }
 
@@ -57,10 +55,13 @@ public class ModuleFragment extends Fragment {
         View view = inflater.inflate(R.layout.lecture_module, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        nameTextView.setText(name);
-        contentTextView.setText(content);
-        //content = content.replaceAll("\\$", "\\$\\$");
-        // contentTex.setText("Синус \\(\\sin^2{x}\\)");
+        nameTextView.setText(module.getName());
+        contentTextView.setText(module.getContent());
+        if (module.getImages() != null && !module.getImages().isEmpty()) {
+            image.setVisibility(View.VISIBLE);
+            String url = "http://visualmath.ru" + module.getImages().get(0);
+            VisualMathApi.getPicasso().load(url).into(image);
+        }
         return view;
     }
 

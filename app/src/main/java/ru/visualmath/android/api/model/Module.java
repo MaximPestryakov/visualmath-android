@@ -3,17 +3,21 @@ package ru.visualmath.android.api.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Module implements Serializable {
 
     @SerializedName("_id")
-    String id;
+    private String id;
 
     @SerializedName("name")
     private String name;
 
     @SerializedName("content")
     private String content;
+
+    @SerializedName("images")
+    private List<String> images;
 
     public String getId() {
         return id;
@@ -27,11 +31,7 @@ public class Module implements Serializable {
         return content;
     }
 
-    @Override
-    public String toString() {
-        return "Module{" +
-                "name: " + name + ", " +
-                "content: " + content +
-                "}";
+    public List<String> getImages() {
+        return images;
     }
 }

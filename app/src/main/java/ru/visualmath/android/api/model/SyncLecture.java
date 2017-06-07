@@ -11,19 +11,49 @@ import java.util.Locale;
 public class SyncLecture {
 
     @SerializedName("_id")
-    public String id;
+    private String id;
 
-    public String ongoingId;
+    @SerializedName("ongoingId")
+    private String ongoingId;
 
-    public boolean isSpeaker;
+    @SerializedName("isSpeaker")
+    private boolean isSpeaker;
 
-    public boolean isOngoing;
+    @SerializedName("isOngoing")
+    private boolean isOngoing;
 
-    public String lecture;
+    @SerializedName("lecture")
+    private String lecture;
 
-    public String name;
+    @SerializedName("name")
+    private String name;
 
-    public String created;
+    @SerializedName("created")
+    private String created;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getOngoingId() {
+        return ongoingId;
+    }
+
+    public boolean isSpeaker() {
+        return isSpeaker;
+    }
+
+    public boolean isOngoing() {
+        return isOngoing;
+    }
+
+    public String getLecture() {
+        return lecture;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Date getCreatedDate() {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());

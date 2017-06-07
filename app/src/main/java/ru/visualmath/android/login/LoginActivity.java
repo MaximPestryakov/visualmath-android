@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import ru.visualmath.android.R;
 import ru.visualmath.android.lectureboard.LectureBoardActivity;
 import ru.visualmath.android.signup.SignUpActivity;
@@ -25,10 +27,10 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     LoginPresenter presenter;
 
     @BindView(R.id.name)
-    EditText name;
+    EditText usernameEditText;
 
     @BindView(R.id.password)
-    EditText password;
+    EditText passwordEditText;
 
     @BindView(R.id.loginButton)
     Button loginButton;
@@ -46,6 +48,12 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        Observable.combineLatest(
+                RxTextView.textChanges(usernameEditText),
+                RxTextView.textChanges(passwordEditText),
+                (username, password) -> username.length() > 0 && password.length() > 0
+        ).subscribe(loginButton::setEnabled);
     }
 
 
@@ -86,8 +94,8 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
     }
 
     private void setFormEnabled(boolean enabled) {
-        name.setEnabled(enabled);
-        password.setEnabled(enabled);
+        usernameEditText.setEnabled(enabled);
+        passwordEditText.setEnabled(enabled);
         loginButton.setEnabled(enabled);
     }
 
@@ -107,14 +115,29 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @OnClick(R.id.loginButton)
     public void onLoginClicked() {
-        String nameValue = name.getText().toString();
-        String passwordValue = password.getText().toString();
+        String nameValue = usernameEditText.getText().toString();
+        String passwordValue = passwordEditText.getText().toString();
         presenter.onLogin(nameValue, passwordValue);
     }
 
     @OnClick(R.id.signUpButton)
     public void onSignUp() {
         Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != 0 || resultCode != 0) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+        String username = data.getStringExtra("username");
+        String password = data.getStringExtra("password");
+
+        usernameEditText.setText(username);
+        passwordEditText.setText(password);
+
+        loginButton.callOnClick();
     }
 }

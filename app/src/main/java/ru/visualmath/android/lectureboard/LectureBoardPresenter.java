@@ -42,7 +42,7 @@ public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
                         Collections.sort(syncLectures, (l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
                     } else if (!allLectures.isEmpty() && allLectures.get(0) instanceof Lecture) {
                         for (Lecture lecture : (List<Lecture>) allLectures) {
-                            if (!lecture.hidden) {
+                            if (!lecture.isHidden()) {
                                 lectures.add(lecture);
                             }
                         }

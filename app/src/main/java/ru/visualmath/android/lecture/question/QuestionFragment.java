@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,11 +32,13 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     private static final String ARGUMENT_IS_STARTED = "ARGUMENT_IS_STARTED";
     private static final String ARGUMENT_BLOCK_ID = "ARGUMENT_BLOCK_ID";
     @BindView(R.id.answer)
-    public Button answer;
+    Button answer;
     @BindView(R.id.lecture_question)
     KatexView questionTextView;
     @BindView(R.id.lecture_answers)
     RecyclerView answersRecyclerView;
+    @BindView(R.id.symbolicAnswer)
+    EditText symbolicAnswer;
     @BindView(R.id.skip)
     Button skip;
     @InjectPresenter
@@ -45,7 +49,6 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     private boolean isStarted;
     private String blockId;
     private QuestionAdapter adapter;
-    private Runnable onAnswerBlockListener;
 
     public static QuestionFragment newInstance(String lectureId, Question question, boolean isStarted) {
         Bundle args = new Bundle();
@@ -97,13 +100,24 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
             finishQuestion();
         }
 
-        questionTextView.setText(question.getTitle());
-        answersRecyclerView.setHasFixedSize(true);
-        answersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new QuestionAdapter(question.getAnswers(), question.isMultiple());
-        answersRecyclerView.setAdapter(adapter);
+        if (question.isSymbolic()) {
+            answersRecyclerView.setVisibility(View.GONE);
+            symbolicAnswer.setVisibility(View.VISIBLE);
 
-        answer.setOnClickListener(v -> presenter.onAnswer(lectureId, adapter.getAnswer(), question.getId()));
+            answer.setOnClickListener(v -> presenter.onAnswer(lectureId,
+                    Collections.singletonList(symbolicAnswer.getText().toString()), question.getId()));
+        } else {
+            answersRecyclerView.setVisibility(View.VISIBLE);
+            symbolicAnswer.setVisibility(View.GONE);
+
+            answersRecyclerView.setHasFixedSize(true);
+            answersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            adapter = new QuestionAdapter(question.getAnswers(), question.isMultiple());
+            answersRecyclerView.setAdapter(adapter);
+            answer.setOnClickListener(v -> presenter.onAnswer(lectureId, adapter.getAnswer(), question.getId()));
+        }
+
+        questionTextView.setText(question.getTitle());
 
         skip.setOnClickListener(v -> presenter.onAnswer(lectureId, new ArrayList<>(), question.getId()));
 
@@ -129,16 +143,5 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void answerBlock() {
-        if (onAnswerBlockListener != null) {
-            onAnswerBlockListener.run();
-        }
-    }
-
-    public void setOnAnswerBlockListener(Runnable onAnswerBlockListener) {
-        this.onAnswerBlockListener = onAnswerBlockListener;
     }
 }

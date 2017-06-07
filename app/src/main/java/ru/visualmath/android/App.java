@@ -3,9 +3,11 @@ package ru.visualmath.android;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.fabric.sdk.android.Fabric;
 import ru.visualmath.android.api.VisualMathApi;
 import ru.visualmath.android.api.model.QuestionBlockSlide;
 
@@ -24,6 +26,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
 
         gson = new GsonBuilder()
