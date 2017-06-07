@@ -2,6 +2,8 @@ package ru.visualmath.android.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.support.v7.app.AlertDialog;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -37,6 +39,8 @@ public class SignUpActivity extends MvpAppCompatActivity implements SignUpView {
     @BindView(R.id.signUp)
     Button signUpButton;
 
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +69,44 @@ public class SignUpActivity extends MvpAppCompatActivity implements SignUpView {
     }
 
     @Override
+    protected void onDestroy() {
+        if (dialog != null) {
+            dialog.setOnCancelListener(null);
+            dialog.dismiss();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void signIn(String username, String password) {
         Intent data = new Intent();
         data.putExtra("username", username);
         data.putExtra("password", password);
         setResult(0, data);
         finish();
+    }
+
+    @Override
+    public void showError(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.sign_in_error)
+                .setMessage(message)
+                .setCancelable(true)
+                .setNegativeButton(R.string.cancel, (d, id) -> presenter.onErrorCancel())
+                .setOnCancelListener(d -> presenter.onErrorCancel());
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void showError(@StringRes int messageId) {
+        showError(getString(messageId));
+    }
+
+    @Override
+    public void hideError() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package ru.visualmath.android.login;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -23,6 +25,8 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
 
     void onLogin(String name, String password) {
         getViewState().showLoading();
+
+        Log.d("MyTag", "name: " + name + "; password: " + password);
 
         api.login(name, password)
                 .subscribeOn(Schedulers.io())

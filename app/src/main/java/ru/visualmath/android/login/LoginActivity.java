@@ -128,10 +128,11 @@ public class LoginActivity extends MvpAppCompatActivity implements LoginView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != 0 || resultCode != 0) {
+        if (requestCode != 0 || resultCode != 0 || data == null) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
+
         String username = data.getStringExtra("username");
         String password = data.getStringExtra("password");
 

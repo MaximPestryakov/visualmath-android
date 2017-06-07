@@ -8,13 +8,16 @@ buildscript {
     }
 }
 
+plugins {
+    id 'me.tatarka.retrolambda' version '3.6.0'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
-
 
 android {
     signingConfigs {
@@ -37,7 +40,7 @@ android {
     }
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             shrinkResources false
             minifyEnabled true
             signingConfig signingConfigs.config
@@ -47,6 +50,8 @@ android {
             debuggable true
             shrinkResources false
             minifyEnabled false
+            applicationIdSuffix '.debug'
+            versionNameSuffix '.debug'
         }
     }
     compileOptions {
