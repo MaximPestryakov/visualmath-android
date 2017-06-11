@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.graphics.Bitmap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +21,7 @@ import ru.visualmath.android.api.model.Visual;
 public class VisualFragment extends Fragment {
     public static final String TAG = "VisualFragment";
 
-    private static final String ARGGUMENT_VISUAL = "ARGUMENT_VISUAL";
+    private static final String ARGUMENT_VISUAL = "ARGUMENT_VISUAL";
 
     @BindView(R.id.header)
     TextView header;
@@ -32,7 +34,7 @@ public class VisualFragment extends Fragment {
 
     public static VisualFragment newInstance(Visual visual) {
         Bundle args = new Bundle();
-        args.putSerializable(ARGGUMENT_VISUAL, visual);
+        args.putSerializable(ARGUMENT_VISUAL, visual);
 
         VisualFragment fragment = new VisualFragment();
         fragment.setArguments(args);
@@ -44,7 +46,7 @@ public class VisualFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            visual = (Visual) args.getSerializable(ARGGUMENT_VISUAL);
+            visual = (Visual) args.getSerializable(ARGUMENT_VISUAL);
         }
     }
 
@@ -56,8 +58,10 @@ public class VisualFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         header.setText(visual.getName());
-        webView.loadUrl(visual.getUrl());
 
+        webView.setWebViewClient(new myWebClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(visual.getUrl());
         return view;
     }
 
@@ -65,5 +69,19 @@ public class VisualFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public class myWebClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+
+        }
     }
 }
