@@ -18,6 +18,7 @@ import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlockSlide;
 import ru.visualmath.android.api.model.SlideInfo;
+import ru.visualmath.android.api.model.Visual;
 
 @InjectViewState
 public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
@@ -27,6 +28,7 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
     private VisualMathSync syncApi;
 
     void connect(String lectureId) {
+        Log.d("MyTag", "Doesn't work?");
         api.loadSyncLecture(lectureId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,6 +74,11 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                     QuestionBlockSlide slide = App.getGson().fromJson(jsonString, QuestionBlockSlide.class);
                     getViewState().showQuestionBlock(slide);
                     break;
+
+                case VISUAL:
+                    Visual visual_slide = App.getGson().fromJson(jsonString, Visual.class);
+                    getViewState().showVisualModule(visual_slide);
+                    break;
             }
 
             syncApi = new VisualMathSync.Builder(lectureId)
@@ -81,6 +88,7 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
                     .setOnModuleListener(getViewState()::showModule)
                     .setOnQuestionListener(getViewState()::showQuestion)
                     .setOnQuestionBlockListener(getViewState()::showQuestionBlock)
+                    .setOnVisualListener(getViewState()::showVisualModule)
                     .build();
             syncApi.connect();
 

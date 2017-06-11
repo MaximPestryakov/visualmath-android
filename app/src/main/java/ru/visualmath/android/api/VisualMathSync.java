@@ -2,6 +2,7 @@ package ru.visualmath.android.api;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -19,6 +20,7 @@ import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlockSlide;
 import ru.visualmath.android.api.model.SlideInfo;
+import ru.visualmath.android.api.model.Visual;
 
 public class VisualMathSync {
 
@@ -31,6 +33,7 @@ public class VisualMathSync {
     private Consumer<Module> onModuleListener;
     private BiConsumer<Question, Boolean> onQuestionListener;
     private Consumer<QuestionBlockSlide> onQuestionBlockListener;
+    private Consumer<Visual> onVisualListener;
 
     private Handler mainThreadHandler;
 
@@ -54,7 +57,9 @@ public class VisualMathSync {
             }
             JSONObject jsonObject = (JSONObject) json[0];
             String jsonString = jsonObject.toString();
+
             SlideInfo slideInfo = App.getGson().fromJson(jsonString, SlideInfo.class);
+
             String contentJson = null;
             try {
                 contentJson = jsonObject.getJSONObject("content").toString();
@@ -103,6 +108,19 @@ public class VisualMathSync {
                         });
                     }
                     break;
+                case VISUAL:
+                    if (onVisualListener != null) {
+                        Visual slide = App.getGson().fromJson(jsonString, Visual.class);
+
+                        Log.i("MyTag", slide.getId());
+                        mainThreadHandler.post(() -> {
+                            try {
+                                //onVisualListener.accept(slide);
+                            } catch (Exception ignored) {
+                            }
+                        });
+                    }
+                    break;
             }
         });
     }
@@ -145,6 +163,11 @@ public class VisualMathSync {
 
         public Builder setOnQuestionBlockListener(Consumer<QuestionBlockSlide> onQuestionBlockListener) {
             api.onQuestionBlockListener = onQuestionBlockListener;
+            return this;
+        }
+
+        public Builder setOnVisualListener(Consumer<Visual> onVisualListener) {
+            api.onVisualListener = onVisualListener;
             return this;
         }
 

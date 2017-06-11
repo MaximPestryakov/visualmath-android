@@ -3,6 +3,7 @@ package ru.visualmath.android.synclecture;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -13,9 +14,11 @@ import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.QuestionBlockSlide;
+import ru.visualmath.android.api.model.Visual;
 import ru.visualmath.android.lecture.module.ModuleFragment;
 import ru.visualmath.android.lecture.question.QuestionFragment;
 import ru.visualmath.android.lecture.questionblock.QuestionBlockFragment;
+import ru.visualmath.android.lecture.visual.VisualFragment;
 import ru.visualmath.android.message.MessageFragment;
 import ru.visualmath.android.util.FragmentUtil;
 
@@ -54,6 +57,8 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
     @Override
     public void showModule(Module module) {
         String tag = ModuleFragment.TAG + "$" + module.getId();
+
+        Log.i("MyTag", tag);
         FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
                 v -> ModuleFragment.newInstance(module));
     }
@@ -61,6 +66,8 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
     @Override
     public void showQuestion(Question question, boolean isStarted) {
         String tag = QuestionFragment.TAG + "$" + question.getId();
+
+        Log.i("MyTag", tag);
         FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
                 v -> QuestionFragment.newInstance(lectureId, question, isStarted));
     }
@@ -69,8 +76,18 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
     public void showQuestionBlock(QuestionBlockSlide slide) {
         QuestionBlock questionBlock = slide.getQuestionBlock();
         String tag = QuestionBlockFragment.TAG + "$" + questionBlock.getId();
+
+        Log.i("MyTag", tag);
         FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
                 v -> QuestionBlockFragment.newInstance(lectureId, questionBlock, slide.getIndex(), slide.isStarted()));
+    }
+
+    @Override
+    public void showVisualModule(Visual slide) {
+        //String tag = VisualFragment.TAG + "$" + slide.getId();
+
+        //FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
+         //       v -> VisualFragment.newInstance(slide));
     }
 
     @Override

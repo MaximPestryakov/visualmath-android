@@ -7,6 +7,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import ru.visualmath.android.api.model.Module;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlockSlide;
+import ru.visualmath.android.api.model.Visual;
 
 
 interface SyncLectureView extends MvpView {
@@ -19,6 +20,9 @@ interface SyncLectureView extends MvpView {
 
     @StateStrategyType(SingleStateStrategy.class)
     void showQuestionBlock(QuestionBlockSlide slide);
+
+    @StateStrategyType(SingleStateStrategy.class)
+    void showVisualModule(Visual slide);
 
     @StateStrategyType(SingleStateStrategy.class)
     void showFinish();
