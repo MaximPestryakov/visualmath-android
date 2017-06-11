@@ -84,10 +84,10 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
 
     @Override
     public void showVisualModule(Visual slide) {
-        //String tag = VisualFragment.TAG + "$" + slide.getId();
+        String tag = VisualFragment.TAG + "$" + slide.getId();
 
-        //FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
-         //       v -> VisualFragment.newInstance(slide));
+        FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
+                v -> VisualFragment.newInstance(slide));
     }
 
     @Override
