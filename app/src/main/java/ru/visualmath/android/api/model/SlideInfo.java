@@ -19,6 +19,9 @@ public class SlideInfo {
         QUESTION,
 
         @SerializedName("questionBlock")
-        QUESTION_BLOCK
+        QUESTION_BLOCK,
+
+        @SerializedName("visual")
+        VISUAL
     }
 }
