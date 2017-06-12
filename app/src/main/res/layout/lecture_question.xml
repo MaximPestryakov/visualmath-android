@@ -5,17 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".lecture.question.QuestionFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp">
+
     <me.maximpestryakov.katexview.KatexView
         android:id="@+id/lecture_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:textColor="@color/colorPrimaryText"
         android:textSize="24sp"
         tools:text="Вопрос" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lecture_answers"
@@ -27,7 +33,7 @@
 
     <EditText
         android:id="@+id/symbolicAnswer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/lecture_question"
         android:layout_alignStart="@+id/lecture_question"
@@ -35,6 +41,32 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textMultiLine" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/draw_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:minWidth="88dp"
+        android:text="@string/draw_answer"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:backgroundTint="#2196F3"
+        tools:visibility="visible" />
+    </LinearLayout>
+
+    <me.maximpestryakov.katexview.KatexView
+        android:id="@+id/obtained_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="24sp"/>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/answer"

@@ -12,6 +12,7 @@ public class SlideInfo {
     }
 
     public enum SlideType {
+
         @SerializedName("slide")
         MODULE,
 

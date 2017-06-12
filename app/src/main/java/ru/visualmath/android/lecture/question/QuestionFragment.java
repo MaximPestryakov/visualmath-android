@@ -1,6 +1,10 @@
 package ru.visualmath.android.lecture.question;
 
+import com.example.android.paint.PaintActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +16,7 @@ import android.widget.EditText;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.example.android.paint.PaintActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +28,8 @@ import me.maximpestryakov.katexview.KatexView;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Question;
 
+import static android.app.Activity.RESULT_OK;
+
 public class QuestionFragment extends MvpAppCompatFragment implements QuestionView {
 
     public static final String TAG = "QuestionFragment";
@@ -31,17 +38,25 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     private static final String ARGUMENT_QUESTION = "ARGUMENT_QUESTION";
     private static final String ARGUMENT_IS_STARTED = "ARGUMENT_IS_STARTED";
     private static final String ARGUMENT_BLOCK_ID = "ARGUMENT_BLOCK_ID";
-    @BindView(R.id.answer)
-    Button answer;
+    private static final int DRAW_RESULT_REQUEST_CODE = 1;
+
+
     @BindView(R.id.lecture_question)
     KatexView questionTextView;
     @BindView(R.id.lecture_answers)
     RecyclerView answersRecyclerView;
     @BindView(R.id.symbolicAnswer)
     EditText symbolicAnswer;
+    @BindView(R.id.draw_answer)
+    Button drawAnswer;
+    @BindView(R.id.obtained_result)
+    KatexView katexPreview;
     @BindView(R.id.skip)
     Button skip;
+    @BindView(R.id.answer)
+    Button answer;
     @InjectPresenter
+
     QuestionPresenter presenter;
     private Unbinder unbinder;
     private String lectureId;
@@ -103,6 +118,15 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         if (question.isSymbolic()) {
             answersRecyclerView.setVisibility(View.GONE);
             symbolicAnswer.setVisibility(View.VISIBLE);
+            drawAnswer.setVisibility(View.VISIBLE);
+            Intent drawIntent = new Intent(getActivity(), PaintActivity.class);
+            drawAnswer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().startActivityForResult(drawIntent, DRAW_RESULT_REQUEST_CODE);
+                }
+            });
+            katexPreview.setVisibility(View.VISIBLE);
 
             answer.setOnClickListener(v -> presenter.onAnswer(lectureId,
                     Collections.singletonList(symbolicAnswer.getText().toString()), question.getId()));
@@ -120,7 +144,6 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         questionTextView.setText(question.getTitle());
 
         skip.setOnClickListener(v -> presenter.onAnswer(lectureId, new ArrayList<>(), question.getId()));
-
         if (blockId == null) {
             presenter.connect(lectureId, question.getId());
         }
@@ -143,5 +166,11 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String returnedResult = data.getData().toString();
+        katexPreview.setText(returnedResult);
     }
 }

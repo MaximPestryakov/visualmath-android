@@ -112,6 +112,9 @@ dependencies {
     // Katex View
     compile project(path: ':katexview')
 
+    // PaintActivity app
+    compile project(path: ':paint')
+
     // Crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true

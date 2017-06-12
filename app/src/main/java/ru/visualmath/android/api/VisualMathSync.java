@@ -52,7 +52,8 @@ public class VisualMathSync {
             e.printStackTrace();
         }
         socket.on("sync_v1/ongoing_lectures/set_slide:" + ongoingId, json -> {
-            if (onModuleListener == null && onQuestionListener == null && onQuestionBlockListener == null) {
+            if (onModuleListener == null && onQuestionListener == null && onQuestionBlockListener == null
+                    && onVisualListener == null) {
                 return;
             }
             JSONObject jsonObject = (JSONObject) json[0];
@@ -112,10 +113,9 @@ public class VisualMathSync {
                     if (onVisualListener != null) {
                         Visual slide = App.getGson().fromJson(jsonString, Visual.class);
 
-                        Log.i("MyTag", slide.getId());
                         mainThreadHandler.post(() -> {
                             try {
-                                //onVisualListener.accept(slide);
+                                onVisualListener.accept(slide);
                             } catch (Exception ignored) {
                             }
                         });

@@ -4,28 +4,20 @@ package ru.visualmath.android.api.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Visual implements Serializable{
-    @SerializedName("_id")
-    private String id;
-
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("visuals")
-    private List<String> urls;
+    @SerializedName("content")
+    private Content content;
 
     public String getId() {
-        return id;
+        return content.getId();
     }
 
     public String getName() {
-        return "test";
+        return content.getName();
     }
 
-    public String getUrl() {
-        //return urls.get(0);
-        return "https://www.google.com";
+    public String getDescription() {
+        return content.getDescription();
     }
 }

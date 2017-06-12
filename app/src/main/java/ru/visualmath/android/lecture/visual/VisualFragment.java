@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -60,8 +61,18 @@ public class VisualFragment extends Fragment {
         header.setText(visual.getName());
 
         webView.setWebViewClient(new myWebClient());
+        webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl(visual.getUrl());
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setAllowContentAccess(true);
+        webView.getSettings().setDisplayZoomControls(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBlockNetworkLoads(false);
+        String url = "http://www.sync.visualmath.ru/visuals/" + visual.getId() + "/";
+        webView.loadUrl(url);
         return view;
     }
 
