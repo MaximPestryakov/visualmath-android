@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -63,15 +64,17 @@ public class VisualFragment extends Fragment {
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setUseWideViewPort(true);
+        //webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setAllowContentAccess(true);
-        webView.getSettings().setDisplayZoomControls(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+        //webView.getSettings().setDisplayZoomControls(true);
+        //webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBlockNetworkLoads(false);
-        String url = "http://www.sync.visualmath.ru/visuals/" + visual.getId() + "/";
+        //webView.getSettings().setSupportZoom(true);
+        //webView.getSettings().setBlockNetworkLoads(false);
+        String url = "http://sync.visualmath.ru/visuals/" + visual.getId();
+
+        CookieManager.getInstance().setCookie("http://sync.visualmath.ru/", "connect.sid=s%3AIVrkf5VBQYR4Qdgp0vcZqGXs0TPxz-2Y.EZMousmykWZF4m5hcK%2F3GFB4H17CcIjiRZvHOMqyYYY");
         webView.loadUrl(url);
         return view;
     }
