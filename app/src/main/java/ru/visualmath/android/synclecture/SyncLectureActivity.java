@@ -3,6 +3,7 @@ package ru.visualmath.android.synclecture;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -24,9 +25,11 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLectureView {
 
     private static final String LECTURE_ID = "LECTURE_ID";
+
+    private String lectureId;
+
     @InjectPresenter
     SyncLecturePresenter presenter;
-    private String lectureId;
 
     public static Intent getStartIntent(Context context, String lectureId) {
         return new Intent(context, SyncLectureActivity.class).putExtra(LECTURE_ID, lectureId);
@@ -44,6 +47,7 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
 
         lectureId = getIntent().getStringExtra(LECTURE_ID);
         presenter.connect(lectureId);
+        Log.d("MyTag", "SyncLectureActivity::onCreate");
     }
 
     @Override
@@ -60,6 +64,7 @@ public class SyncLectureActivity extends MvpAppCompatActivity implements SyncLec
 
     @Override
     public void showQuestion(Question question, boolean isStarted) {
+        Log.d("MyTag", "SyncLectureActivity::showQuestion");
         String tag = QuestionFragment.TAG + "$" + question.getId();
         FragmentUtil.showFragment(getSupportFragmentManager(), R.id.frameLayout, tag,
                 v -> QuestionFragment.newInstance(lectureId, question, isStarted));

@@ -115,6 +115,10 @@ public class VisualMathSync {
         socket.disconnect();
     }
 
+    public boolean isConnected() {
+        return socket.connected();
+    }
+
     public static class Builder {
 
         private VisualMathSync api;

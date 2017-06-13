@@ -27,6 +27,10 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
     private VisualMathSync syncApi;
 
     void connect(String lectureId) {
+        if (syncApi != null && syncApi.isConnected()) {
+            return;
+        }
+
         api.loadSyncLecture(lectureId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
