@@ -3,7 +3,7 @@ package ru.visualmath.android.api;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -12,35 +12,39 @@ import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
+import ru.visualmath.android.api.model.UserInfo;
 
 interface VisualMathService {
 
     String URL = "http://visualmath.ru/api/";
 
     @POST("login")
-    Observable<User> login(@Body Map<String, String> data);
+    Single<User> login(@Body Map<String, String> data);
 
     @POST("users/create")
-    Observable<User> createUser(@Body Map<String, String> data);
+    Single<User> createUser(@Body Map<String, String> data);
 
     @GET("lectures/list")
-    Observable<List<Lecture>> lecturesList();
+    Single<List<Lecture>> lecturesList();
 
     @POST("questionBlock/load")
-    Observable<QuestionBlock> loadQuestionBlock(@Body Map<String, String> data);
+    Single<QuestionBlock> loadQuestionBlock(@Body Map<String, String> data);
 
     @GET("sync_v1/lectures/list")
-    Observable<List<SyncLecture>> syncLectureList();
+    Single<List<SyncLecture>> syncLectureList();
 
     @POST("sync_v1/ongoing_lectures/load_lecture")
-    Observable<ResponseBody> loadSyncLecture(@Body Map<String, String> data);
+    Single<ResponseBody> loadSyncLecture(@Body Map<String, String> data);
 
     @POST("sync_v1/ongoing_lectures/load_slide")
-    Observable<ResponseBody> loadSyncSlide(@Body Map<String, String> data);
+    Single<ResponseBody> loadSyncSlide(@Body Map<String, String> data);
 
     @POST("sync_v1/questions/answer")
-    Observable<ResponseBody> answerQuestion(@Body Map<String, Object> data);
+    Single<ResponseBody> answerQuestion(@Body Map<String, Object> data);
 
     @POST("sync_v1/blocks/answer")
-    Observable<ResponseBody> answerBlock(@Body Map<String, Object> data);
+    Single<ResponseBody> answerBlock(@Body Map<String, Object> data);
+
+    @POST("sync_v1/ongoing_lectures/userinfo")
+    Single<UserInfo> userInfo(@Body Map<String, Object> data);
 }

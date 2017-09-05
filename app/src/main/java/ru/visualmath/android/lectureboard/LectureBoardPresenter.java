@@ -1,14 +1,15 @@
 package ru.visualmath.android.lectureboard;
 
+import android.util.Pair;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -30,26 +31,25 @@ public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
     void loadLectures() {
         getViewState().showLoading();
 
-        List<SyncLecture> syncLectures = new ArrayList<>();
-        List<Lecture> lectures = new ArrayList<>();
+        Single.concat(api.syncLecturesList(), api.lecturesList())
+                .toList()
+                .map(lists -> new Pair<>((List<SyncLecture>) lists.get(0), (List<Lecture>) lists.get(1)))
+                .map(lecturesPair -> {
+                    Collections.sort(lecturesPair.first, (l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
 
-        Observable.concat(api.syncLecturesList(), api.lecturesList())
+                    for (int i = 0; i < lecturesPair.second.size(); ++i) {
+                        if (lecturesPair.second.get(i).isHidden()) {
+                            lecturesPair.second.remove(i);
+                        }
+                    }
+                    Collections.sort(lecturesPair.second, (l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
+
+                    return lecturesPair;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(allLectures -> {
-                    if (!allLectures.isEmpty() && allLectures.get(0) instanceof SyncLecture) {
-                        syncLectures.addAll((List<SyncLecture>) allLectures);
-                        Collections.sort(syncLectures, (l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
-                    } else if (!allLectures.isEmpty() && allLectures.get(0) instanceof Lecture) {
-                        for (Lecture lecture : (List<Lecture>) allLectures) {
-                            if (!lecture.isHidden()) {
-                                lectures.add(lecture);
-                            }
-                        }
-                        Collections.sort(lectures, (l1, l2) -> l2.getCreatedDate().compareTo(l1.getCreatedDate()));
-                        getViewState().showLectureList(syncLectures, lectures);
-                    }
-                }, throwable -> {
+                .subscribe(lecturePair ->
+                        getViewState().showLectureList(lecturePair.first, lecturePair.second), throwable -> {
                     if (throwable instanceof HttpException) {
                         if (((HttpException) throwable).code() == 500) {
                             getViewState().logout();

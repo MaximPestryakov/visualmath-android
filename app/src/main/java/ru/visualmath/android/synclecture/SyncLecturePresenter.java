@@ -8,9 +8,9 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import ru.visualmath.android.App;
 import ru.visualmath.android.api.VisualMathApi;
 import ru.visualmath.android.api.VisualMathSync;
@@ -32,63 +32,58 @@ public class SyncLecturePresenter extends MvpPresenter<SyncLectureView> {
         }
 
         api.loadSyncLecture(lectureId)
+                .map(ResponseBody::string)
+                .map(JSONObject::new)
+                .map(jsonObject -> jsonObject.getBoolean("ended"))
+                .filter(isEnded -> !isEnded)
+                .flatMap(isEnded -> api.loadSyncSlide(lectureId).toMaybe())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(responseBody -> {
+                .subscribe(responseBody -> {
                     String jsonString = responseBody.string();
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    return jsonObject.getBoolean("ended");
-                }).flatMap(isEnded -> {
-            if (isEnded) {
-                getViewState().showFinish();
-                return Observable.empty();
-            }
-            return api.loadSyncSlide(lectureId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
-        }).subscribe(responseBody -> {
-            String jsonString = responseBody.string();
-            if (jsonString.isEmpty()) {
-                return;
-            }
-            SlideInfo slideInfo = new Gson().fromJson(jsonString, SlideInfo.class);
-
-            JSONObject jsonObject = new JSONObject(jsonString);
-            String contentJson = jsonObject.getJSONObject("content").toString();
-
-            boolean isStarted;
-            switch (slideInfo.getType()) {
-                case MODULE:
-                    Module module = new Gson().fromJson(contentJson, Module.class);
-                    getViewState().showModule(module);
-                    break;
-
-                case QUESTION:
-                    Question question = new Gson().fromJson(contentJson, Question.class);
-                    isStarted = !jsonObject.isNull("activeContent");
-                    if (isStarted) {
-                        isStarted = !jsonObject.getJSONObject("activeContent").getBoolean("ended");
+                    if (jsonString.isEmpty()) {
+                        return;
                     }
-                    getViewState().showQuestion(question, isStarted);
-                    break;
+                    SlideInfo slideInfo = new Gson().fromJson(jsonString, SlideInfo.class);
 
-                case QUESTION_BLOCK:
-                    QuestionBlockSlide slide = App.getGson().fromJson(jsonString, QuestionBlockSlide.class);
-                    getViewState().showQuestionBlock(slide);
-                    break;
-            }
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    String contentJson = jsonObject.getJSONObject("content").toString();
 
-            syncApi = new VisualMathSync.Builder(lectureId)
-                    .setOnConnectListener(() -> Log.d("MyTag", "Connected"))
-                    .setOnDisconnectListener(() -> Log.d("MyTag", "Disconnected"))
-                    .setOnFinishListener(getViewState()::showFinish)
-                    .setOnModuleListener(getViewState()::showModule)
-                    .setOnQuestionListener(getViewState()::showQuestion)
-                    .setOnQuestionBlockListener(getViewState()::showQuestionBlock)
-                    .build();
-            syncApi.connect();
+                    boolean isStarted;
+                    switch (slideInfo.getType()) {
+                        case MODULE:
+                            Module module = new Gson().fromJson(contentJson, Module.class);
+                            getViewState().showModule(module);
+                            break;
 
-        });
+                        case QUESTION:
+                            Question question = new Gson().fromJson(contentJson, Question.class);
+                            isStarted = !jsonObject.isNull("activeContent");
+                            if (isStarted) {
+                                isStarted = !jsonObject.getJSONObject("activeContent").getBoolean("ended");
+                            }
+                            getViewState().showQuestion(question, isStarted);
+                            break;
+
+                        case QUESTION_BLOCK:
+                            QuestionBlockSlide slide = App.getGson().fromJson(jsonString, QuestionBlockSlide.class);
+                            getViewState().showQuestionBlock(slide);
+                            break;
+                    }
+
+                    syncApi = new VisualMathSync.Builder(lectureId)
+                            .setOnConnectListener(() -> Log.d("MyTag", "Connected"))
+                            .setOnDisconnectListener(() -> Log.d("MyTag", "Disconnected"))
+                            .setOnFinishListener(getViewState()::showFinish)
+                            .setOnModuleListener(getViewState()::showModule)
+                            .setOnQuestionListener(getViewState()::showQuestion)
+                            .setOnQuestionBlockListener(getViewState()::showQuestionBlock)
+                            .build();
+                    syncApi.connect();
+
+                }, throwable -> {
+                    // empty
+                }, getViewState()::showFinish);
     }
 
     @Override

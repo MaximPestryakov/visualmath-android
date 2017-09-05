@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -25,6 +25,7 @@ import ru.visualmath.android.api.model.Lecture;
 import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.SyncLecture;
 import ru.visualmath.android.api.model.User;
+import ru.visualmath.android.api.model.UserInfo;
 
 public class VisualMathApi {
 
@@ -69,28 +70,28 @@ public class VisualMathApi {
         return picasso;
     }
 
-    public Observable<User> login(String name, String password) {
+    public Single<User> login(String name, String password) {
         Map<String, String> data = new HashMap<>();
         data.put("name", name);
         data.put("password", password);
         return service.login(data);
     }
 
-    public Observable<List<Lecture>> lecturesList() {
+    public Single<List<Lecture>> lecturesList() {
         return service.lecturesList();
     }
 
-    public Observable<List<SyncLecture>> syncLecturesList() {
+    public Single<List<SyncLecture>> syncLecturesList() {
         return service.syncLectureList();
     }
 
-    public Observable<QuestionBlock> loadQuestionBlock(String id) {
+    public Single<QuestionBlock> loadQuestionBlock(String id) {
         Map<String, String> data = new HashMap<>();
         data.put("id", id);
         return service.loadQuestionBlock(data);
     }
 
-    public Observable<User> createUser(String login, String password, String institution, String group) {
+    public Single<User> createUser(String login, String password, String institution, String group) {
         Map<String, String> data = new HashMap<>();
         data.put("login", login);
         data.put("password", password);
@@ -100,19 +101,19 @@ public class VisualMathApi {
         return service.createUser(data);
     }
 
-    public Observable<ResponseBody> loadSyncLecture(String lectureId) {
+    public Single<ResponseBody> loadSyncLecture(String lectureId) {
         Map<String, String> data = new HashMap<>();
         data.put("activeLectureId", lectureId);
         return service.loadSyncLecture(data);
     }
 
-    public Observable<ResponseBody> loadSyncSlide(String lectureId) {
+    public Single<ResponseBody> loadSyncSlide(String lectureId) {
         Map<String, String> data = new HashMap<>();
         data.put("activeLectureId", lectureId);
         return service.loadSyncSlide(data);
     }
 
-    public Observable<ResponseBody> answerQuestion(String lectureId, List answer, String questionId) {
+    public Single<ResponseBody> answerQuestion(String lectureId, List answer, String questionId) {
         Map<String, Object> data = new HashMap<>();
         data.put("activeLectureId", lectureId);
         data.put("answer", answer);
@@ -120,12 +121,18 @@ public class VisualMathApi {
         return service.answerQuestion(data);
     }
 
-    public Observable<ResponseBody> answerBlock(String lectureId, List answer, String blockId, String questionId) {
+    public Single<ResponseBody> answerBlock(String lectureId, List answer, String blockId, String questionId) {
         Map<String, Object> data = new HashMap<>();
         data.put("activeLectureId", lectureId);
         data.put("answer", answer);
         data.put("blockId", blockId);
         data.put("questionId", questionId);
         return service.answerBlock(data);
+    }
+
+    public Single<UserInfo> userInfo(String lectureId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("activeLectureId", lectureId);
+        return service.userInfo(data);
     }
 }

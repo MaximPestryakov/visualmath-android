@@ -2,6 +2,7 @@ package ru.visualmath.android.api;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -177,6 +178,7 @@ public class VisualMathSync {
 
         public Builder setOnFinishQuestion(String questionId, Runnable onFinishQuestion) {
             api.socket.on("sync_v1/questions:" + api.ongoingId + ":" + questionId, json -> {
+                Log.d("MyTag", json[0].toString());
                 JSONObject jsonObject = (JSONObject) json[0];
                 String type = "";
                 try {
