@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/answer"
         android:layout_below="@+id/lecture_question"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        app:layoutManager="LinearLayoutManager" />
 
     <EditText
         android:id="@+id/symbolicAnswer"
@@ -34,9 +35,10 @@
         android:layout_below="@+id/lecture_question"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        tools:ignore="LabelFor" />
 
-    <android.support.v7.widget.AppCompatButton
+    <Button
         android:id="@+id/answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,12 +49,13 @@
         android:layout_marginTop="16dp"
         android:minWidth="88dp"
         android:text="@string/answer"
-        android:textColor="@android:color/white"
+        android:textColor="@color/white"
         android:visibility="gone"
-        app:backgroundTint="#2196F3"
-        tools:visibility="visible" />
+        app:backgroundTint="@color/answerButton"
+        tools:ignore="MissingPrefix"
+        tools:visibility="invisible" />
 
-    <android.support.v7.widget.AppCompatButton
+    <Button
         android:id="@+id/skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +66,20 @@
         android:minWidth="88dp"
         android:text="@string/skip"
         android:visibility="gone"
-        app:backgroundTint="@android:color/white"
+        app:backgroundTint="@color/white"
+        tools:ignore="MissingPrefix"
+        tools:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/answered_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/answered_question"
+        android:textSize="20sp"
+        android:visibility="gone"
         tools:visibility="visible" />
 
 </RelativeLayout>

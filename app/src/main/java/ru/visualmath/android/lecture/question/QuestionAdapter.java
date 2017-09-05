@@ -30,6 +30,8 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
     private SingleQuestionViewHolder checked;
 
+    private boolean answered = false;
+
     QuestionAdapter(List<String> answers, Boolean multiple) {
         this.answers = answers;
         this.multiple = multiple;
@@ -70,6 +72,11 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
         return answers.size();
     }
 
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
+        notifyDataSetChanged();
+    }
+
     class SingleQuestionViewHolder extends BindableViewHolder {
 
         @BindView(R.id.answerCompoundButton)
@@ -96,6 +103,7 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
         @Override
         public void bind(int position) {
+            answerRadioButton.setEnabled(!answered);
             if (answer.contains(position)) {
                 checked = this;
                 answerRadioButton.setChecked(true);
@@ -129,6 +137,7 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
         @Override
         public void bind(int position) {
+            answerCheckBox.setEnabled(!answered);
             answerCheckBox.setChecked(answer.contains(position));
             answerText.setText(answers.get(position));
         }

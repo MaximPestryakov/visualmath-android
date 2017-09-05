@@ -37,19 +37,12 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
             api.answerQuestion(lectureId, answer, questionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(responseBody -> {
-                    }, throwable -> {
-
-                    });
+                    .subscribe(responseBody -> getViewState().showAnswered());
         } else {
             api.answerBlock(lectureId, answer, blockId, questionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(answerRequest -> {
-                        EventBus.getDefault().post(new NextQuestionEvent());
-                    }, throwable -> {
-
-                    });
+                    .subscribe(answerRequest -> EventBus.getDefault().post(new NextQuestionEvent()));
         }
     }
 

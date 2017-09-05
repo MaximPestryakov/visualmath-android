@@ -2,7 +2,6 @@ package ru.visualmath.android.lecture.question;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -47,6 +47,9 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
     @BindView(R.id.skip)
     Button skip;
+
+    @BindView(R.id.answered_text)
+    TextView answeredText;
 
     @InjectPresenter
     QuestionPresenter presenter;
@@ -120,7 +123,6 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
             symbolicAnswer.setVisibility(View.GONE);
 
             answersRecyclerView.setHasFixedSize(true);
-            answersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter = new QuestionAdapter(question.getAnswers(), question.isMultiple());
             answersRecyclerView.setAdapter(adapter);
             answer.setOnClickListener(v -> presenter.onAnswer(lectureId, adapter.getAnswer(), question.getId()));
@@ -146,6 +148,14 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     public void finishQuestion() {
         answer.setVisibility(View.GONE);
         skip.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showAnswered() {
+        answeredText.setVisibility(View.VISIBLE);
+        answer.setVisibility(View.GONE);
+        skip.setVisibility(View.GONE);
+        adapter.setAnswered(true);
     }
 
     @Override
