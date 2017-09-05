@@ -1,12 +1,14 @@
 package ru.visualmath.android.lecture.question;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
     private SingleQuestionViewHolder checked;
 
     private boolean answered = false;
+
+    private List<Integer> voteList;
 
     QuestionAdapter(List<String> answers, Boolean multiple) {
         this.answers = answers;
@@ -77,6 +81,11 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
         notifyDataSetChanged();
     }
 
+    void setvoteList(List<Integer> voteList) {
+        this.voteList = voteList;
+        notifyDataSetChanged();
+    }
+
     class SingleQuestionViewHolder extends BindableViewHolder {
 
         @BindView(R.id.answerCompoundButton)
@@ -84,6 +93,9 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
         @BindView(R.id.answer_text)
         KatexView answerText;
+
+        @BindView(R.id.votes)
+        TextView votes;
 
         SingleQuestionViewHolder(View itemView) {
             super(itemView);
@@ -111,6 +123,7 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
                 answerRadioButton.setChecked(false);
             }
             answerText.setText(answers.get(position));
+
         }
     }
 
@@ -121,6 +134,9 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
         @BindView(R.id.answer_text)
         KatexView answerText;
+
+        @BindView(R.id.votes)
+        TextView votes;
 
         MultipleQuestionViewHolder(View itemView) {
             super(itemView);
@@ -140,6 +156,12 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
             answerCheckBox.setEnabled(!answered);
             answerCheckBox.setChecked(answer.contains(position));
             answerText.setText(answers.get(position));
+            if (voteList == null) {
+                votes.setVisibility(View.GONE);
+            } else {
+                votes.setVisibility(View.VISIBLE);
+                votes.setText(String.valueOf(voteList.get(position)));
+            }
         }
     }
 }

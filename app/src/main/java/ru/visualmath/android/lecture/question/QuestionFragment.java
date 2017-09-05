@@ -16,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,6 +149,10 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     public void finishQuestion() {
         answer.setVisibility(View.GONE);
         skip.setVisibility(View.GONE);
+
+        if (blockId == null) {
+            presenter.getResults(lectureId, question.getId());
+        }
     }
 
     @Override
@@ -156,6 +161,11 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         answer.setVisibility(View.GONE);
         skip.setVisibility(View.GONE);
         adapter.setAnswered(true);
+    }
+
+    @Override
+    public void showStats(List<Integer> votes) {
+        adapter.setvoteList(votes);
     }
 
     @Override

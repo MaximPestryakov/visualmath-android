@@ -1,5 +1,7 @@
 package ru.visualmath.android.lecture.question;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
@@ -11,6 +13,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.visualmath.android.api.VisualMathApi;
 import ru.visualmath.android.api.VisualMathSync;
+import ru.visualmath.android.api.model.QuestionAnswer;
+import ru.visualmath.android.api.model.Stats;
+import ru.visualmath.android.api.model.UserInfo;
 import ru.visualmath.android.event.NextQuestionEvent;
 
 @InjectViewState
@@ -44,6 +49,19 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(answerRequest -> EventBus.getDefault().post(new NextQuestionEvent()));
         }
+    }
+
+    void getResults(String lectureId, String questionId) {
+        api.userInfo(lectureId)
+                .map(UserInfo::getQuestionAnswers)
+                .map(questionAnswers -> questionAnswers.get(questionId))
+                .map(QuestionAnswer::getStats)
+                .map(Stats::getVotes)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getViewState()::showStats, throwable -> {
+                    Log.d("MyTag", throwable.getMessage());
+                });
     }
 
     @Override
