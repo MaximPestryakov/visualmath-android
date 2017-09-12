@@ -154,7 +154,7 @@ public class VisualMathSync {
         }
 
         public Builder setOnFinishListener(Runnable onFinishListener) {
-            api.socket.on("sync_v1/lectures/finish:" + api.ongoingId, __ -> {
+            api.socket.on("sync_v1/lectures/finishByUser:" + api.ongoingId, __ -> {
                 api.mainThreadHandler.post(onFinishListener);
                 api.socket.disconnect();
             });

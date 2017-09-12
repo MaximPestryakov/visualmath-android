@@ -22,7 +22,7 @@
 
     <string name="message_lecture_finished">Лекция закончена, спасибо за внимание!</string>
     <string name="message_wait_for_start">Ожидайте начала блока вопросов</string>
-    <string name="message_question_block_finished">Блок вопросов закончен</string>
+    <string name="message_question_block_finished_by_user">Пожалуйста, подождите, пока лектор завершит блок</string>
     <string name="answer">Ответить</string>
     <string name="skip">Пропустить</string>
     <string name="answered_question">Ответ принят</string>

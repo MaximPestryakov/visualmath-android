@@ -5,6 +5,8 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
+import ru.visualmath.android.api.model.Results;
+
 interface QuestionBlockView extends MvpView {
 
     @StateStrategyType(AddToEndSingleStrategy.class)
@@ -17,5 +19,8 @@ interface QuestionBlockView extends MvpView {
     void start();
 
     @StateStrategyType(SingleStateStrategy.class)
-    void finish();
+    void finishByUser();
+
+    @StateStrategyType(SingleStateStrategy.class)
+    void showResults(Results results);
 }

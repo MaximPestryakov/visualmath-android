@@ -14,8 +14,10 @@ import java.util.List;
 import ru.visualmath.android.R;
 import ru.visualmath.android.api.model.Question;
 import ru.visualmath.android.api.model.QuestionBlock;
+import ru.visualmath.android.api.model.Results;
 import ru.visualmath.android.lecture.question.QuestionFragment;
 import ru.visualmath.android.message.MessageFragment;
+import ru.visualmath.android.results.ResultsFragment;
 import ru.visualmath.android.util.FragmentUtil;
 
 public class QuestionBlockFragment extends MvpAppCompatFragment implements QuestionBlockView {
@@ -98,9 +100,15 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
     }
 
     @Override
-    public void finish() {
-        String tag = MessageFragment.TAG + R.string.message_question_block_finished;
+    public void finishByUser() {
+        String tag = MessageFragment.TAG + R.string.message_question_block_finished_by_user;
         FragmentUtil.showFragment(getActivity().getSupportFragmentManager(), R.id.questionBlock, tag,
-                v -> MessageFragment.newInstance(R.string.message_question_block_finished));
+                v -> MessageFragment.newInstance(R.string.message_question_block_finished_by_user));
+    }
+
+    @Override
+    public void showResults(Results results) {
+        FragmentUtil.showFragment(getActivity().getSupportFragmentManager(), R.id.questionBlock,
+                ResultsFragment.TAG, v -> ResultsFragment.newInstance(results));
     }
 }
