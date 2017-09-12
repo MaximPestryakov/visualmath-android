@@ -42,12 +42,14 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
             api.answerQuestion(lectureId, answer, questionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(responseBody -> getViewState().showAnswered());
+                    .subscribe(responseBody -> getViewState().showAnswered(), throwable ->
+                            Log.d("MyTag", throwable.getMessage()));
         } else {
             api.answerBlock(lectureId, answer, blockId, questionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(answerRequest -> EventBus.getDefault().post(new NextQuestionEvent()));
+                    .subscribe(answerRequest -> EventBus.getDefault().post(new NextQuestionEvent()), throwable ->
+                            Log.d("MyTag", throwable.getMessage()));
         }
     }
 
@@ -59,9 +61,8 @@ public class QuestionPresenter extends MvpPresenter<QuestionView> {
                 .map(Stats::getVotes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getViewState()::showStats, throwable -> {
-                    Log.d("MyTag", throwable.getMessage());
-                });
+                .subscribe(getViewState()::showStats, throwable ->
+                        Log.d("MyTag", throwable.getMessage()));
     }
 
     @Override

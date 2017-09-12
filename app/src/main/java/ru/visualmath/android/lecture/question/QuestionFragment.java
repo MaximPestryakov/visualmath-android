@@ -145,7 +145,9 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         answeredText.setVisibility(View.GONE);
         answer.setVisibility(View.VISIBLE);
         skip.setVisibility(View.VISIBLE);
-        adapter.setAnswered(false);
+        if (adapter != null) {
+            adapter.setAnswered(false);
+        }
     }
 
     @Override
@@ -163,7 +165,9 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         answeredText.setVisibility(View.VISIBLE);
         answer.setVisibility(View.GONE);
         skip.setVisibility(View.GONE);
-        adapter.setAnswered(true);
+        if (adapter != null) {
+            adapter.setAnswered(true);
+        }
     }
 
     @Override

@@ -28,7 +28,7 @@ class LecturePageAdapter extends FragmentStatePagerAdapter {
         }
         if ("question".equals(page.getType())) {
             Question question = lecture.getQuestions().get(page.getIndex());
-            return QuestionFragment.newInstance("", question, true);
+            return QuestionFragment.newInstance(lecture.getId(), question, true);
         }
         if ("questionBlock".equals(page.getType())) {
             String questionBlockId = lecture.getQuestionBlocks().get(page.getIndex());

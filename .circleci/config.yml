@@ -20,3 +20,6 @@ jobs:
       - run:
           name: Assemble Debug
           command: ./gradlew assembleDebug
+      - store_artifacts:
+          path: app/build/outputs/apk/debug
+          destination: apks

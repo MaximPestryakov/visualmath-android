@@ -12,6 +12,9 @@ import java.util.Locale;
 
 public class Lecture implements Serializable {
 
+    @SerializedName("_id")
+    private String id;
+
     @SerializedName("name")
     private String name;
 
@@ -32,6 +35,10 @@ public class Lecture implements Serializable {
 
     @SerializedName("created")
     private String created;
+
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
