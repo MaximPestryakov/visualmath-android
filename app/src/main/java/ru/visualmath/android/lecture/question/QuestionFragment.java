@@ -107,11 +107,6 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         View view = inflater.inflate(R.layout.lecture_question, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        if (isStarted) {
-            startQuestion();
-        } else {
-            finishQuestion();
-        }
 
         if (question.isSymbolic()) {
             answersRecyclerView.setVisibility(View.GONE);
@@ -133,6 +128,12 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
         skip.setOnClickListener(v -> presenter.onAnswer(lectureId, new ArrayList<>(), question.getId()));
 
+        if (isStarted) {
+            startQuestion();
+        } else {
+            finishQuestion();
+        }
+
         if (blockId == null) {
             presenter.connect(lectureId, question.getId());
         }
@@ -141,8 +142,10 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
     @Override
     public void startQuestion() {
+        answeredText.setVisibility(View.GONE);
         answer.setVisibility(View.VISIBLE);
         skip.setVisibility(View.VISIBLE);
+        adapter.setAnswered(false);
     }
 
     @Override
@@ -165,7 +168,7 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
 
     @Override
     public void showStats(List<Integer> votes) {
-        adapter.setvoteList(votes);
+        adapter.setVoteList(votes);
     }
 
     @Override

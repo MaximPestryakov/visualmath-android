@@ -1,7 +1,6 @@
 package ru.visualmath.android.lecture.question;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +77,13 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
 
     public void setAnswered(boolean answered) {
         this.answered = answered;
+        if (!answered) {
+            answer.clear();
+        }
         notifyDataSetChanged();
     }
 
-    void setvoteList(List<Integer> voteList) {
+    void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;
         notifyDataSetChanged();
     }
@@ -123,7 +125,12 @@ class QuestionAdapter extends RecyclerView.Adapter<BindableViewHolder> {
                 answerRadioButton.setChecked(false);
             }
             answerText.setText(answers.get(position));
-
+            if (voteList == null) {
+                votes.setVisibility(View.GONE);
+            } else {
+                votes.setVisibility(View.VISIBLE);
+                votes.setText(String.valueOf(voteList.get(position)));
+            }
         }
     }
 
