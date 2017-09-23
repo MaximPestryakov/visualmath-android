@@ -26,4 +26,7 @@
     <string name="answer">Ответить</string>
     <string name="skip">Пропустить</string>
     <string name="answered_question">Ответ принят</string>
+
+    <string name="results_question_title">Вопрос №%d: %s</string>
+    <string name="results_question_mark">Оценка: %.2f</string>
 </resources>

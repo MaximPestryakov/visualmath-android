@@ -24,12 +24,13 @@ internal class ResultsAdapter(private val questionBlock: QuestionBlock, private 
 
     internal inner class ResultViewHolder(itemView: View) : BindableViewHolder(itemView) {
 
+        private val context = itemView.context
         private val question: KatexView = itemView.findViewById(R.id.question)
         private val mark: TextView = itemView.findViewById(R.id.mark)
 
         override fun bind(position: Int) {
-            question.text = questionBlock.questions[position].title
-            mark.text = "Оценка: ${results.answers[position].mark}"
+            question.text = context.getString(R.string.results_question_title, position + 1, questionBlock.questions[position].title)
+            mark.text = context.getString(R.string.results_question_mark, results.answers[position].mark)
         }
     }
 }
