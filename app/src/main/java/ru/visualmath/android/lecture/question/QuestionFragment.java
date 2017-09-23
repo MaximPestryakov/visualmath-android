@@ -65,7 +65,7 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     public static QuestionFragment newInstance(String lectureId, Question question, boolean isStarted) {
         Bundle args = new Bundle();
         args.putString(ARGUMENT_LECTURE_ID, lectureId);
-        args.putSerializable(ARGUMENT_QUESTION, question);
+        args.putParcelable(ARGUMENT_QUESTION, question);
         args.putBoolean(ARGUMENT_IS_STARTED, isStarted);
 
         QuestionFragment fragment = new QuestionFragment();
@@ -76,7 +76,7 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
     public static QuestionFragment newInstance(String lectureId, Question question, String blockId) {
         Bundle args = new Bundle();
         args.putString(ARGUMENT_LECTURE_ID, lectureId);
-        args.putSerializable(ARGUMENT_QUESTION, question);
+        args.putParcelable(ARGUMENT_QUESTION, question);
         args.putBoolean(ARGUMENT_IS_STARTED, true);
         args.putString(ARGUMENT_BLOCK_ID, blockId);
 
@@ -92,7 +92,7 @@ public class QuestionFragment extends MvpAppCompatFragment implements QuestionVi
         Bundle args = getArguments();
         if (args != null) {
             lectureId = args.getString(ARGUMENT_LECTURE_ID);
-            question = (Question) args.getSerializable(ARGUMENT_QUESTION);
+            question = args.getParcelable(ARGUMENT_QUESTION);
             isStarted = args.getBoolean(ARGUMENT_IS_STARTED);
             blockId = args.getString(ARGUMENT_BLOCK_ID);
         }

@@ -13,24 +13,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.visualmath.android.R;
+import ru.visualmath.android.api.model.QuestionBlock;
 import ru.visualmath.android.api.model.Results;
 
 public class ResultsFragment extends MvpAppCompatFragment {
 
     public static final String TAG = "ResultsFragment";
 
+    private static final String QUESTION_BLOCK_ARGUMENT = "QUESTION_BLOCK_ARGUMENT";
     private static final String RESULTS_ARGUMENT = "RESULTS_ARGUMENT";
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    private QuestionBlock questionBlock;
     private Results results;
     private Unbinder unbinder;
 
-    public static ResultsFragment newInstance(Results results) {
+    public static ResultsFragment newInstance(QuestionBlock questionBlock, Results results) {
 
         Bundle args = new Bundle();
-        args.putSerializable(RESULTS_ARGUMENT, results);
+        args.putParcelable(QUESTION_BLOCK_ARGUMENT, questionBlock);
+        args.putParcelable(RESULTS_ARGUMENT, results);
 
         ResultsFragment fragment = new ResultsFragment();
         fragment.setArguments(args);
@@ -40,7 +44,9 @@ public class ResultsFragment extends MvpAppCompatFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        results = (Results) getArguments().getSerializable(RESULTS_ARGUMENT);
+
+        questionBlock = getArguments().getParcelable(QUESTION_BLOCK_ARGUMENT);
+        results = getArguments().getParcelable(RESULTS_ARGUMENT);
     }
 
     @Nullable
@@ -54,7 +60,7 @@ public class ResultsFragment extends MvpAppCompatFragment {
         unbinder = ButterKnife.bind(this, view);
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new ResultsAdapter(results));
+        recyclerView.setAdapter(new ResultsAdapter(questionBlock, results));
     }
 
     @Override

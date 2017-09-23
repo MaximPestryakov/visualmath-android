@@ -1,0 +1,4 @@
+<lint>
+    <issue id="ParcelCreator" severity="ignore" />
+    <issue id="SetTextI18n" severity="ignore" />
+</lint>

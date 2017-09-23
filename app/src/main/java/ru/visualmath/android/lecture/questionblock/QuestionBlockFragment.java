@@ -39,7 +39,7 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
     public static QuestionBlockFragment newInstance(String lectureId, QuestionBlock questionBlock, int index, boolean isStarted) {
         Bundle args = new Bundle();
         args.putString(ARGUMENT_LECTURE_ID, lectureId);
-        args.putSerializable(ARGUMENT_QUESTION_BLOCK, questionBlock);
+        args.putParcelable(ARGUMENT_QUESTION_BLOCK, questionBlock);
         args.putInt(ARGUMENT_INDEX, index);
         args.putBoolean(ARGUMENT_IS_STARTED, isStarted);
 
@@ -54,7 +54,7 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
         Bundle args = getArguments();
         if (args != null) {
             lectureId = args.getString(ARGUMENT_LECTURE_ID);
-            questionBlock = (QuestionBlock) args.getSerializable(ARGUMENT_QUESTION_BLOCK);
+            questionBlock = args.getParcelable(ARGUMENT_QUESTION_BLOCK);
             questions = questionBlock.getQuestions();
             index = args.getInt(ARGUMENT_INDEX);
             isStarted = args.getBoolean(ARGUMENT_IS_STARTED);
@@ -109,6 +109,6 @@ public class QuestionBlockFragment extends MvpAppCompatFragment implements Quest
     @Override
     public void showResults(Results results) {
         FragmentUtil.showFragment(getActivity().getSupportFragmentManager(), R.id.questionBlock,
-                ResultsFragment.TAG, v -> ResultsFragment.newInstance(results));
+                ResultsFragment.TAG, v -> ResultsFragment.newInstance(questionBlock, results));
     }
 }
