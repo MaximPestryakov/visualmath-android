@@ -32,7 +32,7 @@ public class ModuleFragment extends Fragment {
 
     public static ModuleFragment newInstance(Module module) {
         Bundle args = new Bundle();
-        args.putSerializable(ARGUMENT_MODULE, module);
+        args.putParcelable(ARGUMENT_MODULE, module);
 
         ModuleFragment fragment = new ModuleFragment();
         fragment.setArguments(args);
@@ -44,7 +44,7 @@ public class ModuleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            module = (Module) args.getSerializable(ARGUMENT_MODULE);
+            module = args.getParcelable(ARGUMENT_MODULE);
         }
     }
 
@@ -57,7 +57,7 @@ public class ModuleFragment extends Fragment {
 
         nameTextView.setText(module.getName());
         contentTextView.setText(module.getContent());
-        if (module.getImages() != null && !module.getImages().isEmpty()) {
+        if (!module.getImages().isEmpty()) {
             image.setVisibility(View.VISIBLE);
             String url = "http://visualmath.ru" + module.getImages().get(0);
             VisualMathApi.getPicasso().load(url).into(image);

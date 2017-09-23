@@ -13,10 +13,8 @@ import ru.visualmath.android.util.BindableViewHolder
 
 internal class ResultsAdapter(private val questionBlock: QuestionBlock, private val results: Results) : RecyclerView.Adapter<ResultsAdapter.ResultViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_result, parent, false)
-        return ResultViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ResultViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_result, parent, false))
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) = holder.bind(position)
 

@@ -41,7 +41,7 @@ public class LectureActivity extends MvpAppCompatActivity implements LectureView
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            Lecture lecture = (Lecture) getIntent().getSerializableExtra(EXTRA_LECTURE);
+            Lecture lecture = getIntent().getParcelableExtra(EXTRA_LECTURE);
             presenter.setLecture(lecture);
         }
     }
