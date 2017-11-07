@@ -116,3 +116,5 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+-dontwarn ru.visualmath.android.api.model.**
