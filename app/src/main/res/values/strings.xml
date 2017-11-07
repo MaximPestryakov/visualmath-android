@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">VisualMath</string>
+
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Повторите пароль</string>
+    <string name="institution">Учебное заведение</string>
+    <string name="group">Класс/Группа</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="sign_in">Войти</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="error">Ошибка</string>
+    <string name="sign_in_error">Ошибка входа</string>
+    <string name="wrong_login_or_password">Неверный логин или пароль</string>
+    <string name="server_is_not_available">Сервер временно недоступен</string>
+    <string name="check_the_internet_connection">Проверьте подключение к интернету</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+
+    <string name="active_lecture">Активные лекции</string>
+    <string name="inactive_lecture">Неактивные лекции</string>
+
+    <string name="message_lecture_finished">Лекция закончена, спасибо за внимание!</string>
+    <string name="message_wait_for_start">Ожидайте начала блока вопросов</string>
+    <string name="message_question_block_finished_by_user">Пожалуйста, подождите, пока лектор завершит блок</string>
+    <string name="answer">Ответить</string>
+    <string name="skip">Пропустить</string>
+    <string name="answered_question">Ответ принят</string>
+
+    <string name="results_question_title">Вопрос №%d: %s</string>
+    <string name="results_question_mark">Оценка: %.2f</string>
 </resources>
