@@ -3,6 +3,7 @@ package ru.visualmath.android.api;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -20,6 +21,9 @@ interface VisualMathService {
 
     @POST("login")
     Single<User> login(@Body Map<String, String> data);
+
+    @GET("logout")
+    Completable logout();
 
     @POST("users/create")
     Single<User> createUser(@Body Map<String, String> data);

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
@@ -75,6 +76,10 @@ public class VisualMathApi {
         data.put("name", name);
         data.put("password", password);
         return service.login(data);
+    }
+
+    public Completable logout() {
+        return service.logout();
     }
 
     public Single<List<Lecture>> lecturesList() {

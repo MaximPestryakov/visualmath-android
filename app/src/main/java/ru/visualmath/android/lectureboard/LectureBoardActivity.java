@@ -7,9 +7,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import java.util.List;
 
@@ -51,6 +54,21 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.button_exit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sign_out) {
+            presenter.onLogoutClicked();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void showLoading() {
         refreshLecturesList.setRefreshing(true);
     }
@@ -77,6 +95,7 @@ public class LectureBoardActivity extends MvpAppCompatActivity implements Lectur
 
     @Override
     public void logout() {
+        new SharedPrefsCookiePersistor(this).clear();
         Intent intent = new Intent(this, LoginActivity.class);
         finish();
         startActivity(intent);

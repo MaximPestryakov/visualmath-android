@@ -65,4 +65,12 @@ public class LectureBoardPresenter extends MvpPresenter<LectureBoardView> {
                     }
                 });
     }
+
+    void onLogoutClicked() {
+        getViewState().showLoading();
+        api.logout()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getViewState()::logout, e -> getViewState().logout());
+    }
 }
