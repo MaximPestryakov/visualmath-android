@@ -8,14 +8,14 @@ import kotlinx.android.parcel.Parcelize
 data class QuestionBlock(
 
         @SerializedName("_id")
-        val id: String,
+        val id: String = "",
 
         @SerializedName("name")
-        val name: String,
+        val name: String = "",
 
         @SerializedName("hidden")
-        val isHidden: Boolean,
+        val isHidden: Boolean = false,
 
         @SerializedName("questionsIds")
-        val questions: List<Question>
+        val questions: List<Question> = emptyList()
 ) : Parcelable

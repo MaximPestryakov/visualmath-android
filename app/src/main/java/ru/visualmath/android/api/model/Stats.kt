@@ -7,5 +7,5 @@ data class Stats(
 
         @SerializedName("votes")
         @Expose
-        val votes: List<Int>
+        val votes: List<Int> = emptyList()
 )

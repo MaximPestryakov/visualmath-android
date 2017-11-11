@@ -5,20 +5,20 @@ import com.google.gson.annotations.SerializedName
 data class QuestionAnswer(
 
         @SerializedName("stats")
-        val stats: Stats,
+        val stats: Stats = Stats(),
 
         @SerializedName("questionId")
-        val questionId: String,
+        val questionId: String = "",
 
         @SerializedName("ended")
-        val isEnded: Boolean,
+        val isEnded: Boolean = false,
 
         @SerializedName("activeQuestionId")
-        val activeQuestionId: String,
+        val activeQuestionId: String = "",
 
         @SerializedName("didCurrentUserAnswer")
-        val isDidCurrentUserAnswer: Boolean,
+        val isDidCurrentUserAnswer: Boolean = false,
 
         @SerializedName("userAnsweredCorrectly")
-        val isUserAnsweredCorrectly: Boolean
+        val isUserAnsweredCorrectly: Boolean = false
 )

@@ -8,8 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class Page(
 
         @SerializedName("index")
-        val index: Int,
+        val index: Int = 0,
 
         @SerializedName("type")
-        val type: String
+        val type: String = ""
 ) : Parcelable

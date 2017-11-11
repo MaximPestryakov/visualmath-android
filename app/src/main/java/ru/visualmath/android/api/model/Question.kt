@@ -8,17 +8,17 @@ import kotlinx.android.parcel.Parcelize
 data class Question(
 
         @SerializedName("_id")
-        val id: String,
+        val id: String = "",
 
         @SerializedName("question")
-        val title: String,
+        val title: String = "",
 
         @SerializedName("multiple")
-        val isMultiple: Boolean,
+        val isMultiple: Boolean = false,
 
         @SerializedName("answers")
-        val answers: List<String>,
+        val answers: List<String> = emptyList(),
 
         @SerializedName("isAnswerSymbolic")
-        val isSymbolic: Boolean
+        val isSymbolic: Boolean = false
 ) : Parcelable

@@ -8,14 +8,14 @@ import kotlinx.android.parcel.Parcelize
 data class Module(
 
         @SerializedName("_id")
-        val id: String,
+        val id: String = "",
 
         @SerializedName("name")
-        val name: String,
+        val name: String = "",
 
         @SerializedName("content")
-        val content: String,
+        val content: String = "",
 
         @SerializedName("images")
-        val images: List<String>
+        val images: List<String> = emptyList()
 ) : Parcelable

@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName
 data class User(
 
         @SerializedName("username")
-        val username: String,
+        val username: String = "",
 
         @SerializedName("role")
-        val role: String,
+        val role: String = "",
 
         @SerializedName("last_name")
-        val lastName: String,
+        val lastName: String = "",
 
         @SerializedName("first_name")
-        val firstName: String,
+        val firstName: String = "",
 
         @SerializedName("token")
-        val token: String
+        val token: String = ""
 )

@@ -11,28 +11,28 @@ import java.util.*
 data class Lecture(
 
         @SerializedName("_id")
-        val id: String,
+        val id: String = "",
 
         @SerializedName("name")
-        val name: String,
+        val name: String = "",
 
         @SerializedName("mapping")
-        val mapping: List<Page>,
+        val mapping: List<Page> = emptyList(),
 
         @SerializedName("modules")
-        val modules: List<Module>,
+        val modules: List<Module> = emptyList(),
 
         @SerializedName("questions")
-        val questions: List<Question>,
+        val questions: List<Question> = emptyList(),
 
         @SerializedName("questionBlocks")
-        val questionBlocks: List<String>,
+        val questionBlocks: List<String> = emptyList(),
 
         @SerializedName("hidden")
-        val isHidden: Boolean,
+        val isHidden: Boolean = false,
 
         @SerializedName("created")
-        private val created: String
+        private val created: String = ""
 ) : Parcelable {
 
     val createdDate: Date

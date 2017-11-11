@@ -8,25 +8,25 @@ import java.util.*
 data class SyncLecture(
 
         @SerializedName("_id")
-        val id: String,
+        val id: String = "",
 
         @SerializedName("ongoingId")
-        val ongoingId: String,
+        val ongoingId: String = "",
 
         @SerializedName("isSpeaker")
-        val isSpeaker: Boolean,
+        val isSpeaker: Boolean = false,
 
         @SerializedName("isOngoing")
-        val isOngoing: Boolean,
+        val isOngoing: Boolean = false,
 
         @SerializedName("lecture")
-        val lecture: String,
+        val lecture: String = "",
 
         @SerializedName("name")
-        val name: String,
+        val name: String = "",
 
         @SerializedName("created")
-        private val created: String
+        private val created: String = ""
 ) {
     val createdDate: Date
         get() {

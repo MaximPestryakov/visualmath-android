@@ -8,8 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class Block(
 
         @SerializedName("ended")
-        val isEnded: Boolean,
+        val isEnded: Boolean = false,
 
         @SerializedName("results")
-        val results: Results
+        val results: Results = Results()
 ) : Parcelable

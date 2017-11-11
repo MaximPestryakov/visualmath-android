@@ -14,13 +14,13 @@ import java.lang.reflect.Type
 data class QuestionBlockSlide(
 
         @SerializedName("questionBlock")
-        var questionBlock: QuestionBlock,
+        var questionBlock: QuestionBlock = QuestionBlock(),
 
         @SerializedName("index")
-        var index: Int,
+        var index: Int = 0,
 
         @SerializedName("started")
-        var isStarted: Boolean
+        var isStarted: Boolean = false
 ) {
     class Deserializer : JsonDeserializer<QuestionBlockSlide?> {
 

@@ -8,11 +8,11 @@ import kotlinx.android.parcel.Parcelize
 data class Answer(
 
         @SerializedName("correct")
-        val correct: List<Int>,
+        val correct: List<Int> = emptyList(),
 
         @SerializedName("given")
-        val given: List<Int>,
+        val given: List<Int> = emptyList(),
 
         @SerializedName("mark")
-        val mark: Double
+        val mark: Double = 0.0
 ) : Parcelable

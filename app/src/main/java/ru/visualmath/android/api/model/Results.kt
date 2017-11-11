@@ -8,8 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class Results(
 
         @SerializedName("answers")
-        val answers: List<Answer>,
+        val answers: List<Answer> = emptyList(),
 
         @SerializedName("sum")
-        val sum: Double
+        val sum: Double = 0.0
 ) : Parcelable
