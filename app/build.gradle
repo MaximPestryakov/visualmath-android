@@ -64,8 +64,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.0.0'
-    implementation 'com.android.support:recyclerview-v7:27.0.0'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation 'com.android.support:recyclerview-v7:27.0.1'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.1'
@@ -95,7 +95,6 @@ dependencies {
 
     // OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
     // Moxy
     implementation 'com.arello-mobile:moxy:1.5.3'
