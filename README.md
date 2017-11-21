@@ -1,6 +1,7 @@
 # Мобильное приложение для Blended-Learning системы VisualMath.ru
 
 [![Build Status](https://circleci.com/gh/MaximPestryakov/visualmath-android.svg?style=shield&circle-token=95b6ee46516a0ea7be1f86f768527f3987a2bdf5)](https://circleci.com/gh/MaximPestryakov/visualmath-android/tree/master)
+[![Build status](https://build.appcenter.ms/v0.1/apps/21e5540f-986f-415e-9978-76df07b2e556/branches/master/badge)](https://appcenter.ms)
 
 Пестряков Максим Станиславович, 153 группа
 
